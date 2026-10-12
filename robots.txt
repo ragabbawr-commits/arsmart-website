@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://arsmart.netlify.app/sitemap.xml
