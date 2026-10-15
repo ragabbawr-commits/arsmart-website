@@ -125,27 +125,28 @@ button{font:inherit}
 .chip[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#1A1206;font-weight:600}
 
 /* product cards */
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media (max-width:980px){.grid{grid-template-columns:repeat(3,1fr)}}
-@media (max-width:640px){.grid{grid-template-columns:1fr 1fr;gap:10px}}
-.card{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden;min-width:0}
-.card .pic{position:relative;aspect-ratio:1/1;background:var(--photo);display:grid;place-items:center;max-width:100%}
-.card .pic img{width:100%;height:100%;object-fit:contain;padding:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:1200px;margin-inline:auto;width:100%}
+@media (max-width:520px){.grid{grid-template-columns:1fr 1fr;gap:10px}}
+.card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:15px;text-align:center;box-shadow:0 4px 6px rgba(0,0,0,.05);transition:transform .3s ease,box-shadow .3s ease;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.card:hover{transform:translateY(-5px);box-shadow:0 8px 15px rgba(0,0,0,.1)}
+.card .pic{position:relative;width:100%;height:180px;overflow:hidden;border-radius:8px;margin-bottom:12px;background:#f9f9f9;display:flex;align-items:center;justify-content:center}
+.card .pic img{max-width:100%;max-height:100%;object-fit:contain}
 .card .pic .ph{display:grid;justify-items:center;gap:6px;color:#8A95A8;text-align:center;padding:10px}
-.card .pic .ph svg{width:42%;height:auto;color:#B9C2D0}
+.card .pic .ph svg{width:64px;height:auto;color:#B9C2D0}
 .card .pic .ph span{font-family:var(--mono);font-size:.72rem;direction:ltr}
-.card .tag{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.04em;background:rgba(7,12,22,.82);color:var(--gold2);padding:2px 7px;border-radius:6px;direction:ltr}
-.card .body{display:flex;flex-direction:column;gap:6px;padding:12px;flex:1}
-.card h3{font-family:var(--body);font-weight:600;font-size:.92rem;line-height:1.45;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.9em}
-.card .model{font-family:var(--mono);font-size:.72rem;color:var(--muted);direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card .price{font-family:var(--display);font-size:1.15rem;color:var(--gold2);font-variant-numeric:tabular-nums;margin-top:auto}
-.card .price small{font-size:.75rem;color:var(--muted)}
-.card .price.ask{font-family:var(--body);font-size:.9rem;color:var(--gold)}
-.card .row{display:flex;gap:6px}
-.card .row .btn{flex:1;padding:8px 10px;font-size:.88rem;border-radius:10px}
-.card .row .add{flex:none;width:40px;padding:0;border-radius:10px;border:1px solid var(--gold-deep);background:transparent;color:var(--gold2);cursor:pointer;display:grid;place-items:center}
-.card .row .add svg{width:18px;height:18px}
-.card .row .add.in{background:rgba(226,176,79,.18)}
+.card .tag{position:absolute;top:6px;right:6px;font-family:var(--mono);font-size:.62rem;background:rgba(17,17,17,.75);color:#fff;padding:2px 7px;border-radius:6px;direction:ltr}
+.card .body{display:flex;flex-direction:column;flex:1}
+.card h3{font-family:var(--body);font-size:16px;font-weight:700;line-height:1.3;color:#333;margin-bottom:4px;min-height:40px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .model{font-family:var(--mono);font-size:.72rem;color:#888;direction:ltr;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .price{font-size:15px;font-weight:700;color:#b8860b;margin-top:auto;margin-bottom:12px;font-variant-numeric:tabular-nums}
+.card .price small{font-size:.8em;color:#b8860b}
+.card .row{display:flex;gap:8px}
+.card .row .btn{flex:1;background:#111;color:#fff;border:none;padding:10px;border-radius:6px;font-size:14px;transition:background .2s;filter:none}
+.card .row .btn:hover{background:#333}
+.card .row .add{flex:none;background:#f1f1f1;color:#333;border:none;padding:10px 12px;border-radius:6px;cursor:pointer;transition:background .2s;display:grid;place-items:center}
+.card .row .add:hover{background:#e0e0e0}
+.card .row .add svg{width:16px;height:16px}
+.card .row .add.in{background:#f3e3b8;color:#7a5a12}
 .empty{border:1px dashed var(--line);border-radius:14px;padding:28px 16px;text-align:center;color:var(--muted);display:grid;gap:12px;justify-items:center}
 
 /* booking */
@@ -302,11 +303,11 @@ const save=()=>{try{localStorage.setItem("arsmart-cart",JSON.stringify(cart))}ca
 function card(p){
   const q=cart[p.id]||0;
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">`:`<div class="ph">${ico(catOf(p).ic,1.2)}<span>${esc(p.m)}</span></div>`;
-  const price=p.p?`<div class="price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price ask">اسأل عن السعر</div>`;
+  const price=p.p?`<div class="price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price">اسأل عن السعر</div>`;
   const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
   return `<article class="card"><div class="pic">${pic}<span class="tag">${esc(p.b)}</span></div>
   <div class="body"><h3>${esc(p.n)}</h3><div class="model">${esc(p.m)}</div>${price}
-  <div class="row"><a class="btn wa" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
+  <div class="row"><a class="btn" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
   <button class="add${q?" in":""}" type="button" data-add="${p.id}" aria-label="${q?"في السلة: "+q:"أضف للسلة"}">${ico(q?"check":"plus",2)}</button></div></div></article>`;
 }
 const grid=list=>list.length?`<div class="grid">${list.map(card).join("")}</div>`:`<div class="empty"><p>المنتجات دي بنوفّرها حسب الطلب. ابعتلنا اللي محتاجه على الواتساب ونرد عليك بالسعر والتوفّر.</p><a class="btn wa" href="${wa("السلام عليكم، عايز أسأل عن منتجات")}" target="_blank" rel="noopener">اسأل على الواتساب</a></div>`;
