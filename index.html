@@ -117,10 +117,15 @@ button{font:inherit}
 /* brands strip */
 .brands{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-inline:-16px;padding-inline:16px}
 .brands::-webkit-scrollbar{display:none}
-.brands a{display:grid;justify-items:center;gap:0;padding:8px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg2);text-decoration:none;min-width:96px;flex:none}
-.brands a b{font-family:var(--mono);font-weight:600;font-size:.92rem;direction:ltr}
+.brands a{--c:var(--gold);--bgc:#161616;flex:none;width:120px;height:72px;display:grid;place-items:center;align-content:center;gap:2px;padding:8px 10px;border-radius:12px;text-decoration:none;
+  background:linear-gradient(160deg,var(--bgc) 0%,#111 100%);border:1px solid color-mix(in srgb,var(--c) 45%,transparent);border-top:3px solid var(--c);transition:transform .2s,border-color .2s}
+.brands a b{font-family:var(--mono);font-weight:700;font-size:.95rem;direction:ltr;color:var(--c);letter-spacing:.02em;white-space:nowrap;line-height:1.2}
+.brands a b.long{font-size:.74rem}
+.brands.wrapall{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));overflow:visible;margin-inline:0;padding-inline:0}
+.brands.wrapall a{width:auto}
 .brands a small{font-size:.7rem;color:var(--muted)}
-.brands a:hover,.brands a[aria-current="page"]{border-color:var(--gold-deep)}
+.brands a img{max-width:96px;max-height:30px;object-fit:contain}
+.brands a:hover,.brands a[aria-current="page"]{transform:translateY(-2px);border-color:var(--c)}
 
 /* filter chips */
 .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
@@ -266,13 +271,13 @@ const CATS=[
  {id:"network",short:"الشبكات",name:"الشبكات",sub:"سويتشات وراوترات وأكسس بوينت",ic:"net",match:["net"]}
 ];
 const BRANDS=[
- {id:"hikvision",en:"Hikvision",ar:"هيكفيجن",k:["hikvision"]},{id:"dahua",en:"Dahua",ar:"داهوا",k:["dahua"]},
- {id:"tiandy",en:"Tiandy",ar:"تياندي",k:["tiandy"]},{id:"uniview",en:"Uniview",ar:"يونيفيو",k:["uniview"]},
- {id:"imou",en:"Imou",ar:"إيمو",k:["imou"]},{id:"ezviz",en:"EZVIZ",ar:"إيزفيز",k:["ezviz"]},
- {id:"tapo",en:"Tapo",ar:"تابو",k:["tapo"]},{id:"ruijie",en:"Ruijie · Reyee",ar:"رويجي · ريي",k:["ruijie","reyee"]},
- {id:"tplink",en:"TP-Link",ar:"تي بي لينك",k:["tp-link"]},{id:"tenda",en:"Tenda",ar:"تندا",k:["tenda"]},
- {id:"mercusys",en:"Mercusys",ar:"ميركسس",k:["mercusys"]},{id:"unifi",en:"UniFi",ar:"يونيفاي",k:["unifi","ubiquiti"]},
- {id:"zkteco",en:"ZKTeco",ar:"زد كي تيكو",k:["zkteco"]}
+ {id:"hikvision",c:"#E1251B",bg:"#000",logo:"",en:"Hikvision",ar:"هيكفيجن",k:["hikvision"]},{id:"dahua",c:"#3C86E8",bg:"#0A1A33",logo:"",en:"Dahua",ar:"داهوا",k:["dahua"]},
+ {id:"tiandy",c:"#3B95E6",bg:"#081A2E",logo:"",en:"Tiandy",ar:"تياندي",k:["tiandy"]},{id:"uniview",c:"#3D9BE9",bg:"#061A2C",logo:"",en:"Uniview",ar:"يونيفيو",k:["uniview"]},
+ {id:"imou",c:"#FFC20E",bg:"#000",logo:"",en:"Imou",ar:"إيمو",k:["imou"]},{id:"ezviz",c:"#FFFFFF",bg:"#000",logo:"",en:"EZVIZ",ar:"إيزفيز",k:["ezviz"]},
+ {id:"tapo",c:"#2BB673",bg:"#06231A",logo:"",en:"Tapo",ar:"تابو",k:["tapo"]},{id:"ruijie",c:"#FF3341",bg:"#1A0306",logo:"",en:"Ruijie · Reyee",ar:"رويجي · ريي",k:["ruijie","reyee"]},
+ {id:"tplink",c:"#4ACBD6",bg:"#0B2226",logo:"",en:"TP-Link",ar:"تي بي لينك",k:["tp-link"]},{id:"tenda",c:"#F26B21",bg:"#2A1206",logo:"",en:"Tenda",ar:"تندا",k:["tenda"]},
+ {id:"mercusys",c:"#00A0E9",bg:"#03202C",logo:"",en:"Mercusys",ar:"ميركسس",k:["mercusys"]},{id:"unifi",c:"#3B8CFF",bg:"#020F24",logo:"",en:"UniFi",ar:"يونيفاي",k:["unifi","ubiquiti"]},
+ {id:"zkteco",c:"#00A651",bg:"#03200F",logo:"",en:"ZKTeco",ar:"زد كي تيكو",k:["zkteco"]}
 ];
 const TOP=["im-ps3d-3","im-ps8d-3","im-ps2m","im-ps3d-5","auta-749701","rf-relay-2ch"];
 const ICON={
@@ -316,7 +321,7 @@ function card(p){
 }
 const grid=list=>list.length?`<div class="grid">${list.map(card).join("")}</div>`:`<div class="empty"><p>المنتجات دي بنوفّرها حسب الطلب. ابعتلنا اللي محتاجه على الواتساب ونرد عليك بالسعر والتوفّر.</p><a class="btn wa" href="${wa("السلام عليكم، عايز أسأل عن منتجات")}" target="_blank" rel="noopener">اسأل على الواتساب</a></div>`;
 const catTiles=()=>`<div class="cats">${CATS.map(c=>{const n=inCat(c).length;return `<a class="cat" href="#c-${c.id}"><span class="ic">${ico(c.ic)}</span><b>${c.name}</b><small>${n?n+" منتج":"حسب الطلب"}</small></a>`}).join("")}</div>`;
-const brandStrip=(cur)=>`<div class="brands">${BRANDS.map(b=>`<a href="#b-${b.id}"${b===cur?' aria-current="page"':""}><b>${b.en}</b><small>${b.ar}</small></a>`).join("")}</div>`;
+const brandStrip=(cur,all)=>`<div class="brands${all?" wrapall":""}">${BRANDS.map(b=>`<a href="#b-${b.id}" style="--c:${b.c};--bgc:${b.bg}"${b===cur?' aria-current="page"':""}>${b.logo?`<img src="${b.logo}" alt="${b.en}" loading="lazy">`:`<b${b.en.length>10?' class="long"':""}>${b.en}</b>`}<small>${b.ar}</small></a>`).join("")}</div>`;
 
 function viewHome(){
   return `<section class="hero">
@@ -383,7 +388,7 @@ function route(){
   else if(h.startsWith("#b-")){const b=BRANDS.find(x=>"#b-"+x.id===h);if(b){html=viewBrand(b);title=b.en+" | AR&SMART"}}
   else if(h==="#book"){html=viewBook();title="احجز معاينة | AR&SMART"}
   else if(h==="#all"){html=viewAll();title="كل المنتجات | AR&SMART"}
-  else if(h==="#brands"){html=`<div class="crumb"><a href="#home">الرئيسية</a> / الماركات</div><section class="sec"><div class="sec-h"><h2>الماركات</h2></div>${brandStrip()}</section>`}
+  else if(h==="#brands"){html=`<div class="crumb"><a href="#home">الرئيسية</a> / الماركات</div><section class="sec"><div class="sec-h"><h2>الماركات</h2></div>${brandStrip(null,true)}</section>`}
   if(!html){html=viewHome()}
   $("view").innerHTML=html; document.title=title||baseTitle;
   $("menuLinks").innerHTML=menuLinks(h);
