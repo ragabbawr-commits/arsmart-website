@@ -105,6 +105,13 @@ section{padding-block:72px;display:grid;gap:28px}
 /* hero */
 .hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;padding-block:48px 40px}
 .hero h1{font-size:clamp(2.1rem,6.2vw,3.9rem)}
+.hbrand{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.hbrand img{width:84px;height:84px;border-radius:20px;box-shadow:0 10px 30px -10px rgba(226,176,79,.5);flex:none}
+.hname{font-family:var(--mono);font-weight:600;font-size:clamp(2.6rem,9vw,4.6rem);letter-spacing:.02em;line-height:1;direction:ltr;margin:0;background:linear-gradient(180deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hname em{font-style:normal;color:var(--ink);-webkit-text-fill-color:var(--ink)}
+.htag{display:block;font-family:var(--mono);font-size:.78rem;letter-spacing:.32em;color:var(--muted);margin-top:8px;direction:ltr}
+.hline{font-family:var(--display);font-size:clamp(1.3rem,4vw,1.9rem);line-height:1.4;margin-top:18px}
+.hline em{font-style:normal;color:var(--gold2)}
 .hero h1 em{font-style:normal;background:linear-gradient(180deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero .sub{margin-top:16px;font-size:1.05rem}
 .hero .en{font-family:var(--mono);direction:ltr;text-align:right;color:var(--muted);font-size:.78rem;letter-spacing:.06em;margin-top:10px;opacity:.85}
@@ -235,7 +242,19 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
 .sheet label{display:grid;gap:4px;font-size:.88rem;color:var(--muted)}
 .sheet input,.sheet select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
 
-@media (max-width:860px){.hero{grid-template-columns:1fr;gap:44px}.wall{order:-1}}
+@media (max-width:600px){
+  .grid{grid-template-columns:1fr 1fr;gap:10px}
+  .card .pic{aspect-ratio:1/1}
+  .card .body{padding:10px;gap:6px}
+  .card .m{font-size:.8rem}
+  .card h3{font-size:.8rem}
+  .card .specs{display:none}
+  .card .price{font-size:1.1rem}
+  .acts2{grid-template-columns:1fr}
+  .acts2 a{padding:8px;font-size:.85rem}
+  .acts2 button{padding:6px;font-size:.8rem}
+}
+@media (max-width:860px){.hero{grid-template-columns:1fr;gap:36px}}
 </style>
 
 <div class="wrap" dir="rtl" lang="ar">
@@ -257,8 +276,12 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
 
   <div class="hero" id="top">
     <div>
-      <span class="eyebrow">م. رجب مفتاح · Eng. Ragab Moftah</span>
-      <h1 style="margin-top:12px">بيتك وشغلك <em>تحت عينك</em> في أي وقت ومن أي مكان</h1>
+      <div class="hbrand">
+        <img src="img/logo-192.png" alt="شعار AR&amp;SMART" width="84" height="84">
+        <div><h1 class="hname">AR<em>&amp;</em>SMART</h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span></div>
+      </div>
+      <p class="hline">بيتك وشغلك <em>تحت عينك</em> في أي وقت ومن أي مكان</p>
+      <span class="eyebrow" style="margin-top:12px">م. رجب مفتاح · Eng. Ragab Moftah</span>
       <p class="sub">كاميرات مراقبة، كوالين ذكية، سمارت هوم، إنتركم صوتي ومرئي، أكسيس كنترول، حضور وانصراف، شبكات، ساوند سيستم، بوابات إلكترونية و KNX. توريد وتركيب وضمان ومتابعة بعد التركيب.</p>
       <p class="en">CCTV · SMART LOCKS · SMART HOME · INTERCOM · ACCESS CONTROL · NETWORKING · KNX</p>
       <div class="ctas">
