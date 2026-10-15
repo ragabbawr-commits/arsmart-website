@@ -25,10 +25,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Readex+Pro:wght@300;400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
-/* Layout: night control room — live camera-wall hero, gold-on-navy service rack, illustrated product shelf, project wall, booking console */
+/* Layout: store app — sticky header, hash-routed views (home / category / brand / booking), uniform product cards */
 :root{
   --bg:#070C16; --bg2:#0C1424; --surface:#111B2E; --surface2:#16233A; --ink:#EEF2F8; --muted:#97A5BB; --line:#22314B;
-  --gold:#E2B04F; --gold2:#F5D58E; --gold-deep:#9C7224; --wa:#25B864; --rec:#FF4D4D;
+  --gold:#E2B04F; --gold2:#F5D58E; --gold-deep:#9C7224; --wa:#25B864; --photo:#FFFFFF;
   --display:"Reem Kufi","Readex Pro",system-ui,sans-serif;
   --body:"Readex Pro",system-ui,"Segoe UI",Tahoma,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
@@ -36,374 +36,189 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.75;padding-inline:16px;padding-block:0 96px;
-  background-image:radial-gradient(900px 500px at 85% -10%,rgba(226,176,79,.13),transparent 60%),radial-gradient(700px 500px at 0% 30%,rgba(40,90,180,.12),transparent 60%)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.7;padding-inline:16px;padding-block:0 90px;
+  background-image:radial-gradient(900px 500px at 85% -10%,rgba(226,176,79,.10),transparent 60%)}
 .wrap{max-width:1140px;margin-inline:auto}
 h1,h2,h3{font-family:var(--display);line-height:1.3;text-wrap:balance;margin:0}
-h2{font-size:clamp(1.6rem,4.4vw,2.4rem)}
 p{margin:0}
 a{color:inherit}
+button{font:inherit}
 :focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:8px}
 .mono{font-family:var(--mono);direction:ltr;unicode-bidi:isolate}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;letter-spacing:.1em;color:var(--gold);font-weight:600}
-.eyebrow::before{content:"";width:22px;height:2px;background:var(--gold)}
-.sub{color:var(--muted);max-width:62ch}
-section{padding-block:72px;display:grid;gap:28px}
-.head{display:grid;gap:10px}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:13px 20px;font:600 1rem var(--body);text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .15s,filter .15s,background .15s}
-.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
-.btn.wa{background:var(--wa);color:#fff;box-shadow:0 8px 24px -10px rgba(37,184,100,.7)}
-.btn.gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1A1206;box-shadow:0 8px 24px -10px rgba(226,176,79,.7)}
-.btn.ghost{border-color:var(--line);background:var(--surface);color:var(--ink)}
-.btn svg{width:18px;height:18px;flex:none}
-
-/* top */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px;background:rgba(7,12,22,.82);backdrop-filter:blur(10px);margin-inline:-16px;padding-inline:16px;border-bottom:1px solid var(--line)}
-.top .in{max-width:1140px;margin-inline:auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px}
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:-16px;padding:10px 16px;background:rgba(7,12,22,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .in{max-width:1140px;margin-inline:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.brand b{font-family:var(--mono);font-size:1.15rem;letter-spacing:.04em}
-.brand small{display:block;font-size:.62rem;letter-spacing:.2em;color:var(--gold);font-family:var(--mono);line-height:1}
-.nav{display:flex;gap:18px;font-size:.92rem}
-.nav a{text-decoration:none;color:var(--muted)}
-.nav a:hover{color:var(--gold2)}
-.top .btn{padding:9px 14px;font-size:.9rem}
-.menuBtn{display:none;width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;place-items:center}
-.menuBtn svg{width:22px;height:22px}
-.mmenu{position:absolute;top:100%;inset-inline:0;background:rgba(10,17,30,.98);border-bottom:1px solid var(--line);padding:8px 16px 16px;display:grid;gap:2px}
-.mmenu a.l{padding:12px 4px;text-decoration:none;font-size:1.08rem;border-bottom:1px solid var(--line)}
-.mmenu .btn{margin-top:12px}
-@media (max-width:820px){.nav,.top .in>.btn{display:none}.menuBtn{display:grid}}
-@media (min-width:821px){.mmenu{display:none!important}}
-.fab{position:fixed;left:16px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;background:var(--wa);display:grid;place-items:center;z-index:8;box-shadow:0 10px 30px -8px rgba(37,184,100,.8);transition:bottom .25s}
-.fab svg{width:30px;height:30px}
-.fab::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--wa);animation:ping 2s infinite}
-@keyframes ping{from{transform:scale(1);opacity:.8}to{transform:scale(1.5);opacity:0}}
-.cartbar.on ~ .fab{bottom:calc(86px + env(safe-area-inset-bottom,0px))}
-.status{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 2px 2px}
-.status div{background:rgba(7,12,22,.6);border:1px solid #2A3A58;border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center}
-.status .i{grid-row:span 2;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:rgba(226,176,79,.12);color:var(--gold)}
-.status .i svg{width:20px;height:20px}
-.status b{font-size:.92rem}
-.status small{font-size:.75rem;color:#4ADE80;display:flex;gap:6px;align-items:center}
-.status small::before{content:"";width:7px;height:7px;border-radius:50%;background:#4ADE80;box-shadow:0 0 8px #4ADE80}
-.svc ul{list-style:none;padding:10px 0 0;margin:4px 0 0;border-top:1px solid var(--line);display:grid;gap:4px;font-size:.88rem}
-.svc li{display:flex;gap:8px;align-items:baseline}
-.svc li::before{content:"✓";color:var(--gold);font-weight:700}
-.chip svg{width:16px;height:16px;vertical-align:-3px;margin-inline-end:6px}
-.ci{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none;background:rgba(226,176,79,.12);color:var(--gold)}
-.ci.w{background:rgba(37,184,100,.14);color:var(--wa)}
-.ci svg{width:22px;height:22px}
-.line>.lw{display:flex;gap:12px;align-items:center;min-width:0}
-@media (max-width:600px){
-  .hero h1{font-size:2.45rem}
-  .ctas .btn{width:100%;padding:16px;font-size:1.08rem}
-  section{padding-block:56px}
-}
+.brand img{width:40px;height:40px;border-radius:10px}
+.brand b{font-family:var(--mono);font-size:1.1rem;letter-spacing:.03em;display:block;line-height:1.1}
+.brand small{display:block;font-family:var(--mono);font-size:.58rem;letter-spacing:.22em;color:var(--gold)}
+.top-acts{display:flex;align-items:center;gap:8px}
+.icon-btn{position:relative;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.icon-btn svg{width:21px;height:21px}
+.badge{position:absolute;top:-6px;left:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--gold);color:#1A1206;font-size:.72rem;font-weight:700;display:grid;place-items:center}
+
+/* menu */
+.scrim{position:fixed;inset:0;background:rgba(3,6,12,.6);z-index:30}
+.menu{position:fixed;top:0;bottom:0;right:0;width:min(320px,86vw);background:var(--bg2);border-left:1px solid var(--line);z-index:31;padding:calc(16px + env(safe-area-inset-top,0px)) 16px 24px;display:flex;flex-direction:column;gap:4px;overflow:auto}
+.menu .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.menu .mh b{font-family:var(--display);font-size:1.1rem}
+.menu a{display:flex;align-items:center;gap:12px;padding:11px 10px;border-radius:10px;text-decoration:none;font-size:1rem}
+.menu a:hover,.menu a[aria-current="page"]{background:var(--surface)}
+.menu a svg{width:20px;height:20px;color:var(--gold);flex:none}
+.menu .sep{height:1px;background:var(--line);margin:8px 0}
+.menu .label{font-size:.75rem;color:var(--muted);letter-spacing:.06em;padding:6px 10px 2px}
+.menu a.wa-link{background:var(--wa);color:#fff;justify-content:center;font-weight:600;margin-top:12px}
+.menu a.wa-link svg{color:#fff}
+
+/* shared */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:12px 20px;font-weight:600;font-size:1rem;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:filter .15s}
+.btn:hover{filter:brightness(1.08)}
+.btn svg{width:18px;height:18px;flex:none}
+.ctas .btn{flex:1 1 150px;white-space:nowrap}
+.btn.gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1A1206}
+.btn.ghost{border-color:var(--line);background:var(--surface);color:var(--ink)}
+.btn.wa{background:var(--wa);color:#fff}
+.sec{padding-block:36px;display:grid;gap:18px}
+.sec-h{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.sec-h h2{font-size:clamp(1.35rem,4vw,1.8rem)}
+.sec-h a{font-size:.9rem;color:var(--gold);text-decoration:none}
+.crumb{font-size:.85rem;color:var(--muted);padding-top:18px}
+.crumb a{color:var(--gold);text-decoration:none}
 
 /* hero */
-.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center;padding-block:48px 40px}
-.hero h1{font-size:clamp(2.1rem,6.2vw,3.9rem)}
-.hbrand{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.hbrand img{width:84px;height:84px;border-radius:20px;box-shadow:0 10px 30px -10px rgba(226,176,79,.5);flex:none}
-.hname{font-family:var(--mono);font-weight:600;font-size:clamp(2.6rem,9vw,4.6rem);letter-spacing:.02em;line-height:1;direction:ltr;margin:0;background:linear-gradient(180deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero{padding-block:36px 20px;display:grid;gap:18px;justify-items:start}
+.hbrand{display:flex;align-items:center;gap:14px}
+.hbrand img{width:72px;height:72px;border-radius:18px;box-shadow:0 10px 30px -10px rgba(226,176,79,.5)}
+.hname{font-family:var(--mono);font-weight:600;font-size:clamp(2.3rem,9vw,4rem);line-height:1;direction:ltr;background:linear-gradient(180deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hname em{font-style:normal;color:var(--ink);-webkit-text-fill-color:var(--ink)}
-.htag{display:block;font-family:var(--mono);font-size:.78rem;letter-spacing:.32em;color:var(--muted);margin-top:8px;direction:ltr}
-.hline{font-family:var(--display);font-size:clamp(1.3rem,4vw,1.9rem);line-height:1.4;margin-top:18px}
+.htag{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.3em;color:var(--muted);margin-top:6px;direction:ltr}
+.hline{font-family:var(--display);font-size:clamp(1.25rem,4.4vw,1.9rem);line-height:1.45;max-width:24ch}
 .hline em{font-style:normal;color:var(--gold2)}
-.hero h1 em{font-style:normal;background:linear-gradient(180deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero .sub{margin-top:16px;font-size:1.05rem}
-.hero .en{font-family:var(--mono);direction:ltr;text-align:right;color:var(--muted);font-size:.78rem;letter-spacing:.06em;margin-top:10px;opacity:.85}
-.ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
-.trust{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:26px;color:var(--muted);font-size:.9rem}
-.trust span{display:inline-flex;gap:6px;align-items:center}
-.trust svg{width:16px;height:16px;color:var(--gold)}
+.hsub{color:var(--muted);max-width:60ch;font-size:.95rem}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.trust{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--muted);font-size:.85rem}
+.trust span::before{content:"✓ ";color:var(--gold)}
 
-.wall{position:relative;border-radius:18px;padding:10px;background:linear-gradient(160deg,#1A2740,#0B1220);border:1px solid #2A3A58;box-shadow:0 30px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(226,176,79,.08) inset}
-.wall canvas{display:block;width:100%;height:auto;aspect-ratio:16/11;border-radius:10px;background:#05080F;max-width:100%}
-.wall .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 6px 2px;font-family:var(--mono);font-size:.72rem;color:var(--muted);direction:ltr}
-.wall .bar b{color:var(--gold)}
-.badge{position:absolute;bottom:-18px;right:20px;background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:10px 14px;display:flex;gap:10px;align-items:center;box-shadow:0 12px 30px -12px rgba(0,0,0,.8)}
-.badge svg{width:34px;height:38px}
-.badge div{line-height:1.3}
-.badge strong{font-size:.9rem}
-.badge small{display:block;color:var(--muted);font-size:.75rem}
+/* categories */
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cat{display:grid;gap:10px;align-content:start;padding:16px;border-radius:16px;border:1px solid var(--line);background:linear-gradient(180deg,var(--surface),var(--bg2));text-decoration:none;transition:border-color .2s,transform .2s;min-width:0}
+.cat:hover{border-color:var(--gold-deep);transform:translateY(-2px)}
+.cat .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:rgba(226,176,79,.1);color:var(--gold);border:1px solid rgba(226,176,79,.25)}
+.cat .ic svg{width:24px;height:24px}
+.cat b{font-family:var(--display);font-size:1rem;line-height:1.35}
+.cat small{color:var(--muted);font-size:.8rem}
+@media (max-width:760px){.cats{grid-template-columns:1fr 1fr}}
 
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:28px}
-.stats div{background:var(--bg2);padding:20px;display:grid;gap:2px}
-.stats b{font-family:var(--display);font-size:1.9rem;color:var(--gold2);font-variant-numeric:tabular-nums}
-.stats span{color:var(--muted);font-size:.88rem}
-@media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+/* brands strip */
+.brands{display:flex;flex-wrap:wrap;gap:8px}
+.brands a{display:grid;justify-items:center;gap:0;padding:8px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg2);text-decoration:none;min-width:96px}
+.brands a b{font-family:var(--mono);font-weight:600;font-size:.92rem;direction:ltr}
+.brands a small{font-size:.7rem;color:var(--muted)}
+.brands a:hover,.brands a[aria-current="page"]{border-color:var(--gold-deep)}
 
-/* services */
-.svc{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
-.svc article{position:relative;background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:16px;padding:20px;display:grid;gap:8px;align-content:start;transition:border-color .2s,transform .2s;overflow:hidden}
-.svc article:hover{border-color:var(--gold-deep);transform:translateY(-3px)}
-.svc .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:rgba(226,176,79,.1);color:var(--gold);border:1px solid rgba(226,176,79,.25)}
-.svc .ic svg{width:24px;height:24px}
-.svc h3{font-size:1.12rem}
-.svc p{color:var(--muted);font-size:.92rem}
-.svc small{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;color:var(--gold);direction:ltr;text-align:right;opacity:.8}
+/* filter chips */
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:7px 14px;font-size:.88rem;cursor:pointer;font-family:var(--body)}
+.chip[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#1A1206;font-weight:600}
 
-/* store */
-.chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:8px 16px;font:inherit;font-size:.9rem;cursor:pointer}
-.chip:hover{color:var(--ink)}
-.chip[aria-pressed="true"]{background:var(--gold);color:#1A1206;border-color:var(--gold);font-weight:600}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:grid;grid-template-rows:auto 1fr;min-width:0;transition:border-color .2s,transform .2s}
-.card:hover{border-color:var(--gold-deep);transform:translateY(-3px)}
-.card .pic{aspect-ratio:4/3;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#22324F,#0D1526 70%);position:relative;max-width:100%}
-.card .pic svg{width:58%;height:auto;filter:drop-shadow(0 14px 18px rgba(0,0,0,.55))}
-.card .pic .b{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;background:rgba(7,12,22,.75);border:1px solid var(--line);padding:2px 8px;border-radius:6px;color:var(--gold2);direction:ltr}
-.card .body{padding:14px 16px 16px;display:grid;gap:8px;grid-template-rows:auto auto 1fr auto auto}
-.card h3{font-size:.95rem;font-family:var(--body);font-weight:400;color:var(--muted)}
-.card .price{font-family:var(--display);font-size:1.35rem;color:var(--gold2);font-variant-numeric:tabular-nums;direction:rtl}
-.card .price small{font-size:.8rem;color:var(--muted)}
-.card .price .ask{font-family:var(--body);font-size:.92rem;color:var(--muted)}
-.card .pic.photo{background:#fff}
-.card .pic img{width:100%;height:100%;object-fit:contain;padding:12px;max-width:100%}
-.card .m{font-family:var(--mono);font-size:.95rem;font-weight:600;color:var(--ink);direction:ltr;text-align:right;overflow-wrap:anywhere}
-.specs{display:flex;flex-wrap:wrap;gap:6px;align-content:start}
-.specs span{font-size:.74rem;border:1px solid var(--line);border-radius:6px;padding:1px 8px;color:var(--muted);background:var(--bg2)}
-.acts2{display:grid;grid-template-columns:1fr auto;gap:8px}
-.acts2 a{padding:10px;font-size:.9rem;border-radius:10px}
-.acts2 button{border:1px solid var(--gold-deep);background:transparent;color:var(--gold2);border-radius:10px;padding:0 12px;font:600 .85rem var(--body);cursor:pointer;white-space:nowrap}
-.acts2 button.in{background:rgba(226,176,79,.15)}
-
-/* projects */
-.proj{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-.pj{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--surface);display:grid}
-.pj canvas{display:block;width:100%;aspect-ratio:16/9;height:auto;background:#05080F;max-width:100%}
-.pj .t{padding:14px 16px;display:grid;gap:4px}
-.pj h3{font-size:1.05rem}
-.pj p{color:var(--muted);font-size:.9rem}
-.pj .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
-.pj .tags span{font-family:var(--mono);font-size:.7rem;color:var(--gold);border:1px solid rgba(226,176,79,.3);border-radius:6px;padding:0 6px;direction:ltr}
-
-/* steps */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:s}
-.steps div{border-top:2px solid var(--gold);padding-top:14px;display:grid;gap:6px;counter-increment:s}
-.steps div::before{content:"0" counter(s);font-family:var(--mono);color:var(--gold);font-size:.85rem}
-.steps h3{font-size:1.05rem}
-.steps p{color:var(--muted);font-size:.9rem}
-@media (max-width:820px){.steps{grid-template-columns:1fr 1fr}}
-@media (max-width:460px){.steps{grid-template-columns:1fr}}
-
-/* brands & areas */
-.brands{display:flex;flex-wrap:wrap;gap:10px;direction:ltr;justify-content:center}
-.bgroups{display:grid;gap:18px}
-.bgroup{display:grid;gap:10px}
-.bgroup h3{font-size:.95rem;color:var(--gold);text-align:center}
-.brands span{display:grid;justify-items:center;gap:2px;padding:10px 16px;border:1px solid var(--line);border-radius:12px;background:var(--bg2);color:var(--ink);min-width:110px}
-.brands span b{font-family:var(--mono);font-weight:600;font-size:1.02rem;letter-spacing:.03em}
-.brands span small{font-family:var(--body);font-size:.75rem;color:var(--muted)}
-.areas{display:flex;flex-wrap:wrap;gap:8px}
-.areas span{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 14px}
-.areas span.home{border-color:var(--gold);color:var(--gold2);font-weight:600}
-
-/* faq */
-.faq{display:grid;gap:10px}
-.faq details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
-.faq summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:10px}
-.faq summary::after{content:"+";color:var(--gold);font-size:1.3rem;line-height:1}
-.faq details[open] summary::after{content:"−"}
-.faq p{color:var(--muted);margin-top:8px}
+/* product cards */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:980px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:640px){.grid{grid-template-columns:1fr 1fr;gap:10px}}
+.card{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden;min-width:0}
+.card .pic{position:relative;aspect-ratio:1/1;background:var(--photo);display:grid;place-items:center;max-width:100%}
+.card .pic img{width:100%;height:100%;object-fit:contain;padding:10px}
+.card .pic .ph{display:grid;justify-items:center;gap:6px;color:#8A95A8;text-align:center;padding:10px}
+.card .pic .ph svg{width:42%;height:auto;color:#B9C2D0}
+.card .pic .ph span{font-family:var(--mono);font-size:.72rem;direction:ltr}
+.card .tag{position:absolute;top:8px;right:8px;font-family:var(--mono);font-size:.62rem;letter-spacing:.04em;background:rgba(7,12,22,.82);color:var(--gold2);padding:2px 7px;border-radius:6px;direction:ltr}
+.card .body{display:flex;flex-direction:column;gap:6px;padding:12px;flex:1}
+.card h3{font-family:var(--body);font-weight:600;font-size:.92rem;line-height:1.45;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.9em}
+.card .model{font-family:var(--mono);font-size:.72rem;color:var(--muted);direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .price{font-family:var(--display);font-size:1.15rem;color:var(--gold2);font-variant-numeric:tabular-nums;margin-top:auto}
+.card .price small{font-size:.75rem;color:var(--muted)}
+.card .price.ask{font-family:var(--body);font-size:.9rem;color:var(--gold)}
+.card .row{display:flex;gap:6px}
+.card .row .btn{flex:1;padding:8px 10px;font-size:.88rem;border-radius:10px}
+.card .row .add{flex:none;width:40px;padding:0;border-radius:10px;border:1px solid var(--gold-deep);background:transparent;color:var(--gold2);cursor:pointer;display:grid;place-items:center}
+.card .row .add svg{width:18px;height:18px}
+.card .row .add.in{background:rgba(226,176,79,.18)}
+.empty{border:1px dashed var(--line);border-radius:14px;padding:28px 16px;text-align:center;color:var(--muted);display:grid;gap:12px;justify-items:center}
 
 /* booking */
-.book{display:grid;grid-template-columns:1fr 1.1fr;gap:20px;align-items:start}
+.book{display:grid;grid-template-columns:1.1fr 1fr;gap:16px;align-items:start}
 @media (max-width:860px){.book{grid-template-columns:1fr}}
-.panel{background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;gap:14px}
+.panel{background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:12px}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .form .full{grid-column:1/-1}
 @media (max-width:520px){.form{grid-template-columns:1fr}}
-.form label{display:grid;gap:4px;font-size:.88rem;color:var(--muted)}
-.form input,.form select,.form textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:.95rem}
-.form textarea{min-height:90px;resize:vertical}
-.form .err{color:#FF8A8A;font-size:.85rem;grid-column:1/-1}
+.form label{display:grid;gap:4px;font-size:.86rem;color:var(--muted)}
+.form input,.form select,.form textarea,.sheet input,.sheet select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:.95rem}
+.form textarea{min-height:84px;resize:vertical}
+.err{color:#FF8A8A;font-size:.85rem}
 .line{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-block:10px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .line:last-child{border-bottom:0}
-.line .v{font-family:var(--mono);direction:ltr;font-size:1.05rem;user-select:all;overflow-wrap:anywhere;min-width:0}
-.line .k{color:var(--muted);font-size:.85rem}
-.line .a{display:flex;gap:6px}
-.line .a .btn{padding:7px 12px;font-size:.85rem;border-radius:9px}
-.social{display:flex;flex-wrap:wrap;gap:8px}
-.social .btn{padding:9px 14px;font-size:.9rem}
-footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);font-size:.85rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.line .v{font-family:var(--mono);direction:ltr;user-select:all;overflow-wrap:anywhere}
+.line .k{color:var(--muted);font-size:.82rem}
+.line .btn{padding:7px 12px;font-size:.85rem;border-radius:9px}
 
-/* cart */
-.cartbar{position:fixed;inset-inline:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(12,20,36,.96);backdrop-filter:blur(8px);color:var(--ink);display:flex;justify-content:center;z-index:7;border-top:1px solid var(--gold-deep);transform:translateY(110%);transition:transform .25s}
-.cartbar.on{transform:none}
-.cartbar .in{max-width:1140px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.drawer{position:fixed;inset:0;background:rgba(3,6,12,.7);z-index:10;display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:var(--surface);color:var(--ink);width:100%;max-width:560px;max-height:85%;overflow:auto;border-radius:20px 20px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px));display:grid;gap:14px;border:1px solid var(--line)}
-.row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px}
-.row div{min-width:0}
+/* footer */
+footer{border-top:1px solid var(--line);margin-top:24px;padding-block:24px;display:grid;gap:10px;color:var(--muted);font-size:.85rem}
+footer .ph{font-family:var(--mono);direction:ltr;color:var(--ink)}
+footer .areas{line-height:1.9}
+
+/* floating + cart */
+.fab{position:fixed;left:16px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:54px;height:54px;border-radius:50%;background:var(--wa);display:grid;place-items:center;z-index:15;box-shadow:0 10px 30px -8px rgba(37,184,100,.7)}
+.fab svg{width:28px;height:28px}
+.drawer{position:fixed;inset:0;background:rgba(3,6,12,.7);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--surface);width:100%;max-width:560px;max-height:85%;overflow:auto;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));display:grid;gap:12px;border:1px solid var(--line)}
+.sheet label{display:grid;gap:4px;font-size:.86rem;color:var(--muted)}
+.ci{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px}
+.ci img,.ci .noimg{width:52px;height:52px;border-radius:8px;background:#fff;object-fit:contain}
+.ci div{min-width:0}
+.ci b{font-size:.88rem;display:block}
+.ci small{font-family:var(--mono);color:var(--muted);font-size:.72rem}
 .qty{display:flex;align-items:center;gap:6px}
-.qty button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:1.1rem;cursor:pointer}
-.qty output{min-width:22px;text-align:center;font-variant-numeric:tabular-nums}
-.sheet label{display:grid;gap:4px;font-size:.88rem;color:var(--muted)}
-.sheet input,.sheet select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
-
-@media (max-width:600px){
-  .grid{grid-template-columns:1fr 1fr;gap:10px}
-  .card .pic{aspect-ratio:1/1}
-  .card .body{padding:10px;gap:6px}
-  .card .m{font-size:.8rem}
-  .card h3{font-size:.8rem}
-  .card .specs{display:none}
-  .card .price{font-size:1.1rem}
-  .acts2{grid-template-columns:1fr}
-  .acts2 a{padding:8px;font-size:.85rem}
-  .acts2 button{padding:6px;font-size:.8rem}
-}
-@media (max-width:860px){.hero{grid-template-columns:1fr;gap:36px}}
+.qty button{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.qty output{min-width:20px;text-align:center}
+.total{display:flex;justify-content:space-between;font-weight:600}
+.total b{color:var(--gold2);font-family:var(--display);font-size:1.15rem}
 </style>
 
 <div class="wrap" dir="rtl" lang="ar">
   <header class="top"><div class="in">
-    <a class="brand" href="#top" aria-label="AR&SMART">
-      <img src="img/logo-192.png" alt="" width="40" height="40" style="border-radius:10px">
-      <span><b>AR&amp;SMART</b><small>SECURITY &amp; SMART SYSTEMS</small></span>
-    </a>
-    <nav class="nav" aria-label="أقسام الموقع">
-      <a href="#services">الخدمات</a><a href="#store">المنتجات</a><a href="#projects">أعمالنا</a><a href="#faq">أسئلة</a><a href="#book">احجز معاينة</a>
-    </nav>
-    <a class="btn wa" href="https://wa.me/201144772044" target="_blank" rel="noopener">واتساب</a>
-    <button class="menuBtn" id="menuBtn" type="button" aria-label="القائمة" aria-expanded="false" aria-controls="mmenu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-  </div>
-  <nav class="mmenu" id="mmenu" aria-label="القائمة" hidden>
-    <a class="l" href="#top">الرئيسية</a><a class="l" href="#services">الخدمات</a><a class="l" href="#store">المنتجات</a><a class="l" href="#projects">أعمالنا</a><a class="l" href="#faq">أسئلة شائعة</a><a class="l" href="#book">احجز معاينة وتواصل</a>
-    <a class="btn wa" href="https://wa.me/201144772044" target="_blank" rel="noopener">تواصل على الواتساب</a>
-  </nav></header>
-
-  <div class="hero" id="top">
-    <div>
-      <div class="hbrand">
-        <img src="img/logo-192.png" alt="شعار AR&amp;SMART" width="84" height="84">
-        <div><h1 class="hname">AR<em>&amp;</em>SMART</h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span></div>
-      </div>
-      <p class="hline">بيتك وشغلك <em>تحت عينك</em> في أي وقت ومن أي مكان</p>
-      <span class="eyebrow" style="margin-top:12px">م. رجب مفتاح · Eng. Ragab Moftah</span>
-      <p class="sub">كاميرات مراقبة، كوالين ذكية، سمارت هوم، إنتركم صوتي ومرئي، أكسيس كنترول، حضور وانصراف، شبكات، ساوند سيستم، بوابات إلكترونية و KNX. توريد وتركيب وضمان ومتابعة بعد التركيب.</p>
-      <p class="en">CCTV · SMART LOCKS · SMART HOME · INTERCOM · ACCESS CONTROL · NETWORKING · KNX</p>
-      <div class="ctas">
-        <a class="btn gold" href="#book">احجز معاينة مجانية</a>
-        <a class="btn ghost" href="#store">تصفّح المنتجات</a>
-      </div>
-      <div class="trust">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>ضمان على المنتج والتركيب</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>شريك Ruijie معتمد</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>متابعة بعد 3 شهور من التركيب</span>
-      </div>
+    <a class="brand" href="#home" aria-label="AR&amp;SMART الرئيسية"><img src="img/logo-192.png" alt="" width="40" height="40"><span><b>AR&amp;SMART</b><small>SECURITY &amp; SMART SYSTEMS</small></span></a>
+    <div class="top-acts">
+      <button class="icon-btn" id="cartBtn" type="button" aria-label="سلة الطلب"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 11h10.2L20 8H6.2"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg><span class="badge" id="cartCount" hidden>0</span></button>
+      <button class="icon-btn" id="menuBtn" type="button" aria-label="القائمة" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
-    <div class="wall" aria-label="شاشة مراقبة توضيحية">
-      <canvas id="feed" width="880" height="605"></canvas>
-      <div class="bar"><span><b>●</b> LIVE · 4CH · H.265+</span><span id="clock">--:--:--</span></div>
-      <div class="status" id="status"></div>
-    </div>
-  </div>
+  </div></header>
 
-  <div class="stats" role="list">
-    <div role="listitem"><b>+10</b><span>أنظمة: كاميرات، كوالين، إنتركم وأكتر</span></div>
-    <div role="listitem"><b>13</b><span>براند عالمي بنركّبه</span></div>
-    <div role="listitem"><b>200</b><span>كاميرا في مشروع واحد على 4 أدوار</span></div>
-    <div role="listitem"><b>3</b><span>شهور ومنتابعك بعد التسليم</span></div>
-  </div>
+  <main id="view"></main>
 
-  <section id="services" aria-labelledby="svc-h">
-    <div class="head"><span class="eyebrow">الخدمات</span><h2 id="svc-h">كل أنظمة الأمان والتحكم من مكان واحد</h2><p class="sub">بنعاين المكان، نصمم السيستم على مقاسه، نوّرد ونركّب ونسلّمك شغال على موبايلك.</p></div>
-    <div class="svc" id="svc"></div>
-  </section>
-
-  <section id="store" aria-labelledby="store-h">
-    <div class="head"><span class="eyebrow">المنتجات</span><h2 id="store-h">اختار واطلب على الواتساب في ثانية</h2>
-      <p class="sub">"اطلب الآن" بيفتح واتساب برسالة جاهزة فيها الموديل. ولو عايز أكتر من منتج، ضيفهم للسلة وابعتهم مرة واحدة. السعر والتوفّر بنأكدهم معاك.</p></div>
-    <div class="chips" id="chips" role="group" aria-label="تصفية حسب النوع"></div>
-    <div class="grid" id="grid"></div>
-  </section>
-
-  <section id="projects" aria-labelledby="proj-h">
-    <div class="head"><span class="eyebrow">أعمالنا</span><h2 id="proj-h">من مشاريعنا</h2><p class="sub">نماذج من شغل اتسلّم فعلاً: مباني، فيلات، معارض وشقق سمارت.</p></div>
-    <div class="proj" id="proj"></div>
-  </section>
-
-  <section aria-labelledby="how-h">
-    <div class="head"><span class="eyebrow">إزاي بنشتغل</span><h2 id="how-h">من المعاينة لحد ما السيستم يشتغل</h2></div>
-    <div class="steps">
-      <div><h3>معاينة</h3><p>بننزل المكان، نحدد أماكن الكاميرات والأجهزة ونسمع احتياجك.</p></div>
-      <div><h3>عرض سعر</h3><p>عرض واضح بالموديلات والكميات، توريد فقط أو توريد وتركيب.</p></div>
-      <div><h3>تركيب وتسليم</h3><p>تركيب نضيف وتنظيم كابلات، وتشغيل السيستم على موبايلك.</p></div>
-      <div><h3>ضمان ومتابعة</h3><p>ضمان على المنتج والتركيب، ومكالمة متابعة بعد 3 شهور.</p></div>
-    </div>
-  </section>
-
-  <section aria-labelledby="brands-h">
-    <div class="head" style="text-align:center;justify-items:center"><span class="eyebrow">البراندات</span><h2 id="brands-h">بنشتغل على أقوى الماركات</h2></div>
-    <div class="bgroups"><div class="bgroup"><h3>كاميرات المراقبة والأمان</h3><div class="brands"><span><b>Hikvision</b><small>هيكفيجن</small></span><span><b>Dahua</b><small>داهوا</small></span><span><b>Tiandy</b><small>تياندي</small></span><span><b>Uniview</b><small>يونيفيو</small></span></div></div><div class="bgroup"><h3>كاميرات لاسلكية</h3><div class="brands"><span><b>Imou</b><small>إيمو</small></span><span><b>EZVIZ</b><small>إيزفيز</small></span></div></div><div class="bgroup"><h3>سمارت هوم ولاسلكي</h3><div class="brands"><span><b>Tapo</b><small>تابو</small></span></div></div><div class="bgroup"><h3>شبكات</h3><div class="brands"><span><b>Ruijie · Reyee</b><small>رويجي · ريي</small></span><span><b>TP-Link</b><small>تي بي لينك</small></span><span><b>Tenda</b><small>تندا</small></span><span><b>Mercusys</b><small>ميركسس</small></span><span><b>UniFi / Ubiquiti</b><small>يونيفاي</small></span></div></div><div class="bgroup"><h3>كوالين ذكية وأكسيس كنترول</h3><div class="brands"><span><b>ZKTeco</b><small>زد كي تيكو</small></span></div></div></div>
-  </section>
-
-  <section id="areas" aria-labelledby="areas-h">
-    <div class="head"><span class="eyebrow">مناطق الخدمة</span><h2 id="areas-h">بنوصلك في</h2></div>
-    <div class="areas"><span class="home">الشروق</span><span>التجمع الخامس</span><span>العبور</span><span>بدر</span><span>مدينتي</span><span>سوديك إيست</span><span>سوديك فيليت</span><span>الشيخ زايد</span></div>
-  </section>
-
-  <section id="faq" aria-labelledby="faq-h">
-    <div class="head"><span class="eyebrow">أسئلة شائعة</span><h2 id="faq-h">قبل ما تسأل</h2></div>
-    <div class="faq">
-      <details><summary>المعاينة بفلوس؟</summary><p>المعاينة مجانية داخل مناطق الخدمة، وبعدها بنبعتلك عرض السعر على الواتساب.</p></details>
-      <details><summary>أقدر أشوف الكاميرات من الموبايل؟</summary><p>أيوه، بنسطب التطبيق على موبايلك ونسلّمك السيستم وانت شايف كل الكاميرات قدامك.</p></details>
-      <details><summary>فيه ضمان؟</summary><p>فيه ضمان على المنتج وضمان على التركيب، وبنتابع معاك بعد 3 شهور نتأكد إن كل حاجة شغالة.</p></details>
-      <details><summary>ممكن توريد بس من غير تركيب؟</summary><p>أيوه، تقدر تطلب توريد فقط، أو توريد وتركيب، أو تركيب فقط لأجهزة عندك.</p></details>
-      <details><summary>الكالون الذكي بيفتح لو النت فصل؟</summary><p>أيوه، البصمة والكود والكارت شغالين من غير نت، والنت محتاجينه للفتح من التطبيق بس.</p></details>
-    </div>
-  </section>
-
-  <section id="book" aria-labelledby="book-h">
-    <div class="head"><span class="eyebrow">احجز معاينة</span><h2 id="book-h">ابعت طلبك ونرد عليك على الواتساب</h2></div>
-    <div class="book">
-      <form class="panel form" id="bookForm" novalidate>
-        <label>الاسم<input id="bName" autocomplete="name" placeholder="مثال: أحمد محمد"></label>
-        <label>رقم الموبايل<input id="bPhone" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx" dir="ltr"></label>
-        <label>المنطقة<select id="bArea"><option>الشروق</option><option>التجمع الخامس</option><option>العبور</option><option>بدر</option><option>مدينتي</option><option>سوديك إيست</option><option>سوديك فيليت</option><option>الشيخ زايد</option><option>منطقة تانية</option></select></label>
-        <label>نوع المكان<select id="bPlace"><option>شقة</option><option>فيلا</option><option>محل / معرض</option><option>شركة / مكتب</option><option>مبنى / عمارة</option><option>مصنع / مخزن</option></select></label>
-        <label class="full">الخدمة المطلوبة<select id="bSvc"></select></label>
-        <label class="full">تفاصيل (اختياري)<textarea id="bNote" placeholder="مثال: 6 كاميرات للفيلا + كالون ذكي للباب الرئيسي"></textarea></label>
-        <p class="err" id="bErr" hidden></p>
-        <button class="btn wa full" type="submit">ابعت الطلب على الواتساب</button>
-      </form>
-      <div class="panel">
-        <div class="line"><div class="lw"><span class="ci w" data-ic="phone"></span><div><div class="k">موبايل وواتساب 1</div><div class="v">01144772044</div></div></div><div class="a"><a class="btn wa" href="https://wa.me/201144772044" target="_blank" rel="noopener">واتساب</a><button class="btn ghost" type="button" data-copy="01144772044">نسخ</button></div></div>
-        <div class="line"><div class="lw"><span class="ci w" data-ic="phone"></span><div><div class="k">موبايل وواتساب 2</div><div class="v">01061503410</div></div></div><div class="a"><a class="btn wa" href="https://wa.me/201061503410" target="_blank" rel="noopener">واتساب</a><button class="btn ghost" type="button" data-copy="01061503410">نسخ</button></div></div>
-        <div class="line"><div class="lw"><span class="ci" data-ic="mail"></span><div style="min-width:0"><div class="k">البريد الإلكتروني</div><div class="v">arsmart1482023@gmail.com</div></div></div><div class="a"><button class="btn ghost" type="button" data-copy="arsmart1482023@gmail.com">نسخ</button></div></div>
-        <div class="social">
-          <a class="btn ghost" href="https://share.google/cCLQxVIHdO62sIqYx" target="_blank" rel="noopener">جوجل ماب</a>
-          <a class="btn ghost" href="https://www.youtube.com/@ragabmoftah1" target="_blank" rel="noopener">يوتيوب</a>
-          <a class="btn ghost" href="https://www.tiktok.com/@ragabmoftah1" target="_blank" rel="noopener">تيك توك</a>
-          <a class="btn ghost" href="https://cezma.com/store/smarthwm" target="_blank" rel="noopener">متجر سيزما</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer><span>© AR&amp;SMART · م. رجب مفتاح · Eng. Ragab Moftah</span><span class="mono">Security &amp; Smart Systems · Egypt</span></footer>
+  <footer>
+    <div><b style="color:var(--ink)">AR&amp;SMART</b> · م. رجب مفتاح · Eng. Ragab Moftah</div>
+    <div>واتساب واتصال: <span class="ph">01144772044</span> · <span class="ph">01061503410</span></div>
+    <div class="areas">بنوصلك في: الشروق · التجمع الخامس · العبور · بدر · مدينتي · سوديك إيست · سوديك فيليت · الشيخ زايد</div>
+  </footer>
 </div>
 
-<div class="cartbar" id="cartbar" dir="rtl"><div class="in">
-  <span id="cartSum">السلة فاضية</span>
-  <button class="btn gold" id="openCart" type="button">عرض الطلب</button>
-</div></div>
+<div class="scrim" id="scrim" hidden></div>
+<nav class="menu" id="menu" aria-label="القائمة" hidden>
+  <div class="mh"><b>القائمة</b><button class="icon-btn" id="menuClose" type="button" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <div id="menuLinks"></div>
+</nav>
+
 <a class="fab" href="https://wa.me/201144772044" target="_blank" rel="noopener" aria-label="كلّمنا على الواتساب"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg></a>
 
 <div class="drawer" id="drawer" dir="rtl" hidden>
-  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-h">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-      <h3 id="sheet-h">طلبك</h3>
-      <button class="btn ghost" id="closeCart" type="button">إغلاق</button>
-    </div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetH">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h3 id="sheetH">طلبك</h3><button class="icon-btn" id="closeCart" type="button" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
     <div id="lines"></div>
+    <div class="total" id="totalRow" hidden><span>الإجمالي التقريبي</span><b id="totalVal"></b></div>
     <label>الاسم<input id="cName" autocomplete="name"></label>
     <label>المنطقة<select id="cArea"><option>الشروق</option><option>التجمع الخامس</option><option>العبور</option><option>بدر</option><option>مدينتي</option><option>سوديك إيست</option><option>سوديك فيليت</option><option>الشيخ زايد</option><option>منطقة تانية</option></select></label>
     <label>النوع<select id="cInst"><option>توريد وتركيب</option><option>توريد فقط</option></select></label>
@@ -414,55 +229,6 @@ footer{border-top:1px solid var(--line);padding-block:28px;color:var(--muted);fo
 
 <script>
 const WA="201144772044";
-const ICON={
- cam:'<path d="M3 7h13l3 3v4l-3 3H3z"/><circle cx="10" cy="12" r="2.5"/><path d="M19 10h2M19 14h2"/>',
- lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.5"/>',
- home:'<path d="M3 11 12 4l9 7v9H3z"/><path d="M9 20v-6h6v6"/>',
- int:'<rect x="6" y="3" width="12" height="18" rx="2"/><rect x="8.5" y="6" width="7" height="5" rx="1"/><circle cx="12" cy="16" r="1.6"/>',
- acc:'<rect x="4" y="3" width="16" height="18" rx="3"/><circle cx="12" cy="10" r="3"/><path d="M8 17c1-2 2.5-3 4-3s3 1 4 3"/>',
- att:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
- net:'<rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 17h.01M11 17h.01M8 11a6 6 0 0 1 8 0M5.5 8.5a9.5 9.5 0 0 1 13 0"/>',
- sound:'<path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/>',
- gate:'<path d="M3 21V7M21 21V7M3 9h18M7 9v12M11 9v12M15 9v12M19 9v12"/>',
- phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
- mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
- grid:'<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>',
- wifi:'<path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M2 9a15 15 0 0 1 20 0"/><circle cx="12" cy="19.5" r="1"/>',
- rec:'<rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M10 12h.01M15 12h3"/>'
-};
-document.querySelectorAll("[data-ic]").forEach(el=>el.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[el.dataset.ic]}</svg>`);
-const ico=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
-const SERVICES=[
- ["cam","كاميرات مراقبة","IP وأنالوج وواي فاي، تصميم توزيع الكاميرات ومشاهدة من الموبايل.","CCTV · IP CAMERAS",["أجهزة تسجيل NVR / DVR","رؤية ليلية ملونة وكشف حركة"]],
- ["lock","كوالين ذكية وكوالين شفرات","بصمة ووجه وكود وكارت، وفتح من التطبيق.","SMART LOCKS",["لأبواب الخشب والألوميتال والزجاج","للشقق والفيلات والمكاتب"]],
- ["home","سمارت هوم","مفاتيح ذكية، إضاءة وستائر، وتحكم بالصوت.","SMART HOME",["ربط مع Alexa و Google Home","تشغيل كل البيت من الموبايل"]],
- ["int","إنتركم صوتي ومرئي","للفيلات والعمارات، وفتح الباب عن بُعد.","AUDIO & VIDEO INTERCOM",["شاشة داخلية ووحدة خارجية","رد على الباب من الموبايل"]],
- ["acc","أكسيس كنترول","تحكم في الدخول بالوجه والكارت والبصمة.","ACCESS CONTROL",["صلاحيات لكل موظف","تقارير الدخول والخروج"]],
- ["att","حضور وانصراف","أجهزة بصمة ووجه للشركات والمصانع.","TIME ATTENDANCE",["تقارير حضور جاهزة","ربط بأكتر من فرع"]],
- ["net","شبكات وواي فاي","تمديد كابلات وتنظيم رَكّات وأكسس بوينت.","NETWORKING · RUIJIE PARTNER",["تغطية واي فاي كاملة للمباني","شريك Ruijie / Reyee معتمد"]],
- ["sound","ساوند سيستم","صوتيات للمحلات والمكاتب والفيلات.","SOUND SYSTEM",["سماعات سقف وحائط","تقسيم الصوت على المناطق"]],
- ["gate","بوابات إلكترونية و KNX","بوابات دخول وأنظمة KNX للمباني.","ELECTRONIC GATES · KNX",["تحكم كامل في المبنى","ربط مع الأكسيس كنترول"]]
-];
-const STATUS=[["cam","كاميرات المراقبة","4K IP · مباشر"],["lock","كوالين ذكية","الأبواب مؤمَّنة"],["home","سمارت هوم","Alexa متصلة"],["net","الشبكة","Gigabit · مستقرة"]];
-document.getElementById("status").innerHTML=STATUS.map(([k,t,s])=>`<div><span class="i">${ico(k)}</span><b>${t}</b><small>${s}</small></div>`).join("");
-/* product illustrations */
-const G='fill="#E8ECF2" stroke="#9AA6B8" stroke-width="2"';
-const ART={
- bullet:`<svg viewBox="0 0 200 140"><rect x="78" y="88" width="14" height="34" rx="3" fill="#C9D0DB"/><rect x="58" y="116" width="54" height="10" rx="4" fill="#B5BDCA"/><rect x="30" y="44" width="130" height="50" rx="22" ${G}/><rect x="140" y="38" width="34" height="62" rx="10" fill="#2A3346"/><circle cx="160" cy="69" r="15" fill="#0B0F18"/><circle cx="160" cy="69" r="8" fill="#26406B"/><circle cx="163" cy="66" r="3" fill="#8FB4FF"/><rect x="34" y="40" width="120" height="8" rx="4" fill="#D4DAE4"/></svg>`,
- dome:`<svg viewBox="0 0 200 140"><ellipse cx="100" cy="42" rx="66" ry="14" fill="#C9D0DB"/><path d="M40 44a60 56 0 0 0 120 0z" ${G}/><path d="M64 46a36 40 0 0 0 72 0z" fill="#1A2233"/><circle cx="100" cy="66" r="13" fill="#0B0F18"/><circle cx="100" cy="66" r="7" fill="#26406B"/><circle cx="103" cy="63" r="2.6" fill="#8FB4FF"/></svg>`,
- wifi:`<svg viewBox="0 0 200 140"><rect x="70" y="112" width="60" height="12" rx="6" fill="#C9D0DB"/><rect x="92" y="96" width="16" height="20" fill="#B5BDCA"/><circle cx="100" cy="58" r="44" ${G}/><circle cx="100" cy="58" r="26" fill="#1A2233"/><circle cx="100" cy="58" r="13" fill="#0B0F18"/><circle cx="100" cy="58" r="7" fill="#26406B"/><circle cx="103" cy="55" r="2.6" fill="#8FB4FF"/><circle cx="100" cy="24" r="2.5" fill="#4ADE80"/></svg>`,
- rec:`<svg viewBox="0 0 200 140"><rect x="20" y="46" width="160" height="50" rx="6" fill="#262F42" stroke="#3B475E" stroke-width="2"/><rect x="20" y="46" width="160" height="10" rx="5" fill="#323C52"/><circle cx="40" cy="78" r="4" fill="#4ADE80"/><circle cx="54" cy="78" r="4" fill="#60A5FA"/><circle cx="68" cy="78" r="4" fill="#E2B04F"/><rect x="110" y="70" width="58" height="14" rx="2" fill="#141A26"/><text x="139" y="81" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#97A5BB">NVR</text></svg>`,
- lock:`<svg viewBox="0 0 200 140"><rect x="70" y="10" width="60" height="120" rx="14" fill="#1E2535" stroke="#3B475E" stroke-width="2"/><rect x="80" y="22" width="40" height="40" rx="6" fill="#0B0F18"/><g fill="#8FB4FF">${[0,1,2].map(r=>[0,1,2].map(c=>`<circle cx="${88+c*12}" cy="${30+r*12}" r="2.4"/>`).join("")).join("")}</g><rect x="76" y="72" width="64" height="12" rx="6" fill="#C9A24B"/><circle cx="100" cy="104" r="12" fill="#2A3346" stroke="#E2B04F" stroke-width="2"/><path d="M95 104c0-6 10-6 10 0M93 108c0-10 14-10 14 0" stroke="#E2B04F" stroke-width="1.5" fill="none"/></svg>`,
- face:`<svg viewBox="0 0 200 140"><rect x="66" y="8" width="68" height="124" rx="10" fill="#1E2535" stroke="#3B475E" stroke-width="2"/><rect x="74" y="24" width="52" height="64" rx="4" fill="#0E2238"/><circle cx="100" cy="48" r="10" fill="none" stroke="#4ADE80" stroke-width="2"/><path d="M84 76c4-10 28-10 32 0" stroke="#4ADE80" stroke-width="2" fill="none"/><path d="M78 30h8M78 30v8M122 30h-8M122 30v8M78 82h8M78 82v-8M122 82h-8M122 82v-8" stroke="#E2B04F" stroke-width="2"/><circle cx="100" cy="16" r="3" fill="#0B0F18"/><rect x="82" y="98" width="36" height="22" rx="4" fill="#2A3346"/></svg>`,
- intercom:`<svg viewBox="0 0 200 140"><rect x="22" y="22" width="104" height="80" rx="8" fill="#E8ECF2" stroke="#9AA6B8" stroke-width="2"/><rect x="32" y="32" width="84" height="54" rx="3" fill="#0E2238"/><circle cx="74" cy="52" r="9" fill="#2B4A75"/><path d="M58 80c4-10 28-10 32 0" fill="#2B4A75"/><rect x="142" y="18" width="38" height="104" rx="8" fill="#262F42" stroke="#3B475E" stroke-width="2"/><circle cx="161" cy="34" r="6" fill="#0B0F18"/><circle cx="161" cy="34" r="3" fill="#26406B"/><rect x="152" y="56" width="18" height="30" rx="2" fill="#141A26"/><circle cx="161" cy="104" r="7" fill="#E2B04F"/></svg>`,
- router:`<svg viewBox="0 0 200 140"><rect x="26" y="78" width="148" height="36" rx="10" fill="#E8ECF2" stroke="#9AA6B8" stroke-width="2"/>${[0,1,2,3].map(i=>`<rect x="${44+i*22}" y="22" width="7" height="58" rx="3.5" fill="#C9D0DB"/>`).join("")}<circle cx="146" cy="96" r="4" fill="#4ADE80"/><circle cx="130" cy="96" r="4" fill="#60A5FA"/><rect x="40" y="92" width="50" height="8" rx="2" fill="#B5BDCA"/></svg>`,
- sw:`<svg viewBox="0 0 200 140"><rect x="18" y="50" width="164" height="44" rx="6" fill="#E8ECF2" stroke="#9AA6B8" stroke-width="2"/>${[0,1,2,3,4].map(i=>`<rect x="${34+i*26}" y="62" width="18" height="16" rx="2" fill="#2A3346"/><circle cx="${38+i*26}" cy="86" r="2" fill="#4ADE80"/>`).join("")}</svg>`,
-hdd:`<svg viewBox="0 0 200 140"><rect x="44" y="14" width="112" height="112" rx="8" fill="#6B4FA0" stroke="#4A3478" stroke-width="2"/><rect x="56" y="28" width="88" height="44" rx="4" fill="#E8ECF2"/><text x="100" y="56" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="14" font-weight="600" fill="#4A3478">PURPLE</text><circle cx="100" cy="98" r="16" fill="#4A3478"/><circle cx="100" cy="98" r="5" fill="#9B85C8"/></svg>`,
- closer:`<svg viewBox="0 0 200 140"><rect x="24" y="40" width="96" height="30" rx="8" ${G}/><rect x="112" y="48" width="14" height="14" rx="3" fill="#B5BDCA"/><path d="M120 55 L176 84" stroke="#9AA6B8" stroke-width="8" stroke-linecap="round"/><path d="M176 84 L150 112" stroke="#9AA6B8" stroke-width="8" stroke-linecap="round"/><circle cx="176" cy="84" r="6" fill="#C9D0DB"/></svg>`,
- strike:`<svg viewBox="0 0 200 140"><rect x="78" y="8" width="44" height="124" rx="6" ${G}/><rect x="88" y="42" width="24" height="56" rx="4" fill="#2A3346"/><path d="M94 52 h12 v36 h-12z" fill="#E2B04F"/><circle cx="100" cy="22" r="4" fill="#9AA6B8"/><circle cx="100" cy="118" r="4" fill="#9AA6B8"/></svg>`,
- handset:`<svg viewBox="0 0 200 140"><rect x="62" y="10" width="76" height="120" rx="12" ${G}/><rect x="74" y="20" width="52" height="100" rx="20" fill="#F5F7FA" stroke="#C9D0DB" stroke-width="2"/><circle cx="100" cy="36" r="3" fill="#9AA6B8"/><circle cx="92" cy="36" r="3" fill="#9AA6B8"/><circle cx="108" cy="36" r="3" fill="#9AA6B8"/><rect x="132" y="56" width="10" height="24" rx="3" fill="#E2B04F"/></svg>`,
- monitor:`<svg viewBox="0 0 200 140"><rect x="24" y="18" width="152" height="104" rx="10" fill="#E8ECF2" stroke="#9AA6B8" stroke-width="2"/><rect x="36" y="28" width="104" height="84" rx="3" fill="#0E2238"/><circle cx="88" cy="58" r="12" fill="#2B4A75"/><path d="M66 100c6-16 38-16 44 0" fill="#2B4A75"/><circle cx="158" cy="48" r="5" fill="#9AA6B8"/><circle cx="158" cy="70" r="5" fill="#9AA6B8"/><circle cx="158" cy="92" r="5" fill="#E2B04F"/></svg>`
-};
 const PRODUCTS=[
  {id:"hk-1323",cat:"cam",a:"dome",b:"Hikvision",n:"كاميرا IP دوم 2 ميجا بإضاءة هجينة",m:"DS-2CD1323G2-LIU(F)",s:["2MP","إضاءة هجينة ذكية","مايك مدمج","PoE"],p:1900},
  {id:"hk-1123",cat:"cam",a:"bullet",b:"Hikvision",n:"كاميرا IP 2 ميجا خارجية",m:"DS-2CD1123G",s:["2MP","خارجية","PoE"],p:1850},
@@ -487,42 +253,145 @@ const PRODUCTS=[
  {id:"smb-closer",img:"img/p/smb-closer.jpg?v=2",cat:"acc",a:"closer",b:"SIB",n:"رداد باب هيدروليك 45-60 كجم",m:"Door Closer 45-60kg",s:["هيدروليك","45-60 كجم"],p:1200},
  {id:"mc-ms120gp",img:"img/p/mc-ms120gp.jpg?v=2",cat:"net",a:"sw",b:"MERCUSYS",n:"سويتش PoE+ للكاميرات 16 منفذ",m:"MS120GP",s:["16 منفذ","PoE+"],p:0}
 ];
-const CATS=[["all","الكل","grid"],["cam","كاميرات IP","cam"],["wifi","كاميرات واي فاي","wifi"],["rec","تسجيل وهاردات","rec"],["int","إنتركم","int"],["acc","أكسيس كنترول وأبواب","acc"],["net","شبكات","net"]].filter(([k])=>k==="all"||PRODUCTS.some(p=>p.cat===k));
-const PROJECTS=[
- {t:"مبنى إداري 4 أدوار",d:"توريد وتركيب 200 كاميرا Hikvision IP مع تنظيم عناوين الشبكة وغرفة التحكم.",tags:["HIKVISION","200 CAM","NVR"],cams:9,label:"FLOOR"},
- {t:"معرض سيارات",d:"كاميرات Imou تغطي صالة العرض والمدخل، مع مشاهدة من الموبايل.",tags:["IMOU","WIFI","SHOWROOM"],cams:4,label:"SHOWROOM"},
- {t:"فيلا في سوديك",d:"إعادة تصميم توزيع الكاميرات حول الفيلا لتغطية كل المداخل والأسوار.",tags:["CCTV","VILLA","DESIGN"],cams:6,label:"VILLA"},
- {t:"شقة سمارت هوم كاملة",d:"مفاتيح ذكية وربط مع Alexa وكالون ذكي للباب، وتشغيل كل حاجة من الموبايل.",tags:["SMART HOME","ALEXA","SMART LOCK"],cams:0,label:"HOME"},
- {t:"مشروع تجاري متكامل",d:"أعمال كهرباء وكاميرات وأكسيس كنترول للمشروع كامل كمقاول.",tags:["ACCESS","CCTV","ELECTRICAL"],cams:4,label:"SITE"},
- {t:"شبكة واي فاي لمبنى",d:"تغطية واي فاي كاملة بأجهزة Ruijie/Reyee وإدارة من Ruijie Cloud.",tags:["RUIJIE","REYEE","MESH"],cams:0,label:"NET"}
+const CATS=[
+ {id:"cams",name:"كاميرات المراقبة",sub:"IP وPoE داخلي وخارجي",ic:"cam",match:["cam"]},
+ {id:"rec",name:"أجهزة التسجيل والهاردات",sub:"NVR وهاردات مراقبة",ic:"rec",match:["rec"]},
+ {id:"intercom",name:"إنتركم صوتي ومرئي",sub:"كيتات وشاشات وسماعات",ic:"int",match:["int"]},
+ {id:"locks",name:"الأقفال الذكية وإكسسوارات البوابات",sub:"كوالين، ريلايات، ريموتات، ردادات",ic:"lock",match:["acc","lock"]},
+ {id:"smarthome",name:"المنزل الذكي",sub:"Smart Home",ic:"home",match:["home"]},
+ {id:"network",name:"الشبكات",sub:"سويتشات وراوترات وأكسس بوينت",ic:"net",match:["net"]}
 ];
-
-let cat="all",cart={};
-try{cart=JSON.parse(localStorage.getItem("arsmart-cart")||"{}")||{}}catch(e){cart={}}
-const save=()=>{try{localStorage.setItem("arsmart-cart",JSON.stringify(cart))}catch(e){}};
+const BRANDS=[
+ {id:"hikvision",en:"Hikvision",ar:"هيكفيجن",k:["hikvision"]},{id:"dahua",en:"Dahua",ar:"داهوا",k:["dahua"]},
+ {id:"tiandy",en:"Tiandy",ar:"تياندي",k:["tiandy"]},{id:"uniview",en:"Uniview",ar:"يونيفيو",k:["uniview"]},
+ {id:"imou",en:"Imou",ar:"إيمو",k:["imou"]},{id:"ezviz",en:"EZVIZ",ar:"إيزفيز",k:["ezviz"]},
+ {id:"tapo",en:"Tapo",ar:"تابو",k:["tapo"]},{id:"ruijie",en:"Ruijie · Reyee",ar:"رويجي · ريي",k:["ruijie","reyee"]},
+ {id:"tplink",en:"TP-Link",ar:"تي بي لينك",k:["tp-link"]},{id:"tenda",en:"Tenda",ar:"تندا",k:["tenda"]},
+ {id:"mercusys",en:"Mercusys",ar:"ميركسس",k:["mercusys"]},{id:"unifi",en:"UniFi",ar:"يونيفاي",k:["unifi","ubiquiti"]},
+ {id:"zkteco",en:"ZKTeco",ar:"زد كي تيكو",k:["zkteco"]}
+];
+const TOP=["im-ps3d-3","im-ps8d-3","im-ps2m","hk-7616","auta-749701","rf-relay-2ch"];
+const ICON={
+ cam:'<path d="M3 7h13l3 3v4l-3 3H3z"/><circle cx="10" cy="12" r="2.5"/><path d="M19 10h2M19 14h2"/>',
+ rec:'<rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 12h.01M10 12h.01M15 12h3"/>',
+ int:'<rect x="6" y="3" width="12" height="18" rx="2"/><rect x="8.5" y="6" width="7" height="5" rx="1"/><circle cx="12" cy="16" r="1.6"/>',
+ lock:'<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.5"/>',
+ home:'<path d="M3 11 12 4l9 7v9H3z"/><path d="M9 20v-6h6v6"/>',
+ net:'<rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 17h.01M11 17h.01M8 11a6 6 0 0 1 8 0M5.5 8.5a9.5 9.5 0 0 1 13 0"/>',
+ grid:'<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>',
+ star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+ cal:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
+ tag:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ check:'<path d="M5 12l5 5 9-10"/>'
+};
+const ico=(k,w=1.8)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
 const $=id=>document.getElementById(id);
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const wa=msg=>`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
-
-$("svc").innerHTML=SERVICES.map(([k,t,d,e,pts])=>`<article><span class="ic">${ico(k)}</span><h3>${t}</h3><p>${d}</p><small>${e}</small><ul>${pts.map(x=>`<li>${x}</li>`).join("")}</ul></article>`).join("");
-const mBtn=$("menuBtn"),mMenu=$("mmenu");
-const setMenu=o=>{mMenu.hidden=!o;mBtn.setAttribute("aria-expanded",String(o))};
-mBtn.addEventListener("click",()=>setMenu(mMenu.hidden));
-mMenu.addEventListener("click",e=>{if(e.target.closest("a"))setMenu(false)});
-$("bSvc").innerHTML=SERVICES.map(s=>`<option>${s[1]}</option>`).join("");
-
-function renderChips(){$("chips").innerHTML=CATS.map(([k,l,i])=>`<button class="chip" type="button" data-cat="${k}" aria-pressed="${k===cat}">${ico(i)}${l}</button>`).join("")}
-function renderGrid(){
-  $("grid").innerHTML=PRODUCTS.filter(p=>cat==="all"||p.cat===cat).map(p=>{const q=cart[p.id]||0;
-   const msg=`السلام عليكم، عايز أسأل عن سعر وتوفّر:\n${p.n}\n${p.b} ${p.m}`;
-   return `<article class="card"><div class="pic${p.img?" photo":""}">${p.img?`<img src="${esc(p.img)}" alt="${esc(p.b+" "+p.m)}" loading="lazy">`:ART[p.a]}<span class="b">${esc(p.b)}</span></div>
-    <div class="body"><div class="m">${esc(p.m)}</div><h3>${esc(p.n)}</h3>
-    <div class="specs">${p.s.map(x=>`<span>${esc(x)}</span>`).join("")}</div>
-    <div class="price">${p.p?`${fmt(p.p)} <small>ج.م</small>`:`<span class="ask">اسأل عن السعر</span>`}</div>
-    <div class="acts2"><a class="btn wa" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
-    <button type="button" data-add="${p.id}" class="${q?"in":""}" aria-label="أضف للسلة">${q?"في السلة "+q:"+ سلة"}</button></div></div></article>`}).join("");
-}
 const fmt=n=>Number(n).toLocaleString("en-US");
+const wa=msg=>`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`;
+const catOf=p=>CATS.find(c=>c.match.includes(p.cat));
+const brandOf=p=>BRANDS.find(b=>b.k.some(k=>p.b.toLowerCase().includes(k)));
+const inCat=c=>PRODUCTS.filter(p=>c.match.includes(p.cat));
+const inBrand=b=>PRODUCTS.filter(p=>brandOf(p)===b);
+
+let cart={};
+try{cart=JSON.parse(localStorage.getItem("arsmart-cart")||"{}")||{}}catch(e){cart={}}
+for(const id in cart){if(!PRODUCTS.some(p=>p.id===id))delete cart[id]}
+const save=()=>{try{localStorage.setItem("arsmart-cart",JSON.stringify(cart))}catch(e){}};
+
+function card(p){
+  const q=cart[p.id]||0;
+  const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">`:`<div class="ph">${ico(catOf(p).ic,1.2)}<span>${esc(p.m)}</span></div>`;
+  const price=p.p?`<div class="price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price ask">اسأل عن السعر</div>`;
+  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
+  return `<article class="card"><div class="pic">${pic}<span class="tag">${esc(p.b)}</span></div>
+  <div class="body"><h3>${esc(p.n)}</h3><div class="model">${esc(p.m)}</div>${price}
+  <div class="row"><a class="btn wa" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
+  <button class="add${q?" in":""}" type="button" data-add="${p.id}" aria-label="${q?"في السلة: "+q:"أضف للسلة"}">${ico(q?"check":"plus",2)}</button></div></div></article>`;
+}
+const grid=list=>list.length?`<div class="grid">${list.map(card).join("")}</div>`:`<div class="empty"><p>المنتجات دي بنوفّرها حسب الطلب. ابعتلنا اللي محتاجه على الواتساب ونرد عليك بالسعر والتوفّر.</p><a class="btn wa" href="${wa("السلام عليكم، عايز أسأل عن منتجات")}" target="_blank" rel="noopener">اسأل على الواتساب</a></div>`;
+const catTiles=()=>`<div class="cats">${CATS.map(c=>{const n=inCat(c).length;return `<a class="cat" href="#c-${c.id}"><span class="ic">${ico(c.ic)}</span><b>${c.name}</b><small>${n?n+" منتج":"حسب الطلب"}</small></a>`}).join("")}</div>`;
+const brandStrip=(cur)=>`<div class="brands">${BRANDS.map(b=>`<a href="#b-${b.id}"${b===cur?' aria-current="page"':""}><b>${b.en}</b><small>${b.ar}</small></a>`).join("")}</div>`;
+
+function viewHome(){
+  return `<section class="hero">
+    <div class="hbrand"><img src="img/logo-192.png" alt="شعار AR&amp;SMART" width="72" height="72"><div><h1 class="hname">AR<em>&amp;</em>SMART</h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span></div></div>
+    <p class="hline">أنظمة أمان وتحكم ذكي <em>توريد وتركيب وضمان</em></p>
+    <p class="hsub">كاميرات مراقبة، كوالين ذكية، سمارت هوم، إنتركم صوتي ومرئي، أكسيس كنترول، حضور وانصراف، شبكات، ساوند سيستم، بوابات إلكترونية و KNX.</p>
+    <div class="ctas"><a class="btn gold" href="#book">${ico("cal")}احجز معاينة مجانية</a><a class="btn ghost" href="#categories">${ico("grid")}تصفّح الأقسام</a></div>
+    <div class="trust"><span>ضمان على المنتج والتركيب</span><span>شريك Ruijie معتمد</span><span>متابعة بعد التركيب</span></div>
+  </section>
+  <section class="sec" id="categories"><div class="sec-h"><h2>الأقسام</h2></div>${catTiles()}</section>
+  <section class="sec"><div class="sec-h"><h2>الأكثر طلباً</h2><a href="#all">كل المنتجات ←</a></div>${grid(TOP.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean))}</section>
+  <section class="sec"><div class="sec-h"><h2>تسوّق حسب الماركة</h2></div>${brandStrip()}</section>`;
+}
+let filt="all";
+function viewCat(c){
+  const list=inCat(c), bs=[...new Set(list.map(p=>p.b))];
+  if(!bs.includes(filt))filt="all";
+  const shown=filt==="all"?list:list.filter(p=>p.b===filt);
+  const chips=bs.length>1?`<div class="chips" role="group" aria-label="فلترة حسب الماركة">${["all",...bs].map(b=>`<button class="chip" type="button" data-f="${esc(b)}" aria-pressed="${b===filt}">${b==="all"?"الكل":esc(b)}</button>`).join("")}</div>`:"";
+  return `<div class="crumb"><a href="#home">الرئيسية</a> / <a href="#categories">الأقسام</a> / ${c.name}</div>
+  <section class="sec"><div class="sec-h"><h2>${c.name}</h2><span style="color:var(--muted);font-size:.85rem">${list.length} منتج</span></div>${chips}${grid(shown)}</section>`;
+}
+function viewBrand(b){
+  const list=inBrand(b);
+  return `<div class="crumb"><a href="#home">الرئيسية</a> / الماركات / ${b.en}</div>
+  <section class="sec"><div class="sec-h"><h2><span class="mono">${b.en}</span> · ${b.ar}</h2><span style="color:var(--muted);font-size:.85rem">${list.length} منتج</span></div>${grid(list)}</section>
+  <section class="sec"><div class="sec-h"><h2>ماركات تانية</h2></div>${brandStrip(b)}</section>`;
+}
+function viewAll(){
+  return `<div class="crumb"><a href="#home">الرئيسية</a> / كل المنتجات</div>`+CATS.filter(c=>inCat(c).length).map(c=>`<section class="sec"><div class="sec-h"><h2>${c.name}</h2><a href="#c-${c.id}">القسم ←</a></div>${grid(inCat(c))}</section>`).join("");
+}
+function viewBook(){
+  return `<div class="crumb"><a href="#home">الرئيسية</a> / احجز معاينة</div>
+  <section class="sec"><div class="sec-h"><h2>احجز معاينة مجانية</h2></div>
+  <div class="book">
+    <form class="panel form" id="bookForm" novalidate>
+      <label>الاسم<input id="bName" autocomplete="name" placeholder="مثال: أحمد محمد"></label>
+      <label>رقم الموبايل<input id="bPhone" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx" dir="ltr"></label>
+      <label>المنطقة<select id="bArea"><option>الشروق</option><option>التجمع الخامس</option><option>العبور</option><option>بدر</option><option>مدينتي</option><option>سوديك إيست</option><option>سوديك فيليت</option><option>الشيخ زايد</option><option>منطقة تانية</option></select></label>
+      <label>نوع المكان<select id="bPlace"><option>شقة</option><option>فيلا</option><option>محل / معرض</option><option>شركة / مكتب</option><option>مبنى / عمارة</option><option>مصنع / مخزن</option></select></label>
+      <label class="full">الخدمة المطلوبة<select id="bSvc"><option>كاميرات مراقبة</option><option>كوالين ذكية وأكسيس كنترول</option><option>سمارت هوم</option><option>إنتركم صوتي ومرئي</option><option>حضور وانصراف</option><option>شبكات وواي فاي</option><option>ساوند سيستم</option><option>بوابات إلكترونية و KNX</option></select></label>
+      <label class="full">تفاصيل (اختياري)<textarea id="bNote" placeholder="مثال: 6 كاميرات للفيلا + كالون ذكي للباب"></textarea></label>
+      <p class="err full" id="bErr" hidden></p>
+      <button class="btn wa full" type="submit">ابعت الطلب على الواتساب</button>
+    </form>
+    <div class="panel">
+      <div class="line"><div><div class="k">موبايل وواتساب 1</div><div class="v">01144772044</div></div><a class="btn wa" href="https://wa.me/201144772044" target="_blank" rel="noopener">واتساب</a></div>
+      <div class="line"><div><div class="k">موبايل وواتساب 2</div><div class="v">01061503410</div></div><a class="btn wa" href="https://wa.me/201061503410" target="_blank" rel="noopener">واتساب</a></div>
+      <div class="line"><div><div class="k">البريد الإلكتروني</div><div class="v">arsmart1482023@gmail.com</div></div></div>
+      <div class="line"><a class="btn ghost" href="https://share.google/cCLQxVIHdO62sIqYx" target="_blank" rel="noopener">موقعنا على جوجل ماب</a></div>
+    </div>
+  </div></section>`;
+}
+function menuLinks(cur){
+  const a=(h,ic,t)=>`<a href="${h}"${cur===h?' aria-current="page"':""}>${ico(ic)}${t}</a>`;
+  return a("#home","home","الرئيسية")+a("#book","cal","احجز معاينة مجانية")
+   +`<div class="sep"></div><div class="label">الأقسام</div>`+CATS.map(c=>a("#c-"+c.id,c.ic,c.name)).join("")
+   +`<div class="sep"></div>`+a("#brands","tag","الماركات")
+   +`<a class="wa-link" href="https://wa.me/${WA}" target="_blank" rel="noopener">${ico("int")}تواصل على الواتساب</a>`;
+}
+function route(){
+  const h=location.hash||"#home"; let html, title=null;
+  if(h.startsWith("#c-")){const c=CATS.find(x=>"#c-"+x.id===h);if(c){html=viewCat(c);title=c.name+" | AR&SMART"}}
+  else if(h.startsWith("#b-")){const b=BRANDS.find(x=>"#b-"+x.id===h);if(b){html=viewBrand(b);title=b.en+" | AR&SMART"}}
+  else if(h==="#book"){html=viewBook();title="احجز معاينة | AR&SMART"}
+  else if(h==="#all"){html=viewAll();title="كل المنتجات | AR&SMART"}
+  else if(h==="#brands"){html=`<div class="crumb"><a href="#home">الرئيسية</a> / الماركات</div><section class="sec"><div class="sec-h"><h2>الماركات</h2></div>${brandStrip()}</section>`}
+  if(!html){html=viewHome()}
+  $("view").innerHTML=html; document.title=title||baseTitle;
+  $("menuLinks").innerHTML=menuLinks(h);
+  setMenu(false);
+  if(h==="#categories"){const el=$("categories");el&&el.scrollIntoView()} else window.scrollTo(0,0);
+  bindBook();
+}
+const baseTitle=document.title;
+function setMenu(o){$("menu").hidden=!o;$("scrim").hidden=!o;$("menuBtn").setAttribute("aria-expanded",String(o))}
+$("menuBtn").onclick=()=>setMenu(true);$("menuClose").onclick=()=>setMenu(false);$("scrim").onclick=()=>setMenu(false);
+$("menu").addEventListener("click",e=>{if(e.target.closest("a"))setMenu(false)});
+
 const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
 function cartMsg(){
   const lines=Object.keys(cart).map(id=>{const p=PRODUCTS.find(x=>x.id===id);return p?`- ${p.n} (${p.b} ${p.m}) × ${cart[id]}${p.p?` — ${fmt(p.p*cart[id])} ج.م`:""}`:""}).filter(Boolean);
@@ -530,96 +399,46 @@ function cartMsg(){
   return ["السلام عليكم، عايز أطلب من موقع AR&SMART:",...lines,"",`المنطقة: ${$("cArea").value}`,`النوع: ${$("cInst").value}`].concat(name?[`الاسم: ${name}`]:[]).join("\n");
 }
 function renderCart(){
-  const n=count();
-  $("cartbar").classList.toggle("on",n>0);
-  $("cartSum").textContent=n?`في طلبك ${n} قطعة`:"السلة فاضية";
-  $("lines").innerHTML=Object.keys(cart).map(id=>{const p=PRODUCTS.find(x=>x.id===id);if(!p)return"";return `<div class="row">
-    <div><strong>${esc(p.n)}</strong><div class="mono" style="font-size:.8rem;color:var(--muted)">${esc(p.b)} ${esc(p.m)}</div></div>
-    <div class="qty"><button type="button" data-dec="${id}" aria-label="تقليل">−</button><output>${cart[id]}</output><button type="button" data-inc="${id}" aria-label="زيادة">+</button></div></div>`}).join("")||'<p class="sub">مفيش منتجات في الطلب.</p>';
-  $("sendWa").href=wa(cartMsg());
+  const n=count(); $("cartCount").hidden=!n; $("cartCount").textContent=n;
+  const ids=Object.keys(cart);
+  $("lines").innerHTML=ids.map(id=>{const p=PRODUCTS.find(x=>x.id===id);return `<div class="ci">${p.img?`<img src="${esc(p.img)}" alt="">`:`<span class="noimg"></span>`}<div><b>${esc(p.n)}</b><small>${esc(p.m)}${p.p?" · "+fmt(p.p)+" ج.م":""}</small></div>
+    <div class="qty"><button type="button" data-dec="${id}" aria-label="تقليل">−</button><output>${cart[id]}</output><button type="button" data-inc="${id}" aria-label="زيادة">+</button></div></div>`}).join("")||'<p style="color:var(--muted)">السلة فاضية. دوس + على أي منتج عشان تضيفه.</p>';
+  const tot=ids.reduce((s,id)=>{const p=PRODUCTS.find(x=>x.id===id);return s+(p.p||0)*cart[id]},0);
+  $("totalRow").hidden=!tot; $("totalVal").textContent=fmt(tot)+" ج.م";
+  $("sendWa").href=wa(cartMsg()); $("sendWa").hidden=!n; $("clearCart").hidden=!n;
 }
-const rerender=()=>{save();renderGrid();renderCart()};
-
-/* project tiles drawn as camera views */
-$("proj").innerHTML=PROJECTS.map((p,i)=>`<article class="pj"><canvas width="640" height="360" data-pj="${i}" aria-hidden="true"></canvas><div class="t"><h3>${p.t}</h3><p>${p.d}</p><div class="tags">${p.tags.map(t=>`<span>${t}</span>`).join("")}</div></div></article>`).join("");
-
-function scene(ctx,x,y,w,h,seed,t,label){
-  const g=ctx.createLinearGradient(0,y,0,y+h);g.addColorStop(0,"#16233A");g.addColorStop(1,"#070B13");
-  ctx.fillStyle=g;ctx.fillRect(x,y,w,h);
-  ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();
-  const hz=y+h*(.42+((seed*37)%10)/100);
-  ctx.strokeStyle="rgba(120,150,200,.18)";ctx.lineWidth=1;
-  for(let i=-6;i<=6;i++){ctx.beginPath();ctx.moveTo(x+w/2+i*w*.04,hz);ctx.lineTo(x+w/2+i*w*.22,y+h);ctx.stroke()}
-  for(let j=1;j<6;j++){const yy=hz+(y+h-hz)*Math.pow(j/6,1.8);ctx.beginPath();ctx.moveTo(x,yy);ctx.lineTo(x+w,yy);ctx.stroke()}
-  ctx.fillStyle="rgba(150,175,215,.14)";
-  const kind=seed%4;
-  if(kind===0){ctx.fillRect(x+w*.38,hz-h*.3,w*.24,h*.3);ctx.fillStyle="rgba(226,176,79,.25)";ctx.fillRect(x+w*.47,hz-h*.2,w*.06,h*.2)}
-  else if(kind===1){for(let k=0;k<5;k++)ctx.fillRect(x+w*(.08+k*.18),hz-h*.22,w*.1,h*.22)}
-  else if(kind===2){ctx.fillRect(x+w*.1,hz-h*.12,w*.8,h*.12);ctx.fillRect(x+w*.55,hz-h*.34,w*.3,h*.22)}
-  else{ctx.beginPath();ctx.ellipse(x+w*.5,hz+h*.12,w*.18,h*.06,0,0,7);ctx.fill();ctx.fillRect(x+w*.36,hz+h*.02,w*.28,h*.08)}
-  const px=x+w*(.2+.6*((Math.sin(t/2600+seed)+1)/2)),py=hz+h*.16;
-  ctx.fillStyle="rgba(200,220,255,.35)";ctx.beginPath();ctx.arc(px,py-h*.1,h*.03,0,7);ctx.fill();ctx.fillRect(px-h*.025,py-h*.07,h*.05,h*.12);
-  ctx.strokeStyle="#4ADE80";ctx.lineWidth=1.5;ctx.strokeRect(px-h*.06,py-h*.15,h*.12,h*.25);
-  ctx.fillStyle="rgba(255,255,255,.03)";for(let s=y+((t/30)%4);s<y+h;s+=4)ctx.fillRect(x,s,w,1);
-  const sl=y+((t/12+seed*80)%h);ctx.fillStyle="rgba(140,180,255,.06)";ctx.fillRect(x,sl,w,h*.08);
-  ctx.restore();
-  ctx.font=`600 ${Math.max(10,h*.06)}px "IBM Plex Mono",monospace`;ctx.textBaseline="top";
-  ctx.fillStyle="#E8ECF2";ctx.fillText(label,x+8,y+7);
-  ctx.fillStyle="#FF4D4D";if(Math.floor(t/700)%2===0){ctx.beginPath();ctx.arc(x+w-36,y+13,4,0,7);ctx.fill()}
-  ctx.fillStyle="#E8ECF2";ctx.fillText("REC",x+w-28,y+7);
-}
-const feed=$("feed"),fctx=feed.getContext("2d");
-const CH=["CAM01 ENTRANCE","CAM02 GARAGE","CAM03 LOBBY","CAM04 GARDEN"];
-const pjc=[...document.querySelectorAll("[data-pj]")];
-function stamp(){try{return new Date().toLocaleTimeString("en-GB",{hour12:false})}catch(e){return ""}}
-function draw(t){
-  const W=feed.width,H=feed.height,gap=6,w=(W-gap)/2,h=(H-gap)/2;
-  fctx.fillStyle="#05080F";fctx.fillRect(0,0,W,H);
-  CH.forEach((c,i)=>scene(fctx,(i%2)*(w+gap),Math.floor(i/2)*(h+gap),w,h,i+1,t,c));
-  pjc.forEach(c=>{const i=+c.dataset.pj,p=PROJECTS[i],x=c.getContext("2d");
-    x.fillStyle="#05080F";x.fillRect(0,0,c.width,c.height);
-    if(p.cams>1){const n=p.cams>=9?3:2,r=p.cams>=6&&p.cams<9?2:n,cols=p.cams>=9?3:(p.cams>=6?3:2),rows=p.cams>=9?3:2,gw=(c.width-(cols-1)*4)/cols,gh=(c.height-(rows-1)*4)/rows;
-      for(let k=0;k<cols*rows;k++)scene(x,(k%cols)*(gw+4),Math.floor(k/cols)*(gh+4),gw,gh,i*3+k,t,`${p.label}-${String(k+1).padStart(2,"0")}`)}
-    else scene(x,0,0,c.width,c.height,i*3+1,t,`${p.label}-01`)});
-  $("clock").textContent=stamp();
-}
-const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
-let last=0;
-function loop(t){if(t-last>66){draw(t);last=t}requestAnimationFrame(loop)}
-draw(1200);if(!still)requestAnimationFrame(loop);else setInterval(()=>{$("clock").textContent=stamp()},1000);
+function refreshCards(){document.querySelectorAll("[data-add]").forEach(b=>{const q=cart[b.dataset.add]||0;b.classList.toggle("in",!!q);b.innerHTML=ico(q?"check":"plus",2);b.setAttribute("aria-label",q?"في السلة: "+q:"أضف للسلة")})}
+const sync=()=>{save();renderCart();refreshCards()};
 
 document.addEventListener("click",e=>{
   const t=e.target.closest("button"); if(!t)return;
-  if(t.dataset.cat){cat=t.dataset.cat;renderChips();renderGrid();return}
-  if(t.dataset.add){cart[t.dataset.add]=(cart[t.dataset.add]||0)+1;rerender();return}
-  if(t.dataset.inc){cart[t.dataset.inc]++;rerender();return}
-  if(t.dataset.dec){if(--cart[t.dataset.dec]<=0)delete cart[t.dataset.dec];rerender();if(!count())$("drawer").hidden=true;return}
-  if(t.dataset.copy){const v=t.dataset.copy,old=t.textContent,done=()=>{t.textContent="اتنسخ ✓";setTimeout(()=>t.textContent=old,1500)};
-    const sel=()=>{const n=t.closest(".line").querySelector(".v"),r=document.createRange();r.selectNodeContents(n);const s=getSelection();s.removeAllRanges();s.addRange(r)};
-    try{navigator.clipboard.writeText(v).then(done,sel)}catch(err){sel()}return}
-  if(t.id==="openCart"){$("drawer").hidden=false;$("closeCart").focus();return}
+  if(t.dataset.f){filt=t.dataset.f;const h=location.hash;const c=CATS.find(x=>"#c-"+x.id===h);if(c){$("view").innerHTML=viewCat(c)}return}
+  if(t.dataset.add){cart[t.dataset.add]=(cart[t.dataset.add]||0)+1;sync();return}
+  if(t.dataset.inc){cart[t.dataset.inc]++;sync();return}
+  if(t.dataset.dec){if(--cart[t.dataset.dec]<=0)delete cart[t.dataset.dec];sync();return}
+  if(t.id==="cartBtn"){renderCart();$("drawer").hidden=false;$("closeCart").focus();return}
   if(t.id==="closeCart"){$("drawer").hidden=true;return}
-  if(t.id==="clearCart"){cart={};rerender();$("drawer").hidden=true;return}
+  if(t.id==="clearCart"){cart={};sync();return}
 });
 $("drawer").addEventListener("click",e=>{if(e.target.id==="drawer")$("drawer").hidden=true});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")$("drawer").hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("drawer").hidden=true;setMenu(false)}});
 ["cName","cArea","cInst"].forEach(id=>$(id).addEventListener("input",()=>{$("sendWa").href=wa(cartMsg())}));
 
-const bLink=document.createElement("a");bLink.target="_blank";bLink.rel="noopener";bLink.hidden=true;document.body.appendChild(bLink);
-$("bookForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const name=$("bName").value.trim(),phone=$("bPhone").value.replace(/\s/g,"");
-  const err=$("bErr");
-  if(!name){err.textContent="اكتب اسمك عشان نعرف نرد عليك.";err.hidden=false;$("bName").focus();return}
-  if(!/^01[0125]\d{8}$/.test(phone)){err.textContent="رقم الموبايل لازم يكون 11 رقم ويبدأ بـ 010 أو 011 أو 012 أو 015.";err.hidden=false;$("bPhone").focus();return}
-  err.hidden=true;
-  const note=$("bNote").value.trim();
-  const msg=["السلام عليكم، عايز أحجز معاينة:",`الاسم: ${name}`,`الموبايل: ${phone}`,`المنطقة: ${$("bArea").value}`,`نوع المكان: ${$("bPlace").value}`,`الخدمة: ${$("bSvc").value}`].concat(note?[`تفاصيل: ${note}`]:[]).join("\n");
-  bLink.href=wa(msg);bLink.click();
-});
-
-renderChips();renderGrid();renderCart();
+function bindBook(){
+  const f=$("bookForm"); if(!f)return;
+  f.addEventListener("submit",e=>{
+    e.preventDefault();
+    const name=$("bName").value.trim(),phone=$("bPhone").value.replace(/\s/g,""),err=$("bErr");
+    if(!name){err.textContent="اكتب اسمك عشان نعرف نرد عليك.";err.hidden=false;$("bName").focus();return}
+    if(!/^01[0125]\d{8}$/.test(phone)){err.textContent="رقم الموبايل لازم يكون 11 رقم ويبدأ بـ 010 أو 011 أو 012 أو 015.";err.hidden=false;$("bPhone").focus();return}
+    err.hidden=true;
+    const note=$("bNote").value.trim();
+    const msg=["السلام عليكم، عايز أحجز معاينة:",`الاسم: ${name}`,`الموبايل: ${phone}`,`المنطقة: ${$("bArea").value}`,`نوع المكان: ${$("bPlace").value}`,`الخدمة: ${$("bSvc").value}`].concat(note?[`تفاصيل: ${note}`]:[]).join("\n");
+    const a=document.createElement("a");a.href=wa(msg);a.target="_blank";a.rel="noopener";document.body.appendChild(a);a.click();a.remove();
+  });
+}
+window.addEventListener("hashchange",route);
+route(); renderCart();
 </script>
-
 </body>
 </html>
