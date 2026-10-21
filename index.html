@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AR&amp;SMART | كاميرات مراقبة وكوالين ذكية وسمارت هوم - م. رجب مفتاح</title>
 <meta name="description" content="AR&SMART م. رجب مفتاح: كاميرات مراقبة Hikvision هيكفيجن، Dahua داهوا، EZVIZ إزفيز، Imou إيمو، كوالين ذكية، سمارت هوم، إنتركم صوتي ومرئي، أكسيس كنترول، شبكات Ruijie، ساوند سيستم. الشروق والتجمع ومدينتي والشيخ زايد. 01144772044">
-<meta name="keywords" content="كاميرات مراقبة, كاميرات هيكفيجن, Hikvision, Dahua, EZVIZ, Imou, كالون ذكي, كوالين ذكية, سمارت هوم, إنتركم صوتي ومرئي, أكسيس كنترول, حضور وانصراف, شبكات, Ruijie, Reyee, TP-Link, Tenda, Mercusys, UniFi, Tapo, ZKTeco, ساوند سيستم, KNX, بوابات إلكترونية, الشروق, التجمع الخامس, مدينتي, الشيخ زايد, AR&SMART, Eng Ragab Moftah">
+<meta name="keywords" content="كاميرات مراقبة, كاميرات هيكفيجن, Hikvision, Dahua, EZVIZ, Imou, كالون ذكي, كوالين ذكية, سمارت هوم, إنتركم صوتي ومرئي, أكسيس كنترول, حضور وانصراف, شبكات, Ruijie, Reyee, TP-Link, Tenda, Mercusys, UniFi, Tapo, ZKTeco, ساوند سيستم, KNX, بوابات إلكترونية, الشروق, التجمع الخامس, مدينتي, الشيخ زايد, AR&SMART, Eng Ragab Moftah, أكسيس كنترول, كالون ذكي, سمارت لوك, Smart Lock, SIB, Lezn, ليزن, Levana, ليفانا, Bosch smart lock, ZKTeco, قفل مغناطيسي, زرار خروج, باور سبلاي أكسيس">
 <meta name="google-site-verification" content="HIEiOEzMk7d5N3IHoej4oCCGVULroHSkt0n9nhgr9RU" />
 <meta name="theme-color" content="#111111">
 <meta property="og:type" content="website">
@@ -156,6 +156,14 @@ button{font:inherit}
 .card .row .add svg{width:16px;height:16px}
 .card .row .add.in{background:rgba(17,17,17,.18)}
 .card .row .btn:hover,.card .row .add:hover{background:rgba(255,255,255,.18)}
+.card .code{font-family:var(--mono);font-size:.68rem;color:var(--gold);direction:rtl;text-align:right}
+.count{color:var(--muted);font-size:.82rem;margin:0}
+.more{display:flex;justify-content:center;padding-top:6px}
+.search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 12px}
+.search svg{width:18px;height:18px;color:var(--muted);flex:none}
+.search input{flex:1;min-width:0;background:none;border:0;color:var(--ink);font:inherit;font-size:16px;padding:11px 0;outline:none}
+.search:focus-within{border-color:var(--gold)}
+#catBody{display:grid;gap:14px}
 .empty{border:1px dashed var(--line);border-radius:14px;padding:28px 16px;text-align:center;color:var(--muted);display:grid;gap:12px;justify-items:center}
 
 /* booking */
@@ -237,6 +245,7 @@ footer .areas{line-height:1.9}
   </div>
 </div>
 
+<script src="catalog.js?v=1"></script>
 <script>
 const WA="201144772044";
 const PRODUCTS=[
@@ -259,20 +268,23 @@ const PRODUCTS=[
  {id:"hk-kh6320",img:"img/p/hk-kh6320.jpg?v=2",cat:"int",a:"monitor",b:"Hikvision",n:"شاشة إنتركم داخلية",m:"DS-KH6320",s:["شاشة داخلية","إنتركم مرئي"],p:0},
  {id:"auta-749701",img:"img/p/auta-749701.jpg?v=2",cat:"int",a:"handset",b:"Auta",n:"كيت إنتركم صوتي خط واحد",m:"Compact 749701",s:["إنتركم صوتي","خط واحد"],p:3475},
  {id:"auta-700305",img:"img/p/auta-700305.jpg?v=2",cat:"int",a:"handset",b:"Auta",n:"سماعة إنتركم",m:"700305",s:["سماعة داخلية","إنتركم صوتي"],p:600},
- {id:"rf-relay-1ch",img:"img/p/rf-relay-1ch.jpg?v=2",cat:"acc",a:"strike",b:"RF 433MHz",n:"ريلاي لاسلكي قناة واحدة للتحكم في البوابات والأبواب",m:"RF Relay 1CH 433MHz",s:["قناة واحدة","433MHz","12V DC","بدون ريموت"],p:350},
- {id:"rf-relay-2ch",img:"img/p/rf-relay-2ch.jpg?v=2",cat:"acc",a:"strike",b:"RF 433MHz",n:"ريلاي لاسلكي قناتين للتحكم في البوابات والأبواب",m:"RF Relay 2CH 433MHz",s:["قناتين","433MHz","9-12V AC","مؤشر LED","بدون ريموت"],p:650},
- {id:"rf-remote-3btn",img:"img/p/rf-remote-3btn.jpg?v=2",cat:"acc",a:"strike",b:"RF 433MHz",n:"ريموت لاسلكي مدى طويل 3 زراير (فوق - تحت - وقوف)",m:"RF Remote 433MHz 3 Buttons",s:["433MHz","مدى طويل","فوق / تحت / وقوف"],p:220},
- {id:"rf-remote-2btn-ab",img:"img/p/rf-remote-2btn-ab.jpg?v=2",cat:"acc",a:"strike",b:"RF 433MHz",n:"ريموت لاسلكي زرارين (A - B)",m:"RF Remote 433MHz 2 Buttons (A-B)",s:["433MHz","زرارين A / B","ميدالية مفاتيح"],p:120},
- {id:"rf-remote-2btn-lock",img:"img/p/rf-remote-2btn-lock.jpg?v=2",cat:"acc",a:"strike",b:"RF 433MHz",n:"ريموت لاسلكي زرارين (فتح - قفل)",m:"RF Remote 433MHz 2 Buttons (Open-Close)",s:["433MHz","فتح / قفل","ميدالية مفاتيح"],p:120},
- {id:"strike",img:"img/p/strike.jpg?v=2",cat:"acc",a:"strike",b:"AR&SMART",n:"كالون مهج كهرباء",m:"Electric Strike",s:["فتح كهربا","للأكسيس كنترول والإنتركم"],p:1300},
- {id:"smb-closer",img:"img/p/smb-closer.jpg?v=2",cat:"acc",a:"closer",b:"SIB",n:"رداد باب هيدروليك 45-60 كجم",m:"Door Closer 45-60kg",s:["هيدروليك","45-60 كجم"],p:1200},
+ {id:"rf-relay-1ch",t:"remote",img:"img/p/rf-relay-1ch.jpg?v=2",cat:"acc",a:"strike",b:"RF 433MHz",n:"ريلاي لاسلكي قناة واحدة للتحكم في البوابات والأبواب",m:"RF Relay 1CH 433MHz",s:["قناة واحدة","433MHz","12V DC","بدون ريموت"],p:350},
+ {id:"rf-relay-2ch",t:"remote",img:"img/p/rf-relay-2ch.jpg?v=2",cat:"acc",a:"strike",b:"RF 433MHz",n:"ريلاي لاسلكي قناتين للتحكم في البوابات والأبواب",m:"RF Relay 2CH 433MHz",s:["قناتين","433MHz","9-12V AC","مؤشر LED","بدون ريموت"],p:650},
+ {id:"rf-remote-3btn",t:"remote",img:"img/p/rf-remote-3btn.jpg?v=2",cat:"acc",a:"strike",b:"RF 433MHz",n:"ريموت لاسلكي مدى طويل 3 زراير (فوق - تحت - وقوف)",m:"RF Remote 433MHz 3 Buttons",s:["433MHz","مدى طويل","فوق / تحت / وقوف"],p:220},
+ {id:"rf-remote-2btn-ab",t:"remote",img:"img/p/rf-remote-2btn-ab.jpg?v=2",cat:"acc",a:"strike",b:"RF 433MHz",n:"ريموت لاسلكي زرارين (A - B)",m:"RF Remote 433MHz 2 Buttons (A-B)",s:["433MHz","زرارين A / B","ميدالية مفاتيح"],p:120},
+ {id:"rf-remote-2btn-lock",t:"remote",img:"img/p/rf-remote-2btn-lock.jpg?v=2",cat:"acc",a:"strike",b:"RF 433MHz",n:"ريموت لاسلكي زرارين (فتح - قفل)",m:"RF Remote 433MHz 2 Buttons (Open-Close)",s:["433MHz","فتح / قفل","ميدالية مفاتيح"],p:120},
+ {id:"strike",t:"elock",img:"img/p/strike.jpg?v=2",cat:"acc",a:"strike",b:"AR&SMART",n:"كالون مهج كهرباء",m:"Electric Strike",s:["فتح كهربا","للأكسيس كنترول والإنتركم"],p:1300},
+ {id:"smb-closer",t:"closer",img:"img/p/smb-closer.jpg?v=2",cat:"acc",a:"closer",b:"SIB",n:"رداد باب هيدروليك 45-60 كجم",m:"Door Closer 45-60kg",s:["هيدروليك","45-60 كجم"],p:1200},
  {id:"mc-ms120gp",img:"img/p/mc-ms120gp.jpg?v=2",cat:"net",a:"sw",b:"MERCUSYS",n:"سويتش PoE+ للكاميرات 16 منفذ",m:"MS120GP",s:["16 منفذ","PoE+"],p:0}
 ];
+PRODUCTS.push(...(window.CATALOG||[]));
+const TYPES=window.TYPES||{};
 const CATS=[
  {id:"cams",short:"كاميرات المراقبة",name:"كاميرات المراقبة",sub:"IP وPoE داخلي وخارجي",ic:"cam",match:["cam"]},
  {id:"rec",short:"التسجيل والهاردات",name:"أجهزة التسجيل والهاردات",sub:"NVR وهاردات مراقبة",ic:"rec",match:["rec"]},
  {id:"intercom",short:"الإنتركم",name:"إنتركم صوتي ومرئي",sub:"كيتات وشاشات وسماعات",ic:"int",match:["int"]},
- {id:"locks",short:"الأقفال الذكية",name:"الأقفال الذكية وإكسسوارات البوابات",sub:"كوالين، ريلايات، ريموتات، ردادات",ic:"lock",match:["acc","lock"]},
+ {id:"locks",short:"الكوالين الذكية",name:"الكوالين الذكية (Smart Lock)",sub:"بصمة، وجه، كاميرا عين سحرية",ic:"lock",match:["lock"]},
+ {id:"access",short:"أكسيس كنترول",name:"أكسيس كنترول وإكسسوارات البوابات",sub:"أجهزة، أقفال مغناطيسية، أزرار خروج، ريموتات، ردادات",ic:"acc",match:["access","acc"]},
  {id:"smarthome",short:"المنزل الذكي",name:"المنزل الذكي",sub:"Smart Home",ic:"home",match:["home"]},
  {id:"network",short:"الشبكات",name:"الشبكات",sub:"سويتشات وراوترات وأكسس بوينت",ic:"net",match:["net"]}
 ];
@@ -283,7 +295,10 @@ const BRANDS=[
  {id:"tapo",c:"#2BB673",bg:"#06231A",logo:"",en:"Tapo",ar:"تابو",k:["tapo"]},{id:"ruijie",c:"#FF3341",bg:"#1A0306",logo:"",en:"Ruijie · Reyee",ar:"رويجي · ريي",k:["ruijie","reyee"]},
  {id:"tplink",c:"#4ACBD6",bg:"#0B2226",logo:"",en:"TP-Link",ar:"تي بي لينك",k:["tp-link"]},{id:"tenda",c:"#F26B21",bg:"#2A1206",logo:"",en:"Tenda",ar:"تندا",k:["tenda"]},
  {id:"mercusys",c:"#00A0E9",bg:"#03202C",logo:"",en:"Mercusys",ar:"ميركسس",k:["mercusys"]},{id:"unifi",c:"#3B8CFF",bg:"#020F24",logo:"",en:"UniFi",ar:"يونيفاي",k:["unifi","ubiquiti"]},
- {id:"zkteco",c:"#00A651",bg:"#03200F",logo:"",en:"ZKTeco",ar:"زد كي تيكو",k:["zkteco"]}
+ {id:"zkteco",c:"#00A651",bg:"#03200F",logo:"",en:"ZKTeco",ar:"زد كي تيكو",k:["zkteco"]},
+ {id:"sib",c:"#FF3B3B",bg:"#1C0405",logo:"",en:"SIB",ar:"سيب",k:["sib"]},{id:"smartzoom",c:"#3BA7E6",bg:"#061A2C",logo:"",en:"Smart Zoom",ar:"سمارت زوم",k:["smart zoom"]},
+ {id:"bosch",c:"#FF2B3A",bg:"#1A0306",logo:"",en:"Bosch",ar:"بوش",k:["bosch"]},{id:"lezn",c:"#FF5A5F",bg:"#08172A",logo:"",en:"Lezn",ar:"ليزن",k:["lezn"]},
+ {id:"levana",c:"#D9B45B",bg:"#1A1408",logo:"",en:"Levana",ar:"ليفانا",k:["levana"]}
 ];
 const TOP=["im-ps3d-3","im-ps8d-3","im-ps2m","im-ps3d-5","auta-749701","rf-relay-2ch"];
 const ICON={
@@ -298,7 +313,9 @@ const ICON={
  cal:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
  tag:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.3"/>',
  plus:'<path d="M12 5v14M5 12h14"/>',
- check:'<path d="M5 12l5 5 9-10"/>'
+ check:'<path d="M5 12l5 5 9-10"/>',
+ acc:'<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h.01M12 7h.01M15 7h.01M9 10h.01M12 10h.01M15 10h.01M9 13h.01M12 13h.01M15 13h.01"/><circle cx="12" cy="17" r="1.5"/>',
+ search:'<circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/>'
 };
 const ico=(k,w=1.8)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
 const $=id=>document.getElementById(id);
@@ -319,9 +336,9 @@ function card(p){
   const q=cart[p.id]||0;
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">`:`<div class="ph">${ico(catOf(p).ic,1.2)}<span>${esc(p.m)}</span></div>`;
   const price=p.p?`<div class="price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price">اسأل عن السعر</div>`;
-  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
+  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
   return `<article class="card"><div class="pic">${pic}<span class="tag">${esc(p.b)}</span></div>
-  <div class="body"><h3>${esc(p.n)}</h3><div class="model">${esc(p.m)}</div>${price}
+  <div class="body"><h3>${esc(p.n)}</h3><div class="model">${esc(p.m)}</div><div class="code">${p.c?`كود ${esc(p.c)}`:"&nbsp;"}</div>${price}
   <div class="row"><a class="btn" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
   <button class="add${q?" in":""}" type="button" data-add="${p.id}" aria-label="${q?"في السلة: "+q:"أضف للسلة"}">${ico(q?"check":"plus",2)}</button></div></div></article>`;
 }
@@ -341,24 +358,45 @@ function viewHome(){
   <section class="sec"><div class="sec-h"><h2>الأكثر طلباً</h2><a href="#all">كل المنتجات ←</a></div>${grid(TOP.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean))}</section>
   <section class="sec"><div class="sec-h"><h2>تسوّق حسب الماركة</h2></div>${brandStrip()}</section>`;
 }
-let filt="all";
-function viewCat(c){
-  const list=inCat(c), bs=[...new Set(list.map(p=>p.b))];
+let filt="all",tfilt="all",query="",lim=24;
+const PAGE=24;
+const norm=t=>String(t).toLowerCase().replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[\s\-_/().]+/g,"");
+const matchQ=p=>!query||norm(p.n+" "+p.m+" "+(p.c||"")+" "+p.b).includes(norm(query));
+const pgrid=list=>list.length?`${grid(list.slice(0,lim))}${list.length>lim?`<div class="more"><button class="btn ghost" type="button" data-more="1">عرض المزيد (${list.length-lim})</button></div>`:""}`:(query?`<div class="empty"><p>مفيش نتايج لـ "${esc(query)}". جرّب كلمة تانية أو اسأل على الواتساب.</p></div>`:grid([]));
+const chipRow=(arr,cur,attr,label,lab)=>arr.length>1?`<div class="chips" role="group" aria-label="${label}">${["all",...arr].map(v=>`<button class="chip" type="button" ${attr}="${esc(v)}" aria-pressed="${v===cur}">${v==="all"?"الكل":esc(lab?lab(v):v)}</button>`).join("")}</div>`:"";
+const searchBox=()=>`<label class="search">${ico("search")}<input id="q" type="search" placeholder="ابحث بالاسم أو الموديل أو الكود" value="${esc(query)}" autocomplete="off"></label>`;
+function catBody(c){
+  const list=inCat(c);
+  const ts=[...new Set(list.map(p=>p.t).filter(Boolean))];
+  if(!ts.includes(tfilt))tfilt="all";
+  const byT=tfilt==="all"?list:list.filter(p=>p.t===tfilt);
+  const bs=[...new Set(byT.map(p=>p.b))];
   if(!bs.includes(filt))filt="all";
-  const shown=filt==="all"?list:list.filter(p=>p.b===filt);
-  const chips=bs.length>1?`<div class="chips" role="group" aria-label="فلترة حسب الماركة">${["all",...bs].map(b=>`<button class="chip" type="button" data-f="${esc(b)}" aria-pressed="${b===filt}">${b==="all"?"الكل":esc(b)}</button>`).join("")}</div>`:"";
+  const shown=(filt==="all"?byT:byT.filter(p=>p.b===filt)).filter(matchQ);
+  return `${chipRow(ts,tfilt,"data-t","النوع",v=>TYPES[v]||v)}${chipRow(bs,filt,"data-f","الماركة")}<p class="count">${shown.length} منتج</p>${pgrid(shown)}`;
+}
+function viewCat(c){
+  const n=inCat(c).length;
   return `<div class="crumb"><a href="#home">الرئيسية</a> / <a href="#categories">الأقسام</a> / ${c.name}</div>
-  <section class="sec"><div class="sec-h"><h2>${c.name}</h2><span style="color:var(--muted);font-size:.85rem">${list.length} منتج</span></div>${chips}${grid(shown)}</section>`;
+  <section class="sec"><div class="sec-h"><h2>${c.name}</h2></div>${n>8?searchBox():""}<div id="catBody">${catBody(c)}</div></section>`;
+}
+function brandBody(b){
+  const list=inBrand(b);
+  const ts=[...new Set(list.map(p=>p.t).filter(Boolean))];
+  if(!ts.includes(tfilt))tfilt="all";
+  const shown=(tfilt==="all"?list:list.filter(p=>p.t===tfilt)).filter(matchQ);
+  return `${chipRow(ts,tfilt,"data-t","النوع",v=>TYPES[v]||v)}<p class="count">${shown.length} منتج</p>${pgrid(shown)}`;
 }
 function viewBrand(b){
   const list=inBrand(b);
   return `<div class="crumb"><a href="#home">الرئيسية</a> / الماركات / ${b.en}</div>
-  <section class="sec"><div class="sec-h"><h2><span class="mono">${b.en}</span> · ${b.ar}</h2><span style="color:var(--muted);font-size:.85rem">${list.length} منتج</span></div>${grid(list)}</section>
+  <section class="sec"><div class="sec-h"><h2><span class="mono">${b.en}</span> · ${b.ar}</h2><span style="color:var(--muted);font-size:.85rem">${list.length} منتج</span></div>${list.length>8?searchBox():""}<div id="catBody">${brandBody(b)}</div></section>
   <section class="sec"><div class="sec-h"><h2>ماركات تانية</h2></div>${brandStrip(b)}</section>`;
 }
 function viewAll(){
-  return `<div class="crumb"><a href="#home">الرئيسية</a> / كل المنتجات</div>`+CATS.filter(c=>inCat(c).length).map(c=>`<section class="sec"><div class="sec-h"><h2>${c.name}</h2><a href="#c-${c.id}">القسم ←</a></div>${grid(inCat(c))}</section>`).join("");
+  return `<div class="crumb"><a href="#home">الرئيسية</a> / كل المنتجات</div>`+CATS.filter(c=>inCat(c).length).map(c=>{const l=inCat(c);return `<section class="sec"><div class="sec-h"><h2>${c.name}</h2><a href="#c-${c.id}">${l.length>8?"كل الـ "+l.length+" منتج":"القسم"} ←</a></div>${grid(l.slice(0,8))}</section>`}).join("");
 }
+
 function viewBook(){
   return `<div class="crumb"><a href="#home">الرئيسية</a> / احجز معاينة</div>
   <section class="sec"><div class="sec-h"><h2>احجز معاينة مجانية</h2></div>
@@ -388,8 +426,12 @@ function menuLinks(cur){
    +`<div class="sep"></div>`+a("#brands","tag","الماركات")
    +`<a class="wa-link" href="https://wa.me/${WA}" target="_blank" rel="noopener">${ico("int")}تواصل على الواتساب</a>`;
 }
+let lastHash="";
+function curView(){const h=location.hash;const c=CATS.find(x=>"#c-"+x.id===h);if(c)return()=>catBody(c);const b=BRANDS.find(x=>"#b-"+x.id===h);if(b)return()=>brandBody(b);return null}
+function rerender(){const f=curView();const el=$("catBody");if(f&&el)el.innerHTML=f()}
 function route(){
   const h=location.hash||"#home"; let html, title=null;
+  if(h!==lastHash){filt="all";tfilt="all";query="";lim=PAGE;lastHash=h}
   if(h.startsWith("#c-")){const c=CATS.find(x=>"#c-"+x.id===h);if(c){html=viewCat(c);title=c.name+" | AR&SMART"}}
   else if(h.startsWith("#b-")){const b=BRANDS.find(x=>"#b-"+x.id===h);if(b){html=viewBrand(b);title=b.en+" | AR&SMART"}}
   else if(h==="#book"){html=viewBook();title="احجز معاينة | AR&SMART"}
@@ -411,7 +453,7 @@ $("menu").addEventListener("click",e=>{if(e.target.closest("a"))setMenu(false)})
 
 const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
 function cartMsg(){
-  const lines=Object.keys(cart).map(id=>{const p=PRODUCTS.find(x=>x.id===id);return p?`- ${p.n} (${p.b} ${p.m}) × ${cart[id]}${p.p?` — ${fmt(p.p*cart[id])} ج.م`:""}`:""}).filter(Boolean);
+  const lines=Object.keys(cart).map(id=>{const p=PRODUCTS.find(x=>x.id===id);return p?`- ${p.n} (${p.b} ${p.m}${p.c?` - كود ${p.c}`:""}) × ${cart[id]}${p.p?` — ${fmt(p.p*cart[id])} ج.م`:""}`:""}).filter(Boolean);
   const name=$("cName").value.trim();
   return ["السلام عليكم، عايز أطلب من موقع AR&SMART:",...lines,"",`المنطقة: ${$("cArea").value}`,`النوع: ${$("cInst").value}`].concat(name?[`الاسم: ${name}`]:[]).join("\n");
 }
@@ -429,7 +471,9 @@ const sync=()=>{save();renderCart();refreshCards()};
 
 document.addEventListener("click",e=>{
   const t=e.target.closest("button"); if(!t)return;
-  if(t.dataset.f){filt=t.dataset.f;const h=location.hash;const c=CATS.find(x=>"#c-"+x.id===h);if(c){$("view").innerHTML=viewCat(c)}return}
+  if(t.dataset.f){filt=t.dataset.f;lim=PAGE;rerender();return}
+  if(t.dataset.t){tfilt=t.dataset.t;filt="all";lim=PAGE;rerender();return}
+  if(t.dataset.more){lim+=PAGE*2;rerender();return}
   if(t.dataset.add){cart[t.dataset.add]=(cart[t.dataset.add]||0)+1;sync();return}
   if(t.dataset.inc){cart[t.dataset.inc]++;sync();return}
   if(t.dataset.dec){if(--cart[t.dataset.dec]<=0)delete cart[t.dataset.dec];sync();return}
@@ -454,6 +498,7 @@ function bindBook(){
     const a=document.createElement("a");a.href=wa(msg);a.target="_blank";a.rel="noopener";document.body.appendChild(a);a.click();a.remove();
   });
 }
+document.addEventListener("input",e=>{if(e.target.id==="q"){query=e.target.value.trim();lim=PAGE;rerender()}});
 window.addEventListener("hashchange",route);
 route(); renderCart();
 </script>
