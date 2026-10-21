@@ -156,7 +156,32 @@ button{font:inherit}
 .card .row .add svg{width:16px;height:16px}
 .card .row .add.in{background:rgba(17,17,17,.18)}
 .card .row .btn:hover,.card .row .add:hover{background:rgba(255,255,255,.18)}
-.card .code{font-family:var(--mono);font-size:.68rem;color:var(--gold);direction:rtl;text-align:right}
+.card h3 a{color:inherit;text-decoration:none}
+.pd{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+@media (max-width:760px){.pd{grid-template-columns:1fr}}
+.pd-img{background:#fff;border-radius:16px;border:1px solid rgba(212,166,63,.35);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pd-img img{width:100%;height:100%;object-fit:contain}
+.pd-img .ph svg{width:120px;color:#bbb}
+.pd-info{display:grid;gap:12px}
+.pd-info h1{font-family:var(--display);font-size:clamp(1.3rem,4.5vw,1.8rem);line-height:1.4}
+.pd-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--muted);font-size:.85rem}
+.pd-meta .mono{color:var(--ink);font-size:.9rem}
+.pd-brand{padding:3px 10px;border-radius:999px;border:1px solid var(--gold-deep);color:var(--gold2);text-decoration:none;font-size:.8rem}
+.pd-price{font-family:var(--display);font-size:1.7rem;color:var(--gold2);font-weight:700}
+.pd-price small{font-size:.9rem;color:var(--gold)}
+.pd-use{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;line-height:1.8;font-size:.95rem}
+.pd-acts{display:flex;gap:8px;flex-wrap:wrap}
+.pd-acts .btn{flex:1 1 160px}
+.spec{width:100%;border-collapse:collapse;font-size:.92rem}
+.spec th,.spec td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
+.spec th{color:var(--muted);font-weight:500;width:40%}
+.spec td{color:var(--ink)}
+.feat{margin:0;padding:0 18px 0 0;display:grid;gap:6px;color:var(--ink);font-size:.9rem;direction:ltr;text-align:left;padding:0 0 0 18px}
+.feat li::marker{color:var(--gold)}
+.card .model .fq{color:var(--gold);font-weight:600}
+.sortrow{display:flex;gap:8px;align-items:center;overflow-x:auto;scrollbar-width:none;color:var(--muted);font-size:.85rem}
+.sortrow::-webkit-scrollbar{display:none}
+.sortrow span{flex:none}
 .count{color:var(--muted);font-size:.82rem;margin:0}
 .more{display:flex;justify-content:center;padding-top:6px}
 .search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 12px}
@@ -245,7 +270,7 @@ footer .areas{line-height:1.9}
   </div>
 </div>
 
-<script src="catalog.js?v=2"></script>
+<script src="catalog.js?v=3"></script>
 <script>
 const WA="201144772044";
 const PRODUCTS=[
@@ -335,9 +360,9 @@ function card(p){
   const q=cart[p.id]||0;
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">`:`<div class="ph">${ico(catOf(p).ic,1.2)}<span>${esc(p.m)}</span></div>`;
   const price=p.p?`<div class="price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price">اسأل عن السعر</div>`;
-  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
-  return `<article class="card"><div class="pic">${pic}<span class="tag">${esc(p.b)}</span></div>
-  <div class="body"><h3>${esc(p.n)}</h3><div class="model">${esc(p.m)}</div><div class="code">${p.c?`كود ${esc(p.c)}`:"&nbsp;"}</div>${price}
+  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
+  return `<article class="card"><a class="pic" href="#p-${p.id}" aria-label="${esc(p.n)}">${pic}<span class="tag">${esc(p.b)}</span></a>
+  <div class="body"><h3><a href="#p-${p.id}">${esc(p.n)}</a></h3><div class="model">${esc(p.m)}${freqOf(p)?` · <b class="fq">${FREQ[freqOf(p)].replace(/ \(.*\)/,"")}</b>`:""}</div>${price}
   <div class="row"><a class="btn" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
   <button class="add${q?" in":""}" type="button" data-add="${p.id}" aria-label="${q?"في السلة: "+q:"أضف للسلة"}">${ico(q?"check":"plus",2)}</button></div></div></article>`;
 }
@@ -357,13 +382,21 @@ function viewHome(){
   <section class="sec"><div class="sec-h"><h2>الأكثر طلباً</h2><a href="#all">كل المنتجات ←</a></div>${grid(TOP.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean))}</section>
   <section class="sec"><div class="sec-h"><h2>تسوّق حسب الماركة</h2></div>${brandStrip()}</section>`;
 }
-let filt="all",tfilt="all",query="",lim=24;
+let filt="all",tfilt="all",ffilt="all",sortBy="def",query="",lim=24;
+const FREQ={"125":"125KHz (EM)","1356":"13.56MHz (IC)","dual":"125KHz + 13.56MHz","uhf":"UHF"};
+const freqOf=p=>{const h=(p.h||[]).find(x=>x[0]==="التردد");if(!h)return "";const v=h[1];const a=/125/.test(v),b=/13\.56/.test(v);return /UHF/.test(v)?"uhf":a&&b?"dual":a?"125":b?"1356":""};
+const TORD=Object.keys(TYPES);const FORD=["125","1356","dual","uhf",""];
+const sortList=l=>{const a=[...l];if(sortBy==="asc")return a.sort((x,y)=>(x.p||1e9)-(y.p||1e9));if(sortBy==="desc")return a.sort((x,y)=>(y.p||0)-(x.p||0));
+ return a.sort((x,y)=>{const t=(x.t?TORD.indexOf(x.t):-1)-(y.t?TORD.indexOf(y.t):-1);if(t)return t;const f=FORD.indexOf(freqOf(x))-FORD.indexOf(freqOf(y));if(f)return f;return (x.p||1e9)-(y.p||1e9)})};
+const freqRow=l=>{const fs=FORD.filter(f=>f&&l.some(p=>freqOf(p)===f));if(!fs.includes(ffilt))ffilt="all";return fs.length>1||(fs.length===1&&l.some(p=>!freqOf(p))&&false)?chipRow(fs,ffilt,"data-fr","التردد",v=>FREQ[v]):""};
+const byFreq=l=>ffilt==="all"?l:l.filter(p=>freqOf(p)===ffilt);
+const sortRow=()=>`<div class="sortrow"><span>ترتيب:</span>${[["def","حسب النوع والتردد"],["asc","السعر: الأقل أولاً"],["desc","السعر: الأعلى أولاً"]].map(([k,t])=>`<button class="chip" type="button" data-sort="${k}" aria-pressed="${sortBy===k}">${t}</button>`).join("")}</div>`;
 const PAGE=24;
 const norm=t=>String(t).toLowerCase().replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[\s\-_/().]+/g,"");
 const matchQ=p=>!query||norm(p.n+" "+p.m+" "+(p.c||"")+" "+p.b).includes(norm(query));
 const pgrid=list=>list.length?`${grid(list.slice(0,lim))}${list.length>lim?`<div class="more"><button class="btn ghost" type="button" data-more="1">عرض المزيد (${list.length-lim})</button></div>`:""}`:(query?`<div class="empty"><p>مفيش نتايج لـ "${esc(query)}". جرّب كلمة تانية أو اسأل على الواتساب.</p></div>`:grid([]));
 const chipRow=(arr,cur,attr,label,lab)=>arr.length>1?`<div class="chips" role="group" aria-label="${label}">${["all",...arr].map(v=>`<button class="chip" type="button" ${attr}="${esc(v)}" aria-pressed="${v===cur}">${v==="all"?"الكل":esc(lab?lab(v):v)}</button>`).join("")}</div>`:"";
-const searchBox=()=>`<label class="search">${ico("search")}<input id="q" type="search" placeholder="ابحث بالاسم أو الموديل أو الكود" value="${esc(query)}" autocomplete="off"></label>`;
+const searchBox=()=>`<label class="search">${ico("search")}<input id="q" type="search" placeholder="ابحث بالاسم أو الموديل" value="${esc(query)}" autocomplete="off"></label>`;
 function catBody(c){
   const list=inCat(c);
   const ts=[...new Set(list.map(p=>p.t).filter(Boolean))];
@@ -371,8 +404,10 @@ function catBody(c){
   const byT=tfilt==="all"?list:list.filter(p=>p.t===tfilt);
   const bs=[...new Set(byT.map(p=>p.b))];
   if(!bs.includes(filt))filt="all";
-  const shown=(filt==="all"?byT:byT.filter(p=>p.b===filt)).filter(matchQ);
-  return `${chipRow(ts,tfilt,"data-t","النوع",v=>TYPES[v]||v)}${chipRow(bs,filt,"data-f","الماركة")}<p class="count">${shown.length} منتج</p>${pgrid(shown)}`;
+  const byB=filt==="all"?byT:byT.filter(p=>p.b===filt);
+  const fr=freqRow(byB);
+  const shown=sortList(byFreq(byB).filter(matchQ));
+  return `${chipRow(ts,tfilt,"data-t","النوع",v=>TYPES[v]||v)}${chipRow(bs,filt,"data-f","الماركة")}${fr}${sortRow()}<p class="count">${shown.length} منتج</p>${pgrid(shown)}`;
 }
 function viewCat(c){
   const n=inCat(c).length;
@@ -383,8 +418,49 @@ function brandBody(b){
   const list=inBrand(b);
   const ts=[...new Set(list.map(p=>p.t).filter(Boolean))];
   if(!ts.includes(tfilt))tfilt="all";
-  const shown=(tfilt==="all"?list:list.filter(p=>p.t===tfilt)).filter(matchQ);
-  return `${chipRow(ts,tfilt,"data-t","النوع",v=>TYPES[v]||v)}<p class="count">${shown.length} منتج</p>${pgrid(shown)}`;
+  const byT=tfilt==="all"?list:list.filter(p=>p.t===tfilt);
+  const fr=freqRow(byT);
+  const shown=sortList(byFreq(byT).filter(matchQ));
+  return `${chipRow(ts,tfilt,"data-t","النوع",v=>TYPES[v]||v)}${fr}${sortRow()}<p class="count">${shown.length} منتج</p>${pgrid(shown)}`;
+}
+const USE={keypad:"جهاز بيتحكم في فتح الباب بالكارت أو الباسورد. مناسب للشقق والفيلات والشركات والمحلات ومداخل العمارات، وبيشتغل مع القفل المغناطيسي أو الكهربائي وزرار الخروج.",
+bio:"جهاز للتحكم في الدخول وتسجيل الحضور والانصراف بالبصمة أو الوجه. مناسب للشركات والمكاتب والمصانع والعيادات.",
+reader:"قارئ كروت بيتوصل بجهاز الأكسيس كنترول أو بالكمبيوتر، عشان تقرا كروت الموظفين أو السكان. لازم تردده يطابق تردد الكروت.",
+maglock:"قفل مغناطيسي لتأمين الأبواب الخشب والزجاج والألومنيوم والحديد. بيفتح من جهاز الأكسيس كنترول أو الإنتركم أو زرار الخروج.",
+elock:"قفل كهربائي بيتركب في الباب ويفتح بالكهربا من جهاز الأكسيس كنترول أو الإنتركم أو زرار الخروج.",
+bracket:"براكت لتركيب القفل المغناطيسي على الأبواب الزجاج أو الأبواب اللي فتحتها لجوه ومفيهاش مكان مباشر للقفل.",
+power:"باور سبلاي لتشغيل أجهزة الأكسيس كنترول والأقفال الكهربائية والمغناطيسية بأمان.",
+exit:"زرار بيتركب جوه المكان عشان تفتح الباب وانت خارج من غير كارت ولا باسورد.",
+cards:"كروت وتاجات للأكسيس كنترول والكوالين الذكية. لازم تردد الكارت يكون نفس تردد الجهاز.",
+remote:"للتحكم عن بعد في البوابات والأبواب والجراجات والموتورات.",
+closer:"بيقفل الباب لوحده بهدوء بعد ما يتفتح، وبيحافظ على الباب والقفل.",
+other:"إكسسوار لأنظمة الأكسيس كنترول والبوابات.",
+smart:"كالون ذكي للأبواب الخشب والمصفحة، بيفتح بالبصمة والباسورد والكارت ومعاه مفتاح احتياطي. مناسب للشقق والفيلات والمكاتب.",
+cam:"كالون ذكي بكاميرا عين سحرية، تشوف مين على الباب وتكلمه من الموبايل، وبيفتح بالبصمة والباسورد والكارت.",
+face:"كالون ذكي بيفتح بالتعرف على الوجه 3D، ومعاه البصمة والباسورد والكارت، وكاميرا تشوف بيها الباب من الموبايل.",
+hotel:"حلول للفنادق والشقق الفندقية: كروت الغرف وتوفير الكهربا."};
+function viewProduct(p){
+  const c=catOf(p), b=brandOf(p);
+  const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}">`:`<div class="ph">${ico(c?c.ic:"tag",1.2)}</div>`;
+  const price=p.p?`<div class="pd-price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="pd-price" style="font-size:1.2rem">اسأل عن السعر</div>`;
+  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
+  const ask=`السلام عليكم، عايز أسأل عن:\n${p.n}\n${p.b} ${p.m}`;
+  const rows=[["الماركة",p.b],["الموديل",`<span class="mono">${esc(p.m)}</span>`],...(p.t&&TYPES[p.t]?[["النوع",TYPES[p.t]]]:[]),...(p.h||[]).map(([k,v])=>[k,esc(v)])];
+  const specs=(p.s||[]).length?`<ul class="feat" style="direction:rtl;text-align:right;padding:0 18px 0 0">${p.s.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
+  const det=(p.d||[]).length?`<section class="sec"><div class="sec-h"><h2>المواصفات التفصيلية</h2></div><ul class="feat">${p.d.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>`:"";
+  const rel=PRODUCTS.filter(x=>x!==p&&x.cat===p.cat&&(x.t||"")===(p.t||"")).slice(0,4);
+  return `<div class="crumb"><a href="#home">الرئيسية</a> / ${c?`<a href="#c-${c.id}">${c.short||c.name}</a> / `:""}${esc(p.m)}</div>
+  <section class="sec"><div class="pd"><div class="pd-img">${pic}</div>
+  <div class="pd-info"><h1>${esc(p.n)}</h1>
+   <div class="pd-meta">${b?`<a class="pd-brand" href="#b-${b.id}">${esc(p.b)}</a>`:`<span class="pd-brand">${esc(p.b)}</span>`}<span class="mono">${esc(p.m)}</span></div>
+   ${price}
+   ${USE[p.t]?`<p class="pd-use">${USE[p.t]}</p>`:""}
+   ${specs}
+   <table class="spec">${rows.map(([k,v])=>`<tr><th>${k}</th><td>${v}</td></tr>`).join("")}</table>
+   <div class="pd-acts"><a class="btn gold" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن على الواتساب</a><button class="btn ghost" type="button" data-add="${p.id}">${ico("plus",2)}أضف للسلة</button></div>
+   <a class="btn ghost" href="${wa(ask)}" target="_blank" rel="noopener" style="justify-self:start">عندك سؤال عن المنتج؟ اسألنا</a>
+  </div></div></section>${det}
+  ${rel.length?`<section class="sec"><div class="sec-h"><h2>منتجات مشابهة</h2></div>${grid(rel)}</section>`:""}`;
 }
 function viewBrand(b){
   const list=inBrand(b);
@@ -430,9 +506,10 @@ function curView(){const h=location.hash;const c=CATS.find(x=>"#c-"+x.id===h);if
 function rerender(){const f=curView();const el=$("catBody");if(f&&el)el.innerHTML=f()}
 function route(){
   const h=location.hash||"#home"; let html, title=null;
-  if(h!==lastHash){filt="all";tfilt="all";query="";lim=PAGE;lastHash=h}
+  if(h!==lastHash){filt="all";tfilt="all";ffilt="all";sortBy="def";query="";lim=PAGE;lastHash=h}
   if(h.startsWith("#c-")){const c=CATS.find(x=>"#c-"+x.id===h);if(c){html=viewCat(c);title=c.name+" | AR&SMART"}}
   else if(h.startsWith("#b-")){const b=BRANDS.find(x=>"#b-"+x.id===h);if(b){html=viewBrand(b);title=b.en+" | AR&SMART"}}
+  else if(h.startsWith("#p-")){const p=PRODUCTS.find(x=>"#p-"+x.id===h);if(p){html=viewProduct(p);title=p.n+" "+p.m+" | AR&SMART"}}
   else if(h==="#book"){html=viewBook();title="احجز معاينة | AR&SMART"}
   else if(h==="#all"){html=viewAll();title="كل المنتجات | AR&SMART"}
   else if(h==="#brands"){html=`<div class="crumb"><a href="#home">الرئيسية</a> / الماركات</div><section class="sec"><div class="sec-h"><h2>الماركات</h2></div>${brandStrip(null,true)}</section>`}
@@ -443,7 +520,7 @@ function route(){
   const cur=$("catnav").querySelector("[aria-current]");cur&&cur.scrollIntoView({block:"nearest",inline:"center"});
   setMenu(false);
   if(h==="#categories"){const el=$("categories");el&&el.scrollIntoView()} else window.scrollTo(0,0);
-  bindBook();
+  bindBook();refreshCards();
 }
 const baseTitle=document.title;
 function setMenu(o){$("menu").hidden=!o;$("scrim").hidden=!o;$("menuBtn").setAttribute("aria-expanded",String(o))}
@@ -452,7 +529,7 @@ $("menu").addEventListener("click",e=>{if(e.target.closest("a"))setMenu(false)})
 
 const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
 function cartMsg(){
-  const lines=Object.keys(cart).map(id=>{const p=PRODUCTS.find(x=>x.id===id);return p?`- ${p.n} (${p.b} ${p.m}${p.c?` - كود ${p.c}`:""}) × ${cart[id]}${p.p?` — ${fmt(p.p*cart[id])} ج.م`:""}`:""}).filter(Boolean);
+  const lines=Object.keys(cart).map(id=>{const p=PRODUCTS.find(x=>x.id===id);return p?`- ${p.n} (${p.b} ${p.m}) × ${cart[id]}${p.p?` — ${fmt(p.p*cart[id])} ج.م`:""}`:""}).filter(Boolean);
   const name=$("cName").value.trim();
   return ["السلام عليكم، عايز أطلب من موقع AR&SMART:",...lines,"",`المنطقة: ${$("cArea").value}`,`النوع: ${$("cInst").value}`].concat(name?[`الاسم: ${name}`]:[]).join("\n");
 }
@@ -465,13 +542,15 @@ function renderCart(){
   $("totalRow").hidden=!tot; $("totalVal").textContent=fmt(tot)+" ج.م";
   $("sendWa").href=wa(cartMsg()); $("sendWa").hidden=!n; $("clearCart").hidden=!n;
 }
-function refreshCards(){document.querySelectorAll("[data-add]").forEach(b=>{const q=cart[b.dataset.add]||0;b.classList.toggle("in",!!q);b.innerHTML=ico(q?"check":"plus",2);b.setAttribute("aria-label",q?"في السلة: "+q:"أضف للسلة")})}
+function refreshCards(){document.querySelectorAll(".pd-acts [data-add]").forEach(b=>{const q=cart[b.dataset.add]||0;b.innerHTML=q?ico("check",2)+"في السلة ("+q+")":ico("plus",2)+"أضف للسلة"});document.querySelectorAll(".card [data-add]").forEach(b=>{const q=cart[b.dataset.add]||0;b.classList.toggle("in",!!q);b.innerHTML=ico(q?"check":"plus",2);b.setAttribute("aria-label",q?"في السلة: "+q:"أضف للسلة")})}
 const sync=()=>{save();renderCart();refreshCards()};
 
 document.addEventListener("click",e=>{
   const t=e.target.closest("button"); if(!t)return;
   if(t.dataset.f){filt=t.dataset.f;lim=PAGE;rerender();return}
-  if(t.dataset.t){tfilt=t.dataset.t;filt="all";lim=PAGE;rerender();return}
+  if(t.dataset.t){tfilt=t.dataset.t;filt="all";ffilt="all";lim=PAGE;rerender();return}
+  if(t.dataset.fr){ffilt=t.dataset.fr;lim=PAGE;rerender();return}
+  if(t.dataset.sort){sortBy=t.dataset.sort;lim=PAGE;rerender();return}
   if(t.dataset.more){lim+=PAGE*2;rerender();return}
   if(t.dataset.add){cart[t.dataset.add]=(cart[t.dataset.add]||0)+1;sync();return}
   if(t.dataset.inc){cart[t.dataset.inc]++;sync();return}
