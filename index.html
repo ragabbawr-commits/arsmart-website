@@ -228,7 +228,7 @@ button{font:inherit}
 .about p{line-height:1.9}
 .ticks{margin:0;padding:0;list-style:none;display:grid;gap:8px}
 .ticks li::before{content:"✓ ";color:var(--gold);font-weight:700}
-.areas-line{color:var(--muted);font-size:.88rem}
+.areas{display:grid;gap:10px;margin-top:6px}.areas b{color:var(--gold2)}.areas div{display:flex;flex-wrap:wrap;gap:6px}.areas span{padding:5px 12px;border-radius:999px;border:1px solid rgba(212,166,63,.35);background:rgba(212,166,63,.08);font-size:.85rem}
 .count{color:var(--muted);font-size:.82rem;margin:0}
 .more{display:flex;justify-content:center;padding-top:6px}
 .search{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 12px}
@@ -312,7 +312,9 @@ footer .areas{line-height:1.9}
     <div id="lines"></div>
     <div class="total" id="totalRow" hidden><span>الإجمالي التقريبي</span><b id="totalVal"></b></div>
     <label>الاسم<input id="cName" autocomplete="name"></label>
-    <label>المنطقة<select id="cArea"><option>الشروق</option><option>التجمع الخامس</option><option>العبور</option><option>بدر</option><option>مدينتي</option><option>سوديك إيست</option><option>سوديك فيليت</option><option>الشيخ زايد</option><option>منطقة تانية</option></select></label>
+    <label>رقم الموبايل<input id="cPhone" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx" dir="ltr"></label>
+    <label>نوع المكان<select id="cPlace"><option>فيلا</option><option>شقة</option><option>شركة / مكتب</option><option>محل / معرض</option><option>مبنى / عمارة</option><option>مصنع / مخزن</option></select></label>
+    <label>المنطقة<select id="cArea"><option>الشروق</option><option>التجمع الخامس</option><option>العبور</option><option>بدر</option><option>مدينتي</option><option>سوديك إيست</option><option>سوديك فيليت</option><option>الشيخ زايد</option><option>الرحاب</option><option>القطامية</option><option>المقطم</option><option>مدينة نصر</option><option>العاصمة الإدارية</option><option>منطقة تانية</option></select></label>
     <label>النوع<select id="cInst"><option>توريد وتركيب</option><option>توريد فقط</option></select></label>
     <a class="btn wa" id="sendWa" href="#" target="_blank" rel="noopener">ابعت الطلب على الواتساب</a>
     <button class="btn ghost" id="clearCart" type="button">تفريغ السلة</button>
@@ -434,7 +436,7 @@ const bItem=(b,cur,dup)=>`<a href="#b-${b.id}" style="--c:${b.c};--bgc:${b.bg}"$
 const brandStrip=(cur,all)=>`<div class="brands${all?" wrapall":""}">${BRANDS.map(b=>bItem(b,cur)).join("")}</div>`;
 const brandMarquee=()=>`<div class="mq" role="region" aria-label="الماركات"><div class="brands mq-track">${BRANDS.map(b=>bItem(b)).join("")}${BRANDS.map(b=>bItem(b,null,1)).join("")}</div></div>`;
 /* معرض الأعمال: ضيف صورة في img/w/ وسطر هنا — k = نوع الشغل */
-const WK={cam:"كاميرات",lock:"كوالين ذكية",home:"سمارت هوم",int:"إنتركم",acc:"أكسيس كنترول",net:"شبكات",sound:"ساوند وسنترالات",gate:"بوابات"};
+const WK={cam:"كاميرات",lock:"كوالين ذكية",home:"سمارت هوم",int:"إنتركم",acc:"أكسيس كنترول",net:"شبكات وراكات",sound:"ساوند وسنترالات",gate:"بوابات"};
 const WORKS=[
  // {img:"img/w/villa-tagamoa-cams.jpg",k:"cam",t:"تركيب 12 كاميرا Hikvision",place:"فيلا – التجمع الخامس"},
 ];
@@ -444,12 +446,12 @@ const SOCIAL=`<div class="ctas"><a class="btn gold" href="https://www.tiktok.com
 const worksSec=()=>`<section class="sec" id="works"><div class="sec-h"><h2>أعمالنا</h2></div>${WORKS.length?`${chipRow([...new Set(WORKS.map(w=>w.k))],wfilt,"data-wk","نوع الشغل",v=>WK[v]||v)}<div id="worksBody">${worksGrid()}</div><div style="margin-top:14px">${SOCIAL}</div>`:`<div class="panel works-empty">${ico("photo")}<p>صور من مواقع ركّبنا فيها كاميرات وكوالين وسمارت هوم هتنزل هنا قريباً. لحد ما تنزل، اتفرج على فيديوهات التركيب والبرمجة من الشغل الحقيقي.</p>${SOCIAL}</div>`}</section>`;
 
 const SERVICES=[
- ["cam","كاميرات المراقبة","أنظمة IP وPoE داخلي وخارجي، تسجيل ومشاهدة من الموبايل من أي مكان.","#c-cams"],
+ ["cam","كاميرات المراقبة","أنظمة IP وPoE داخلي وخارجي من Hikvision وDahua وUniview، ومشاهدة من الموبايل من أي مكان.","#c-cams"],
  ["lock","الكوالين الذكية","كوالين بصمة ووجه وكارت وباسورد، وكاميرا عين سحرية على الموبايل.","#c-locks"],
- ["home","السمارت هوم و KNX","تحكم في الإضاءة والستائر والتكييف والأجهزة بالموبايل والصوت والسيناريوهات.","#c-smarthome"],
- ["int","الإنتركم الصوتي والمرئي","إنتركم للفيلات والعمارات، تشوف وتكلم وتفتح الباب من الشاشة أو الموبايل.","#c-intercom"],
- ["acc","الأكسيس كنترول والحضور والانصراف","أجهزة بصمة ووجه وكارت، أقفال مغناطيسية وكهربائية، وتقارير حضور للشركات.","#c-access"],
- ["net","الشبكات والواي فاي","تغطية واي فاي كاملة وسويتشات وراوترات، شريك Ruijie / Reyee معتمد.","#c-network"],
+ ["home","السمارت هوم و KNX","تحكم في الإضاءة والشتر والتكييف والأجهزة بالموبايل والصوت (Tuya / Smart Life وKNX).","#c-smarthome"],
+ ["int","الإنتركم الصوتي والمرئي","إنتركم IP للفيلات والعمارات، تشوف وتكلم وتفتح الباب من الشاشة أو الموبايل.","#c-intercom"],
+ ["acc","الأكسيس كنترول والحضور والانصراف","أجهزة بصمة وجه وكارت، أقفال مغناطيسية وكهربائية، وتقارير حضور للشركات.","#c-access"],
+ ["net","الشبكات والواي فاي","واي فاي سلكي ولاسلكي وسويتشات وتنظيم راكات، شريك Ruijie Reyee معتمد.","#c-network"],
  ["pbx","الساوند سيستم والسنترالات","سماعات وأمبليفاير ومايكات، وسنترالات وتليفونات داخلية للفيلات والشركات والفنادق.","#c-sound"],
  ["tag","البوابات الإلكترونية","موتورات وريموتات وريلايات وأكسيس كنترول للبوابات والجراجات.","#c-access"]];
 const svcCards=()=>`<div class="svcs">${SERVICES.map(([ic,t,d,h])=>`<a class="svc" href="${h}"><span class="ic">${ico(ic)}</span><b>${t}</b><small>${d}</small></a>`).join("")}</div>`;
@@ -463,9 +465,9 @@ const quickForm=()=>`<form class="panel form" id="quickForm" novalidate>
 function viewHome(){
   return `<section class="hero">
     <div class="hbrand"><img src="img/logo-192.png" alt="شعار AR&amp;SMART" width="72" height="72"><div><h1 class="hname">AR<em>&amp;</em>SMART</h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span></div></div>
-    <p class="hline">حلول أمان وتحكم ذكي متكاملة <em>للفيلات والشركات والمحلات</em></p>
+    <p class="hline">حلول أمنية وأنظمة سمارت هوم متكاملة <em>للفيلات والشركات والمحلات التجارية</em></p>
     <p class="hsub">توريد وتركيب وبرمجة وضمان: كاميرات مراقبة، كوالين ذكية، سمارت هوم و KNX، إنتركم صوتي ومرئي، أكسيس كنترول، حضور وانصراف، شبكات، ساوند سيستم، سنترالات، وبوابات إلكترونية.</p>
-    <div class="ctas"><a class="btn gold" href="#book">${ico("cal")}اطلب معاينة مجانية</a><a class="btn ghost" href="#services">${ico("grid")}استعرض الخدمات</a></div>
+    <div class="ctas"><a class="btn gold" href="#book">${ico("cal")}اطلب معاينة مجانية</a><a class="btn ghost" href="#services">${ico("grid")}استعرض المنتجات والخدمات</a></div>
     <div class="trust"><span>معاينة مجانية في الموقع</span><span>ضمان على المنتج والتركيب</span><span>شريك Ruijie معتمد</span><span>متابعة بعد التركيب</span></div>
   </section>
   <section class="sec" id="services"><div class="sec-h"><h2>خدماتنا</h2></div>${svcCards()}</section>
@@ -476,7 +478,7 @@ function viewHome(){
   <section class="sec" id="about"><div class="sec-h"><h2>مين إحنا</h2></div>
    <div class="panel about"><p><b>AR&amp;SMART</b> بإدارة <b>م. رجب مفتاح (Eng. Ragab Moftah)</b>، متخصصين في توريد وتركيب وبرمجة أنظمة الأمان والتحكم الذكي للفيلات والشقق الفاخرة في الكمبوندات، والشركات والمحلات.</p>
    <ul class="ticks"><li>بنعاين المكان مجاناً ونقترح الحل المناسب لميزانيتك</li><li>بنركّب ونبرمج ونسلّمك النظام شغال على موبايلك</li><li>ضمان على المنتج والتركيب، ومتابعة وصيانة بعد التسليم</li><li>شريك Ruijie / Reyee معتمد في الشبكات</li></ul>
-   <p class="areas-line">بنخدم: التجمع الخامس، القطامية، المقطم، مدينة نصر، الرحاب، مدينتي، الشروق، العبور، بدر، سوديك إيست، سوديك فيليت، العاصمة الإدارية، المركز الطبي العالمي، الشيخ زايد.</p></div></section>
+   <div class="areas"><b>مناطق التغطية</b><div>${["الشروق","التجمع الخامس","العبور","بدر","مدينتي","سوديك إيست","سوديك فيليت","الشيخ زايد","الرحاب","القطامية","المقطم","مدينة نصر","العاصمة الإدارية","المركز الطبي العالمي"].map(a=>`<span>${a}</span>`).join("")}</div></div></div></section>
   <section class="sec" id="contact"><div class="sec-h"><h2>اطلب معاينة مجانية</h2></div>
    <div class="book">${quickForm()}
    <div class="panel">
@@ -599,7 +601,7 @@ function viewBook(){
     <form class="panel form" id="bookForm" novalidate>
       <label>الاسم<input id="bName" autocomplete="name" placeholder="مثال: أحمد محمد"></label>
       <label>رقم الموبايل<input id="bPhone" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx" dir="ltr"></label>
-      <label>المنطقة<select id="bArea"><option>الشروق</option><option>التجمع الخامس</option><option>العبور</option><option>بدر</option><option>مدينتي</option><option>سوديك إيست</option><option>سوديك فيليت</option><option>الشيخ زايد</option><option>منطقة تانية</option></select></label>
+      <label>المنطقة<select id="bArea"><option>الشروق</option><option>التجمع الخامس</option><option>العبور</option><option>بدر</option><option>مدينتي</option><option>سوديك إيست</option><option>سوديك فيليت</option><option>الشيخ زايد</option><option>الرحاب</option><option>القطامية</option><option>المقطم</option><option>مدينة نصر</option><option>العاصمة الإدارية</option><option>منطقة تانية</option></select></label>
       <label>نوع المكان<select id="bPlace"><option>شقة</option><option>فيلا</option><option>محل / معرض</option><option>شركة / مكتب</option><option>مبنى / عمارة</option><option>مصنع / مخزن</option></select></label>
       <label class="full">الخدمة المطلوبة<select id="bSvc"><option>كاميرات مراقبة</option><option>كوالين ذكية وأكسيس كنترول</option><option>سمارت هوم</option><option>إنتركم صوتي ومرئي</option><option>حضور وانصراف</option><option>شبكات وواي فاي</option><option>ساوند سيستم</option><option>بوابات إلكترونية و KNX</option></select></label>
       <label class="full">تفاصيل (اختياري)<textarea id="bNote" placeholder="مثال: 6 كاميرات للفيلا + كالون ذكي للباب"></textarea></label>
@@ -652,7 +654,9 @@ const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
 function cartMsg(){
   const lines=Object.keys(cart).map(id=>{const p=PRODUCTS.find(x=>x.id===id);return p?`- ${p.n} (${p.b} ${p.m}${p.c?` - كود ${p.c}`:""}) × ${cart[id]}${p.p?` — ${fmt(p.p*cart[id])} ج.م`:""}`:""}).filter(Boolean);
   const name=$("cName").value.trim();
-  return ["السلام عليكم، عايز أطلب من موقع AR&SMART:",...lines,"",`المنطقة: ${$("cArea").value}`,`النوع: ${$("cInst").value}`].concat(name?[`الاسم: ${name}`]:[]).join("\n");
+  const tot=Object.keys(cart).reduce((s,id)=>{const p=PRODUCTS.find(x=>x.id===id);return s+(p&&p.p||0)*cart[id]},0), ph=$("cPhone").value.trim();
+  return ["السلام عليكم، عايز أطلب من موقع AR&SMART:",...lines].concat(tot?[`الإجمالي التقريبي: ${fmt(tot)} ج.م`]:[],["",
+   ...(name?[`الاسم: ${name}`]:[]),...(ph?[`الموبايل: ${ph}`]:[]),`نوع المكان: ${$("cPlace").value}`,`المنطقة: ${$("cArea").value}`,`الطلب: ${$("cInst").value}`]).join("\n");
 }
 function renderCart(){
   const n=count(); $("cartCount").hidden=!n; $("cartCount").textContent=n;
@@ -682,7 +686,7 @@ document.addEventListener("click",e=>{
 });
 $("drawer").addEventListener("click",e=>{if(e.target.id==="drawer")$("drawer").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("drawer").hidden=true;setMenu(false)}});
-["cName","cArea","cInst"].forEach(id=>$(id).addEventListener("input",()=>{$("sendWa").href=wa(cartMsg())}));
+["cName","cPhone","cPlace","cArea","cInst"].forEach(id=>$(id).addEventListener("input",()=>{$("sendWa").href=wa(cartMsg())}));
 
 
 let lbI=0;
