@@ -194,13 +194,14 @@ button{font:inherit}
 .mq:hover .mq-track,.mq:focus-within .mq-track{animation-play-state:paused}
 @keyframes mq{to{transform:translateX(50%)}}
 @media (prefers-reduced-motion:reduce){.mq{overflow-x:auto;scrollbar-width:none}.mq .dup{display:none}}
-.works{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.works{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 @media (max-width:980px){.works{grid-template-columns:repeat(2,1fr)}}
-.work{position:relative;padding:0;border:1px solid rgba(212,166,63,.3);border-radius:14px;overflow:hidden;background:#000;cursor:zoom-in;aspect-ratio:4/3;font:inherit;color:#fff;text-align:right}
+.work{position:relative;padding:0;border:1px solid rgba(212,166,63,.3);border-radius:14px;overflow:hidden;background:#000;cursor:zoom-in;aspect-ratio:3/4;font:inherit;color:#fff;text-align:right}
 .work img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
 .work:hover img{transform:scale(1.04)}
 .work span{position:absolute;inset:auto 0 0 0;display:grid;gap:2px;padding:24px 12px 10px;background:linear-gradient(transparent,rgba(0,0,0,.85))}
-.work b{font-size:.9rem}.work small{font-size:.75rem;color:var(--gold2)}
+.work b{font-size:.9rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5}
+@media (max-width:600px){.work b{font-size:.76rem}.work span{padding:20px 8px 8px}}.work small{font-size:.75rem;color:var(--gold2)}
 .works-empty{display:grid;justify-items:center;text-align:center;gap:12px;padding:28px 16px}
 .works-empty>svg{width:40px;height:40px;color:var(--gold)}
 .works-empty p{margin:0;max-width:560px;color:var(--muted);line-height:1.8}
@@ -438,10 +439,28 @@ const brandMarquee=()=>`<div class="mq" role="region" aria-label="الماركا
 /* معرض الأعمال: ضيف صورة في img/w/ وسطر هنا — k = نوع الشغل */
 const WK={cam:"كاميرات",lock:"كوالين ذكية",home:"سمارت هوم",int:"إنتركم",acc:"أكسيس كنترول",net:"شبكات وراكات",sound:"ساوند وسنترالات",gate:"بوابات"};
 const WORKS=[
- // {img:"img/w/villa-tagamoa-cams.jpg",k:"cam",t:"تركيب 12 كاميرا Hikvision",place:"فيلا – التجمع الخامس"},
+ // {img:"img/w/اسم-الصورة.jpg",k:"cam",t:"وصف الشغل",place:"المكان (اختياري)"}  — والنسخة الصغيرة في img/w/t/
+ {img:"img/w/pole-ptz-site.jpg",k:"cam",t:"تركيب كاميرا PTZ على عمود في موقع إنشائي"},
+ {img:"img/w/hik-domes-batch.jpg",k:"cam",t:"استلام وبرمجة دفعة كاميرات Hikvision لمشروع شركة"},
+ {img:"img/w/hik-office-nvr.jpg",k:"cam",t:"نظام Hikvision بأكثر من 25 كاميرا لمكاتب شركة"},
+ {img:"img/w/tiandy-live-building.jpg",k:"cam",t:"كاميرات Tiandy لعمارة سكنية ومشاهدة من الموبايل"},
+ {img:"img/w/ruijie-hik-supply.jpg",k:"net",t:"توريد سويتشات Ruijie PoE وكاميرات Hikvision PTZ"},
+ {img:"img/w/villa-corner-bullets.jpg",k:"cam",t:"كاميرتين خارجيتين على زاوية فيلا بحامل مزدوج"},
+ {img:"img/w/ruijie-poe-box.jpg",k:"net",t:"سويتش Ruijie Reyee PoE في صندوق خارجي على عمود"},
+ {img:"img/w/ptz-pole-hill.jpg",k:"cam",t:"كاميرا PTZ خارجية على عمود لتغطية موقع مفتوح"},
+ {img:"img/w/hik-bullet-villa.jpg",k:"cam",t:"كاميرا Hikvision على جنكشن بوكس في فيلا"},
+ {img:"img/w/dome-villa-ceiling.jpg",k:"cam",t:"كاميرا دوم في سقف ديكور بفيلا"},
+ {img:"img/w/rack-nvr.jpg",k:"net",t:"تنظيم راك شبكة مع جهاز تسجيل NVR"},
+ {img:"img/w/ptz-parking.jpg",k:"cam",t:"كاميرا PTZ على حامل سقف في جراج"},
+ {img:"img/w/ptz-basement.jpg",k:"cam",t:"كاميرا PTZ في بدروم غرفة الطلمبات"},
+ {img:"img/w/pole-install.jpg",k:"cam",t:"تركيب وتوصيل كاميرا على عمود"},
+ {img:"img/w/bullet-wall.jpg",k:"cam",t:"كاميرا خارجية بماسورة مرتبة على الواجهة"},
+ {img:"img/w/twin-bullets.jpg",k:"cam",t:"كاميرتين مع بوكس توزيع وتمديدات مرتبة"},
+ {img:"img/w/bullet-ceiling.jpg",k:"cam",t:"كاميرا بوليت مع جنكشن بوكس في السقف"},
+ {img:"img/w/bullet-arm.jpg",k:"cam",t:"كاميرا على ذراع حائط لتغطية الشارع"},
 ];
-let wfilt="all";
-const worksGrid=()=>{const l=WORKS.filter(w=>wfilt==="all"||w.k===wfilt);return `<div class="works">${l.map(w=>`<button class="work" type="button" data-lb="${WORKS.indexOf(w)}"><img src="${esc(w.img)}" alt="${esc(w.t)}" loading="lazy"><span><b>${esc(w.t)}</b><small>${esc(w.place||"")}</small></span></button>`).join("")}</div>`};
+let wfilt="all",wlim=8;
+const worksGrid=()=>{const l=WORKS.filter(w=>wfilt==="all"||w.k===wfilt);return `<div class="works">${l.slice(0,wlim).map(w=>`<button class="work" type="button" data-lb="${WORKS.indexOf(w)}"><img src="${esc(w.img.replace("img/w/","img/w/t/"))}" alt="${esc(w.t)}" loading="lazy"><span><b>${esc(w.t)}</b><small>${esc(w.place||WK[w.k]||"")}</small></span></button>`).join("")}</div>${l.length>wlim?`<div class="more"><button class="btn ghost" type="button" data-wmore>شوف كل الأعمال (${l.length})</button></div>`:""}`};
 const SOCIAL=`<div class="ctas"><a class="btn gold" href="https://www.tiktok.com/@ragabmoftah1" target="_blank" rel="noopener">${ico("play")}فيديوهات شغلنا على تيك توك</a><a class="btn ghost" href="https://www.youtube.com/@ragabmoftah1" target="_blank" rel="noopener">${ico("play")}قناتنا على يوتيوب</a></div>`;
 const worksSec=()=>`<section class="sec" id="works"><div class="sec-h"><h2>أعمالنا</h2></div>${WORKS.length?`${chipRow([...new Set(WORKS.map(w=>w.k))],wfilt,"data-wk","نوع الشغل",v=>WK[v]||v)}<div id="worksBody">${worksGrid()}</div><div style="margin-top:14px">${SOCIAL}</div>`:`<div class="panel works-empty">${ico("photo")}<p>صور من مواقع ركّبنا فيها كاميرات وكوالين وسمارت هوم هتنزل هنا قريباً. لحد ما تنزل، اتفرج على فيديوهات التركيب والبرمجة من الشغل الحقيقي.</p>${SOCIAL}</div>`}</section>`;
 
@@ -628,7 +647,7 @@ function curView(){const h=location.hash;const c=CATS.find(x=>"#c-"+x.id===h);if
 function rerender(){const f=curView();const el=$("catBody");if(f&&el)el.innerHTML=f()}
 function route(){
   const h=location.hash||"#home"; let html, title=null;
-  if(h!==lastHash){wfilt="all";filt="all";tfilt="all";ffilt="all";sortBy="def";query="";lim=PAGE;lastHash=h}
+  if(h!==lastHash){wfilt="all";wlim=8;filt="all";tfilt="all";ffilt="all";sortBy="def";query="";lim=PAGE;lastHash=h}
   if(h.startsWith("#c-")){const c=CATS.find(x=>"#c-"+x.id===h);if(c){html=viewCat(c);title=c.name+" | AR&SMART"}}
   else if(h.startsWith("#b-")){const b=BRANDS.find(x=>"#b-"+x.id===h);if(b){html=viewBrand(b);title=b.en+" | AR&SMART"}}
   else if(h.startsWith("#p-")){const p=PRODUCTS.find(x=>"#p-"+x.id===h);if(p){html=viewProduct(p);title=p.n+" "+p.m+" | AR&SMART"}}
@@ -693,6 +712,7 @@ let lbI=0;
 function lbShow(i){if(!WORKS.length)return;lbI=(i+WORKS.length)%WORKS.length;const w=WORKS[lbI];$("lbImg").src=w.img;$("lbImg").alt=w.t;$("lbCap").textContent=w.t+(w.place?" · "+w.place:"");$("lb").hidden=false;document.body.style.overflow="hidden";$("lbX").focus()}
 function lbClose(){$("lb").hidden=true;document.body.style.overflow=""}
 document.addEventListener("click",e=>{
+  if(e.target.closest("[data-wmore]")){wlim=89;$("worksBody").innerHTML=worksGrid();return}
   const wk=e.target.closest("[data-wk]");if(wk){wfilt=wk.dataset.wk;$("worksBody").innerHTML=worksGrid();wk.parentNode.querySelectorAll("[data-wk]").forEach(c=>c.setAttribute("aria-pressed",c===wk));return}
   const lb=e.target.closest("[data-lb]");if(lb){lbShow(+lb.dataset.lb);return}
   if(e.target.id==="lb")lbClose();
