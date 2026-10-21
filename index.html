@@ -360,7 +360,7 @@ function card(p){
   const q=cart[p.id]||0;
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">`:`<div class="ph">${ico(catOf(p).ic,1.2)}<span>${esc(p.m)}</span></div>`;
   const price=p.p?`<div class="price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price">اسأل عن السعر</div>`;
-  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
+  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
   return `<article class="card"><a class="pic" href="#p-${p.id}" aria-label="${esc(p.n)}">${pic}<span class="tag">${esc(p.b)}</span></a>
   <div class="body"><h3><a href="#p-${p.id}">${esc(p.n)}</a></h3><div class="model">${esc(p.m)}${freqOf(p)?` · <b class="fq">${FREQ[freqOf(p)].replace(/ \(.*\)/,"")}</b>`:""}</div>${price}
   <div class="row"><a class="btn" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
@@ -396,7 +396,7 @@ const norm=t=>String(t).toLowerCase().replace(/[أإآ]/g,"ا").replace(/ة/g,"�
 const matchQ=p=>!query||norm(p.n+" "+p.m+" "+(p.c||"")+" "+p.b).includes(norm(query));
 const pgrid=list=>list.length?`${grid(list.slice(0,lim))}${list.length>lim?`<div class="more"><button class="btn ghost" type="button" data-more="1">عرض المزيد (${list.length-lim})</button></div>`:""}`:(query?`<div class="empty"><p>مفيش نتايج لـ "${esc(query)}". جرّب كلمة تانية أو اسأل على الواتساب.</p></div>`:grid([]));
 const chipRow=(arr,cur,attr,label,lab)=>arr.length>1?`<div class="chips" role="group" aria-label="${label}">${["all",...arr].map(v=>`<button class="chip" type="button" ${attr}="${esc(v)}" aria-pressed="${v===cur}">${v==="all"?"الكل":esc(lab?lab(v):v)}</button>`).join("")}</div>`:"";
-const searchBox=()=>`<label class="search">${ico("search")}<input id="q" type="search" placeholder="ابحث بالاسم أو الموديل" value="${esc(query)}" autocomplete="off"></label>`;
+const searchBox=()=>`<label class="search">${ico("search")}<input id="q" type="search" placeholder="ابحث بالاسم أو الموديل أو الكود" value="${esc(query)}" autocomplete="off"></label>`;
 function catBody(c){
   const list=inCat(c);
   const ts=[...new Set(list.map(p=>p.t).filter(Boolean))];
@@ -443,9 +443,9 @@ function viewProduct(p){
   const c=catOf(p), b=brandOf(p);
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}">`:`<div class="ph">${ico(c?c.ic:"tag",1.2)}</div>`;
   const price=p.p?`<div class="pd-price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="pd-price" style="font-size:1.2rem">اسأل عن السعر</div>`;
-  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
-  const ask=`السلام عليكم، عايز أسأل عن:\n${p.n}\n${p.b} ${p.m}`;
-  const rows=[["الماركة",p.b],["الموديل",`<span class="mono">${esc(p.m)}</span>`],...(p.t&&TYPES[p.t]?[["النوع",TYPES[p.t]]]:[]),...(p.h||[]).map(([k,v])=>[k,esc(v)])];
+  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
+  const ask=`السلام عليكم، عايز أسأل عن:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`;
+  const rows=[["الماركة",p.b],["الموديل",`<span class="mono">${esc(p.m)}</span>`],...(p.c?[["الكود",`<span class="mono">${esc(p.c)}</span>`]]:[]),...(p.t&&TYPES[p.t]?[["النوع",TYPES[p.t]]]:[]),...(p.h||[]).map(([k,v])=>[k,esc(v)])];
   const specs=(p.s||[]).length?`<ul class="feat" style="direction:rtl;text-align:right;padding:0 18px 0 0">${p.s.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
   const det=(p.d||[]).length?`<section class="sec"><div class="sec-h"><h2>المواصفات التفصيلية</h2></div><ul class="feat">${p.d.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>`:"";
   const rel=PRODUCTS.filter(x=>x!==p&&x.cat===p.cat&&(x.t||"")===(p.t||"")).slice(0,4);
@@ -529,7 +529,7 @@ $("menu").addEventListener("click",e=>{if(e.target.closest("a"))setMenu(false)})
 
 const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
 function cartMsg(){
-  const lines=Object.keys(cart).map(id=>{const p=PRODUCTS.find(x=>x.id===id);return p?`- ${p.n} (${p.b} ${p.m}) × ${cart[id]}${p.p?` — ${fmt(p.p*cart[id])} ج.م`:""}`:""}).filter(Boolean);
+  const lines=Object.keys(cart).map(id=>{const p=PRODUCTS.find(x=>x.id===id);return p?`- ${p.n} (${p.b} ${p.m}${p.c?` - كود ${p.c}`:""}) × ${cart[id]}${p.p?` — ${fmt(p.p*cart[id])} ج.م`:""}`:""}).filter(Boolean);
   const name=$("cName").value.trim();
   return ["السلام عليكم، عايز أطلب من موقع AR&SMART:",...lines,"",`المنطقة: ${$("cArea").value}`,`النوع: ${$("cInst").value}`].concat(name?[`الاسم: ${name}`]:[]).join("\n");
 }
