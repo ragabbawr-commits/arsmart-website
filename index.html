@@ -591,6 +591,8 @@ cards:"كروت وتاجات للأكسيس كنترول والكوالين ال
 remote:"للتحكم عن بعد في البوابات والأبواب والجراجات والموتورات.",
 closer:"بيقفل الباب لوحده بهدوء بعد ما يتفتح، وبيحافظ على الباب والقفل.",
 other:"إكسسوار لأنظمة الأكسيس كنترول والبوابات.",
+glass:"كالون ذكي مخصوص لأبواب السيكوريت (الزجاج من غير إطار) بيتركب بالكلابة (Hook) من غير تخريم في الزجاج، وبيفتح بالبصمة أو الوجه أو الباسورد أو الكارت ومن الموبايل. مناسب لمداخل الشركات والمحلات والمكاتب والفيلات.",
+iron:"كالون ذكي للأبواب الحديد والبوابات، بيفتح بالريموت أو الكارت ومعاه مفاتيح احتياطي. مناسب لأبواب العمارات والجراجات والمخازن.",
 smart:"كالون ذكي للأبواب الخشب والمصفحة، بيفتح بالبصمة والباسورد والكارت ومعاه مفتاح احتياطي. مناسب للشقق والفيلات والمكاتب.",
 cam:"كالون ذكي بكاميرا عين سحرية، تشوف مين على الباب وتكلمه من الموبايل، وبيفتح بالبصمة والباسورد والكارت.",
 face:"كالون ذكي بيفتح بالتعرف على الوجه 3D، ومعاه البصمة والباسورد والكارت، وكاميرا تشوف بيها الباب من الموبايل.",
@@ -669,17 +671,18 @@ function viewBook(){
 function menuLinks(cur){
   const a=(h,ic,t)=>`<a href="${h}"${cur===h?' aria-current="page"':""}>${ico(ic)}${t}</a>`;
   return a("#home","home","الرئيسية")+a("#services","grid","الخدمات")+a("#works","photo","أعمالنا")+a("#about","star","مين إحنا")+a("#faq","search","أسئلة شائعة")+a("#calc","rec","حاسبة الهارد")+a("#contact","cal","اطلب معاينة مجانية")
-   +`<div class="sep"></div><div class="label">الأقسام</div>`+CATS.map(c=>a("#c-"+c.id,c.ic,c.name)).join("")
+   +`<div class="sep"></div><div class="label">الأقسام</div>`+CATS.map(c=>a("#c-"+c.id,c.ic,c.name)+(c.id==="locks"?a("#c-locks/glass","lock","سمارت لوك سيكوريت (أبواب زجاج)"):"")).join("")
    +`<div class="sep"></div>`+a("#brands","tag","الماركات")
    +`<a class="wa-link" href="https://wa.me/${WA}" target="_blank" rel="noopener">${ico("int")}تواصل على الواتساب</a>`;
 }
 let lastHash="";
 function curView(){const h=location.hash;const c=CATS.find(x=>"#c-"+x.id===h);if(c)return()=>catBody(c);const b=BRANDS.find(x=>"#b-"+x.id===h);if(b)return()=>brandBody(b);return null}
 function rerender(){const f=curView();const el=$("catBody");if(f&&el)el.innerHTML=f()}
+let lastSub="";
 function route(){
   const h=location.hash||"#home"; let html, title=null;
-  if(h!==lastHash){wfilt="all";wlim=8;filt="all";tfilt="all";ffilt="all";sortBy="def";query="";lim=PAGE;lastHash=h}
-  if(h.startsWith("#c-")){const c=CATS.find(x=>"#c-"+x.id===h);if(c){html=viewCat(c);title=c.name+" | AR&SMART"}}
+  if(h!==lastHash){lastSub="";wfilt="all";wlim=8;filt="all";tfilt="all";ffilt="all";sortBy="def";query="";lim=PAGE;lastHash=h}
+  if(h.startsWith("#c-")){const [hc,sub]=h.split("/");const c=CATS.find(x=>"#c-"+x.id===hc);if(c){if(sub&&TYPES[sub]&&h!==lastSub){tfilt=sub;lastSub=h}html=viewCat(c);title=(sub&&TYPES[sub]?TYPES[sub]:c.name)+" | AR&SMART"}}
   else if(h.startsWith("#b-")){const b=BRANDS.find(x=>"#b-"+x.id===h);if(b){html=viewBrand(b);title=b.en+" | AR&SMART"}}
   else if(h.startsWith("#p-")){const p=PRODUCTS.find(x=>"#p-"+x.id===h);if(p){html=viewProduct(p);title=p.n+" "+p.m+" | AR&SMART"}}
   else if(h==="#book"){html=viewBook();title="احجز معاينة | AR&SMART"}
@@ -689,7 +692,7 @@ function route(){
   if(!html){html=viewHome()}
   $("view").innerHTML=html; document.title=title||baseTitle;
   $("menuLinks").innerHTML=menuLinks(h);
-  $("catnav").innerHTML=[["#home","الرئيسية"],...CATS.map(c=>["#c-"+c.id,c.short])].map(([u,t])=>`<a href="${u}"${(h===u||(u==="#home"&&!location.hash))?' aria-current="page"':""}>${t}</a>`).join("");
+  $("catnav").innerHTML=[["#home","الرئيسية"],...CATS.flatMap(c=>c.id==="locks"?[["#c-locks",c.short],["#c-locks/glass","سمارت لوك سيكوريت"]]:[["#c-"+c.id,c.short]])].map(([u,t])=>`<a href="${u}"${(h===u||(u==="#home"&&!location.hash))?' aria-current="page"':""}>${t}</a>`).join("");
   const cur=$("catnav").querySelector("[aria-current]");cur&&cur.scrollIntoView({block:"nearest",inline:"center"});
   setMenu(false);
   const anchor=["#categories","#services","#works","#about","#contact","#brandsec","#faq","#process"].includes(h)?$(h.slice(1)):null;
