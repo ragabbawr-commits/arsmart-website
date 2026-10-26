@@ -55,7 +55,36 @@ SERVICES = [
 ]
 WORKS = ["pole-ptz-site", "hik-domes-batch", "villa-corner-bullets", "ruijie-poe-box", "dome-villa-ceiling", "rack-nvr"]
 
-CSS = """:root{--bg:#111;--surface:#1B1B1B;--ink:#F7F7F7;--muted:#C2C2C2;--line:#2C2C2C;--gold:#D4A63F;--gold2:#F0CF7A;--wa:#25B864;color-scheme:dark}
+CSS = """.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats div{background:var(--surface);border:1px solid rgba(212,166,63,.3);border-radius:12px;padding:10px 6px;text-align:center;display:grid;gap:2px}
+.stats b{font-family:var(--display);color:var(--gold2);font-size:1.05rem}.stats small{color:var(--muted);font-size:.78rem}
+.btn.inst{flex-basis:100%;background:transparent;border:1px solid var(--gold);color:var(--gold2)}
+.fxs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.fx{display:grid;gap:6px;align-content:start;justify-items:center;text-align:center;padding:16px 12px;border-radius:14px;background:var(--surface);border:1px solid rgba(212,166,63,.22)}
+.fx .ic svg{width:34px;height:34px;color:var(--gold)}.fx b{font-size:.98rem}.fx small{color:var(--muted);font-size:.82rem;line-height:1.7}
+.fx.warr{border-color:var(--gold)}
+.why{background:linear-gradient(160deg,#16130b,#0e0e0e);border:1px solid rgba(212,166,63,.3);border-radius:18px;padding:20px 16px}
+.why h2{font-family:var(--display);color:var(--gold2);margin:0 0 14px}
+.why-in{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:center}
+.why .fxs{grid-template-columns:repeat(2,1fr)}.why .fx{background:rgba(255,255,255,.03)}
+.why-img{background:#fff;border-radius:14px;aspect-ratio:1;display:grid;place-items:center;overflow:hidden}.why-img img{width:100%;height:100%;object-fit:contain}
+@media (max-width:760px){.why-in{grid-template-columns:1fr}.why-img{max-width:280px;justify-self:center}}
+.cta{text-align:center;background:linear-gradient(135deg,rgba(212,166,63,.22),rgba(212,166,63,.05));border:1px solid var(--gold);border-radius:18px;padding:26px 16px}
+.cta h2{font-family:var(--display);font-size:clamp(1.3rem,4.5vw,1.8rem);margin:0 0 8px}.cta p{color:var(--muted);margin:0 0 14px;line-height:1.8}.cta .ctas{justify-content:center}
+.bnav{display:none}
+@media (max-width:760px){
+ .bnav{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(17,17,17,.97);border-top:1px solid rgba(212,166,63,.35);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));backdrop-filter:blur(8px)}
+ .bnav a,.bnav button{display:grid;justify-items:center;gap:2px;color:var(--muted);font:inherit;font-size:.7rem;text-decoration:none;background:none;border:0;padding:4px 0;position:relative}
+ .bnav svg{width:22px;height:22px}.bnav .wa{color:#25B864}.bnav .on{color:var(--gold2)}
+ .bnav .cnt{position:absolute;top:0;right:calc(50% - 20px);background:var(--gold);color:#111;border-radius:999px;font-size:.65rem;min-width:16px;height:16px;line-height:16px;padding:0 4px;font-weight:700}
+ .fab{display:none!important}
+ body{padding-bottom:80px}
+}
+
+:root{--display:"Cairo","Readex Pro",sans-serif;--ink:#F7F7F7}
+.sec{margin:26px 0}.sec-h h2{margin:0 0 12px}.ctas{display:flex;gap:10px;flex-wrap:wrap}.ic svg{display:block}.btn svg{width:18px;height:18px}
+.bnav a{font-size:.72rem}.bnav a{font-size:1.1rem}.bnav span{font-size:.7rem}
+:root{--bg:#111;--surface:#1B1B1B;--ink:#F7F7F7;--muted:#C2C2C2;--line:#2C2C2C;--gold:#D4A63F;--gold2:#F0CF7A;--wa:#25B864;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Readex Pro",system-ui,"Segoe UI",Tahoma,sans-serif;line-height:1.8;padding:0 16px 90px}
 a{color:var(--gold2)}img{max-width:100%}.w{max-width:1100px;margin:auto}
 header{position:sticky;top:0;z-index:5;background:rgba(17,17,17,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:0 -16px;padding:10px 16px}
@@ -116,7 +145,7 @@ def page(path, title, desc, body, ld=None, img="img/og-cover.jpg", crumb=None):
 <main class="w">{cr}{body}</main>
 <footer><div class="w cols"><div><b>AR&amp;SMART · م. رجب مفتاح</b>Eng. Ragab Moftah<br>توريد وتركيب وبرمجة أنظمة الأمان والتحكم الذكي<br>واتساب واتصال: <span class="mono">01144772044</span> · <span class="mono">01061503410</span><br>ضمان 24 شهر · معاينة مجانية</div>
 <div><b>خدماتنا</b>{svc_links}</div><div><b>المناطق اللي بنخدمها</b>{area_links}</div></div></footer>
-{FAB}</body></html>"""
+{FAB}<nav class="bnav"><a href="{up}#home">🏠<span>الرئيسية</span></a><a href="{up}#categories">🛒<span>المتجر</span></a><a href="tel:+201144772044">📞<span>اتصل</span></a><a class="wa" href="https://wa.me/{WA}" target="_blank" rel="noopener">💬<span>واتساب</span></a></nav></body></html>"""
     full = os.path.join(ROOT, path)
     os.makedirs(os.path.dirname(full), exist_ok=True)
     open(full, "w", encoding="utf-8").write(out)
@@ -200,15 +229,17 @@ for p in P:
     det = "".join(f"<li>{e(x)}</li>" for x in (p.get("d") or []))
     price = f'<div class="price">{fmt(p["p"])} <small>ج.م</small></div>' if p.get("p") else '<div class="price oos" style="font-size:1.3rem">نفذ المخزون حالياً</div>'
     msg = f"السلام عليكم، عايز أطلب:\n{p['n']}\n{p['b']} {p['m']}" + (f"\nكود: {p['c']}" if p.get("c") else "") + (f"\nالسعر: {fmt(p['p'])} ج.م" if p.get("p") else "")
+    inst = f"السلام عليكم، عايز أطلب توريد وتركيب:\n{p['n']}\n{p['b']} {p['m']}" + (f"\nكود: {p['c']}" if p.get("c") else "")
     ask = f"السلام عليكم، المنتج ده هيتوفر إمتى؟\n{p['n']}\n{p['b']} {p['m']}" + (f"\nكود: {p['c']}" if p.get("c") else "")
-    btns = (f'<a class="btn wa" href="{e(wa(msg))}" target="_blank" rel="noopener">اطلب على الواتساب</a><a class="btn gold" href="{up}#p-{p["id"]}">أضف للسلة في المتجر</a>' if p.get("p")
+    btns = (f'<a class="btn wa" href="{e(wa(msg))}" target="_blank" rel="noopener">اطلب على الواتساب</a><a class="btn gold" href="{up}#p-{p["id"]}">أضف للسلة في المتجر</a><a class="btn inst" href="{e(wa(inst))}" target="_blank" rel="noopener">اطلب توريد وتركيب</a>' if p.get("p")
             else f'<a class="btn wa" href="{e(wa(ask))}" target="_blank" rel="noopener">اسأل عن التوفر على الواتساب</a>')
     rel = [x for x in by_cat.get(p.get("catId"), []) if x is not p and (x.get("t") or "") == (p.get("t") or "")][:4]
     body = f"""<div class="pd"><div class="im">{f'<img src="{up}{e(img)}" alt="{e(p["n"])} {e(p["m"])}">' if img else ""}</div><div>
-<h1>{e(p["n"])}</h1><p class="mono" style="color:var(--muted);margin:0">{e(p["b"])} · {e(p["m"])}</p>{price}
+<h1>{e(p["n"])}</h1><p class="mono" style="color:var(--muted);margin:0">{e(p["b"])} · {e(p["m"])}</p>{price}{p.get("stats","")}
 {f'<p>{e(p["use"])}</p>' if p.get("use") else ""}{f'<ul class="ticks">{feats}</ul>' if feats else ""}
 <table>{"".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in rows)}</table>
 <div class="btns">{btns}</div><p style="color:var(--muted);font-size:.9rem">توريد وتركيب وبرمجة · ضمان 24 شهر · توصيل في القاهرة الجديدة والشروق</p></div></div>
+{p.get("extra","").replace('src="img/','src="../img/')}
 {f'<h2>المواصفات التفصيلية</h2><ul class="det">{det}</ul>' if det else ""}
 {f'<h2>منتجات مشابهة</h2><div class="grid">' + "".join(card(x, up) for x in rel) + "</div>" if rel else ""}"""
     title = f"{p['n']} {p['b']} {p['m']}" + (f" | سعر {fmt(p['p'])} ج.م" if p.get("p") else "") + " | AR&SMART"

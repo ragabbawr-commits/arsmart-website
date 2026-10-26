@@ -190,6 +190,31 @@ button{font:inherit}
 .sortrow::-webkit-scrollbar{display:none}
 .sortrow span{flex:none}
 .sec{scroll-margin-top:120px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stats div{background:var(--surface);border:1px solid rgba(212,166,63,.3);border-radius:12px;padding:10px 6px;text-align:center;display:grid;gap:2px}
+.stats b{font-family:var(--display);color:var(--gold2);font-size:1.05rem}.stats small{color:var(--muted);font-size:.78rem}
+.btn.inst{flex-basis:100%;background:transparent;border:1px solid var(--gold);color:var(--gold2)}
+.fxs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.fx{display:grid;gap:6px;align-content:start;justify-items:center;text-align:center;padding:16px 12px;border-radius:14px;background:var(--surface);border:1px solid rgba(212,166,63,.22)}
+.fx .ic svg{width:34px;height:34px;color:var(--gold)}.fx b{font-size:.98rem}.fx small{color:var(--muted);font-size:.82rem;line-height:1.7}
+.fx.warr{border-color:var(--gold)}
+.why{background:linear-gradient(160deg,#16130b,#0e0e0e);border:1px solid rgba(212,166,63,.3);border-radius:18px;padding:20px 16px}
+.why h2{font-family:var(--display);color:var(--gold2);margin:0 0 14px}
+.why-in{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:center}
+.why .fxs{grid-template-columns:repeat(2,1fr)}.why .fx{background:rgba(255,255,255,.03)}
+.why-img{background:#fff;border-radius:14px;aspect-ratio:1;display:grid;place-items:center;overflow:hidden}.why-img img{width:100%;height:100%;object-fit:contain}
+@media (max-width:760px){.why-in{grid-template-columns:1fr}.why-img{max-width:280px;justify-self:center}}
+.cta{text-align:center;background:linear-gradient(135deg,rgba(212,166,63,.22),rgba(212,166,63,.05));border:1px solid var(--gold);border-radius:18px;padding:26px 16px}
+.cta h2{font-family:var(--display);font-size:clamp(1.3rem,4.5vw,1.8rem);margin:0 0 8px}.cta p{color:var(--muted);margin:0 0 14px;line-height:1.8}.cta .ctas{justify-content:center}
+.bnav{display:none}
+@media (max-width:760px){
+ .bnav{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(17,17,17,.97);border-top:1px solid rgba(212,166,63,.35);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));backdrop-filter:blur(8px)}
+ .bnav a,.bnav button{display:grid;justify-items:center;gap:2px;color:var(--muted);font:inherit;font-size:.7rem;text-decoration:none;background:none;border:0;padding:4px 0;position:relative}
+ .bnav svg{width:22px;height:22px}.bnav .wa{color:#25B864}.bnav .on{color:var(--gold2)}
+ .bnav .cnt{position:absolute;top:0;right:calc(50% - 20px);background:var(--gold);color:#111;border-radius:999px;font-size:.65rem;min-width:16px;height:16px;line-height:16px;padding:0 4px;font-weight:700}
+ .fab{display:none!important}
+ body{padding-bottom:80px}
+}
 .flinks{line-height:2}.flinks a{color:var(--muted);text-decoration:none}.flinks a:hover{color:var(--gold2)}
 .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
 @media (max-width:980px){.steps{grid-template-columns:repeat(3,1fr)}}
@@ -333,6 +358,7 @@ footer .areas{line-height:1.9}
   <div id="menuLinks"></div>
 </nav>
 
+<div id="bnavHost"></div>
 <a class="fab" href="https://wa.me/201144772044" target="_blank" rel="noopener" aria-label="كلّمنا على الواتساب"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg></a>
 
 <div class="drawer" id="drawer" dir="rtl" hidden>
@@ -433,6 +459,27 @@ const ICON={
  pbx:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/>',
  photo:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 8"/>',
  play:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/>',
+ finger:'<path d="M12 4a6 6 0 0 0-6 6v3M18 10a6 6 0 0 0-3-5.2M9 20c1-2 1.5-4 1.5-7a1.5 1.5 0 0 1 3 0c0 3-.5 5.5-1.5 8M15.5 13c0 3-.5 5-1 7M7 17c.6-1.5.9-2.8 1-4"/>',
+ face:'<path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><path d="M9 10h.01M15 10h.01M9.5 15a3.5 3.5 0 0 0 5 0"/>',
+ palm:'<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V12M11 11V4a1.5 1.5 0 0 1 3 0v8M14 11V5.5a1.5 1.5 0 0 1 3 0V14a6 6 0 0 1-6 6h-1a5 5 0 0 1-4-2l-2.6-3.7a1.5 1.5 0 0 1 2.4-1.8L8 14"/>',
+ card:'<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 15h4"/>',
+ key:'<circle cx="8" cy="15" r="4"/><path d="m11 12 8-8M16 7l2 2M14 9l2 2"/>',
+ pass:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h.01M12 7h.01M16 7h.01M8 11h.01M12 11h.01M16 11h.01M8 15h.01M12 15h.01M16 15h.01"/>',
+ app:'<rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18h2"/>',
+ eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+ remote:'<rect x="8" y="3" width="8" height="18" rx="3"/><circle cx="12" cy="8" r="1.5"/><path d="M12 13h.01M12 16h.01"/>',
+ shield:'<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+ moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+ mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>',
+ wifi:'<path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"/>',
+ plug:'<path d="M9 2v6M15 2v6M6 8h12v3a6 6 0 0 1-12 0zM12 17v5"/>',
+ tool:'<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>',
+ pin:'<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+ users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 4 6"/>',
+ bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 20a2 2 0 0 0 4 0"/>',
+ phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a1 1 0 0 1-1 1A16 16 0 0 1 4 5a1 1 0 0 1 1-1z"/>',
+ menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+ cart:'<circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 4h2l2.4 11h11l2-8H6.2"/>',
  search:'<circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5"/>'
 };
 const ico=(k,w=1.8)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
@@ -617,6 +664,74 @@ wamp:"أمبليفاير بيتركب في الحيطة يشغّل سماعات 
 amp:"أمبليفاير أو ميكسر لتشغيل نظام صوت كامل بالمايكات والسماعات.",
 mic:"مايك للقاعات والمساجد والمؤتمرات والحفلات.",
 sacc:"إكسسوارات أنظمة الصوت: فوليوم كنترول وكابلات ووحدات مؤتمرات."};
+
+/* ===== تفاصيل صفحة المنتج (طرق الفتح / المميزات / ليه / خطوات / ضمان) ===== */
+const FEAT={
+ face:["face","بصمة الوجه 3D","يفتح بمجرد ما يتعرف على وشك، حتى في الضلمة."],
+ palm:["palm","عروق كف اليد","يقرا عروق الكف، أدق وأأمن من البصمة العادية."],
+ finger:["finger","بصمة الإصبع","فتح في أقل من ثانية ببصمة صباعك."],
+ card:["card","كارت / تاج","افتح بالكارت أو الميدالية القريبة من الجهاز."],
+ pass:["pass","باسورد","كود سري، وتقدر تعمل كود مؤقت للضيوف."],
+ app:["app","تطبيق على الموبايل","تحكم وافتح وتابع من موبايلك من أي مكان."],
+ eye:["eye","كاميرا عين سحرية","تشوف وتكلم اللي على الباب من الشاشة أو الموبايل."],
+ key:["key","مفتاح طوارئ","مفتاح ميكانيكي احتياطي لو البطارية خلصت."],
+ remote:["remote","ريموت","افتح من بعيد بالريموت."],
+ log:["users","سجل دخول وخروج","تعرف مين فتح وإمتى."],
+ bell:["bell","جرس وإشعارات","إشعار على الموبايل لما حد يرن أو يحاول يفتح."],
+ color:["moon","رؤية ليلية ملونة","صورة ملونة واضحة بالليل."],
+ night:["moon","رؤية ليلية","تسجيل واضح في الضلمة بالأشعة تحت الحمراء."],
+ mic:["mic","ميكروفون وصوت","تسمع الصوت مع الصورة، وبعض الموديلات بتتكلم كمان."],
+ wifi:["wifi","واي فاي","تركيب أسهل من غير كابلات شبكة."],
+ poe:["plug","PoE","كابل واحد للكهربا والشبكة، تركيب نضيف وأأمن."],
+ ai:["users","كشف الأشخاص والعربيات","تنبيهات ذكية بتقلل الإنذارات الغلط."],
+ out:["shield","مقاومة للمية والتراب","مناسبة للتركيب الخارجي."],
+ users:["users","سعة مستخدمين كبيرة","تضيف موظفين وسكان كتير على نفس الجهاز."]};
+function featsOf(p){
+  const t=[p.n,p.m,...(p.d||[]),...(p.s||[]),...(p.h||[]).flat()].join(" ").toLowerCase(), f=[];
+  const has=(...k)=>k.some(x=>t.includes(x));
+  if(p.cat==="lock"||p.cat==="access"||p.cat==="int"){
+    if(has("face","وجه")) f.push("face");
+    if(has("palm","كف")) f.push("palm");
+    if(has("finger","بصمة")) f.push("finger");
+    if(has("card","كارت","nfc","mifare"," ic ","em ","تاج")) f.push("card");
+    if(has("password","باسورد","code","keypad","كود")) f.push("pass");
+    if(has("tuya","app","تطبيق","wifi","smart life")) f.push("app");
+    if(has("cat eye","camera","كاميرا","video")) f.push("eye");
+    if(has("remote","ريموت")) f.push("remote");
+    if(/\bkey\b(?!pad)|مفتاح/.test(t)&&!/keypad\b(?![\s\S]*\bkey\b(?!pad))/.test(t)) f.push("key");
+    if(has("record","history","log","سجل")) f.push("log");
+    if(has("doorbell","alarm","جرس")) f.push("bell");
+    if(p.cat==="access"&&has("user")) f.push("users");
+  } else if(p.cat==="cam"){
+    if(has("color","colorvu","full-color","ملون","ألوان","الوان","dual-light","smart light")) f.push("color"); else f.push("night");
+    if(has("mic","audio","مايك","صوت")) f.push("mic");
+    if(has("poe")) f.push("poe");
+    if(has("wifi","wi-fi","واي فاي")) f.push("wifi");
+    if(has("human","vehicle","ai","smart detection","أشخاص")) f.push("ai");
+    if(has("ip67","ip66","outdoor","خارج")) f.push("out");
+    f.push("app");
+  }
+  return [...new Set(f)].slice(0,8);
+}
+const WHY={
+ lock:["ليه كالون ذكي؟",[["key","مش هتشيل مفاتيح تاني","البصمة أو الوجه أو الموبايل هما مفتاحك."],["eye","تعرف مين دخل بيتك","سجل وإشعارات لحظة بلحظة على الموبايل."],["shield","قفل تلقائي","الباب بيقفل لوحده بعد ما يتقفل."],["users","كود مؤقت للضيوف","تدي صلاحية دخول لوقت محدد وتلغيها في أي وقت."]]],
+ cam:["ليه كاميرات مراقبة مع AR&SMART؟",[["app","تشوف بيتك أو شغلك من أي مكان","لايف وتسجيل على موبايلك."],["moon","صورة واضحة ليل ونهار","نختار الكاميرا المناسبة لكل زاوية."],["tool","تركيب نضيف","مواسير وبوكسات وتنظيم راك من غير أسلاك باينة."],["shield","تخطيط من غير نقط عمياء","نحدد أماكن الكاميرات في المعاينة."]]],
+ access:["ليه أكسيس كنترول؟",[["users","تتحكم مين يدخل وإمتى","صلاحيات لكل موظف أو ساكن."],["card","بصمة أو كارت أو باسورد","من غير مفاتيح تتنسخ أو تضيع."],["users","سجل حضور وانصراف","تقارير دخول وخروج جاهزة."],["shield","أمان للأبواب والبوابات","مع أقفال مغناطيسية وكهربائية مناسبة لكل باب."]]],
+ int:["ليه إنتركم صوتي ومرئي؟",[["eye","تشوف مين على الباب","قبل ما تفتح، من الشاشة أو الموبايل."],["app","تفتح من أي مكان","حتى وانت برا البيت."],["users","للفيلات والعمارات","من شقة واحدة لعمارة كاملة."],["tool","تركيب وبرمجة","ونسلّمك النظام شغال."]]],
+ home:["ليه سمارت هوم؟",[["app","بيتك في موبايلك","إضاءة وستائر وتكييف وأجهزة."],["star","سيناريوهات تلقائية","خروج، نوم، رجوع للبيت بلمسة واحدة."],["mic","تحكم بالصوت","مع Alexa و Google Home."],["tool","من غير تكسير","أنظمة واي فاي و Zigbee مكان المفاتيح العادية."]]],
+ net:["ليه شبكة من AR&SMART؟",[["wifi","واي فاي في كل مكان","تغطية كاملة لكل الأدوار والجنينة."],["plug","سويتشات PoE","للكاميرات والأكسس بوينت."],["tool","راك منظم","كابلات مترقمة وسهلة الصيانة."],["shield","شريك Ruijie معتمد","أجهزة أصلية وضمان."]]],
+ sound:["ليه ساوند سيستم؟",[["sound","صوت موزع ونضيف","في كل أوضة أو صالة بتحكم منفصل."],["app","تحكم من الموبايل","مع الأمبليفاير الذكي."],["users","للبيوت والمحلات والمساجد","حلول مناسبة لكل مساحة."],["tool","تركيب وضبط","ونسلّمك النظام شغال."]]],
+ pbx:["ليه سنترال؟",[["pbx","خط واحد لكل المكاتب","توزيع الخطوط والتحويل بين الأوض."],["users","اتصال داخلي مجاني","بين الموظفين أو أفراد البيت."],["tool","تركيب وبرمجة","أرقام داخلية وتحويلات زي ما تحب."],["shield","ضمان وصيانة","ومتابعة بعد التركيب."]]]};
+const fCard=([ic,t,d])=>`<div class="fx"><span class="ic">${ico(ic)}</span><b>${t}</b><small>${d}</small></div>`;
+function pdExtras(p){
+  const fs=featsOf(p), why=WHY[p.cat], isLock=p.cat==="lock";
+  const featHtml=fs.length?`<section class="sec"><div class="sec-h"><h2>${isLock||p.cat==="access"?"طرق الفتح والمميزات":"المميزات"}</h2></div><div class="fxs">${fs.map(k=>fCard(FEAT[k])).join("")}</div></section>`:"";
+  const whyHtml=why?`<section class="sec why"><h2>${why[0]}</h2><div class="why-in"><div class="fxs">${why[1].map(fCard).join("")}</div>${p.img?`<div class="why-img"><img src="${esc(p.img)}" alt="" loading="lazy"></div>`:""}</div></section>`:"";
+  const steps=`<section class="sec"><div class="sec-h"><h2>تركيب احترافي</h2></div><div class="fxs steps3">${[["cal","1. حدد معاد المعاينة","ابعتلنا على الواتساب ونحدد معاد يناسبك. المعاينة مجانية."],["tool","2. وصول الفني والتركيب","تركيب نضيف وبرمجة كاملة في نفس اليوم غالباً."],["app","3. التسليم والتدريب","نسلّمك النظام شغال ونعلّمك تستخدمه من موبايلك."]].map(fCard).join("")}<div class="fx warr"><span class="ic">${ico("shield")}</span><b>الضمان</b><small>ضمان 24 شهر على المنتج، وعقود صيانة دورية بعد كدا حسب الموقع.</small></div></div></section>`;
+  const cta=`<section class="sec cta"><h2>جاهز ترقّي الأمان في ${isLock?"بابك":"مكانك"}؟</h2><p>كلّمنا دلوقتي ونحدد معاينة مجانية في القاهرة الجديدة والشروق وكل المناطق اللي بنخدمها.</p><div class="ctas"><a class="btn wa" href="${wa(`السلام عليكم، عايز معاينة وتركيب:\n${p.n}\n${p.b} ${p.m}`)}" target="_blank" rel="noopener">كلّمنا على الواتساب</a><a class="btn ghost" href="tel:+201144772044">${ico("phone")}اتصل 01144772044</a></div></section>`;
+  return featHtml+whyHtml+steps+cta;
+}
+const pdStats=p=>`<div class="stats"><div><b>24 شهر</b><small>ضمان</small></div><div><b>مجانية</b><small>المعاينة</small></div><div><b>متاح</b><small>التركيب والبرمجة</small></div></div>`;
 function viewProduct(p){
   const c=catOf(p), b=brandOf(p);
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}">`:`<div class="ph">${ico(c?c.ic:"tag",1.2)}</div>`;
@@ -632,12 +747,13 @@ function viewProduct(p){
   <div class="pd-info"><h1>${esc(p.n)}</h1>
    <div class="pd-meta">${b?`<a class="pd-brand" href="#b-${b.id}">${esc(p.b)}</a>`:`<span class="pd-brand">${esc(p.b)}</span>`}<span class="mono">${esc(p.m)}</span></div>
    ${price}
+   ${pdStats(p)}
    ${USE[p.t]?`<p class="pd-use">${USE[p.t]}</p>`:""}
    ${specs}
    <table class="spec">${rows.map(([k,v])=>`<tr><th>${k}</th><td>${v}</td></tr>`).join("")}</table>
-   <div class="pd-acts">${p.p?`<a class="btn gold" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن على الواتساب</a><button class="btn ghost" type="button" data-add="${p.id}">${ico("plus",2)}أضف للسلة</button>`:`<a class="btn gold" href="${wa(ask.replace("عايز أسأل عن:","المنتج ده هيتوفر إمتى؟"))}" target="_blank" rel="noopener">اسأل عن التوفر على الواتساب</a>`}</div>
+   <div class="pd-acts">${p.p?`<a class="btn gold" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن على الواتساب</a><button class="btn ghost" type="button" data-add="${p.id}">${ico("plus",2)}أضف للسلة</button><a class="btn inst" href="${wa(`السلام عليكم، عايز أطلب توريد وتركيب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`)}" target="_blank" rel="noopener">${ico("tool")}اطلب توريد وتركيب</a>`:`<a class="btn gold" href="${wa(ask.replace("عايز أسأل عن:","المنتج ده هيتوفر إمتى؟"))}" target="_blank" rel="noopener">اسأل عن التوفر على الواتساب</a>`}</div>
    <a class="btn ghost" href="${wa(ask)}" target="_blank" rel="noopener" style="justify-self:start">عندك سؤال عن المنتج؟ اسألنا</a>
-  </div></div></section>${det}
+  </div></div></section>${pdExtras(p)}${det}
   ${rel.length?`<section class="sec"><div class="sec-h"><h2>منتجات مشابهة</h2></div>${grid(rel)}</section>`:""}`;
 }
 function viewBrand(b){
@@ -796,6 +912,11 @@ function viewCalc(){return `<div class="crumb"><a href="#home">الرئيسية<
   <label class="full">عدد أيام التسجيل<input id="kD" type="number" inputmode="numeric" min="1" max="365" value="30"></label>
  </form><div class="panel k-out" id="kOut" aria-live="polite"></div></div></section>`}
 function bindCalc(){const f=$("calcForm");if(!f)return;f.addEventListener("input",calcOut);calcOut()}
+
+(function(){const h=document.getElementById("bnavHost");if(!h)return;h.outerHTML=`<nav class="bnav" id="bnav" aria-label="تنقل سريع"><a href="#home">${ico("home")}<span>الرئيسية</span></a><a href="#categories">${ico("grid")}<span>المتجر</span></a><button type="button" id="bnCart">${ico("cart")}<span>السلة</span><b class="cnt" id="bnCnt" hidden></b></button><a href="tel:+201144772044">${ico("phone")}<span>اتصل</span></a><a class="wa" href="https://wa.me/201144772044" target="_blank" rel="noopener">${ico("int")}<span>واتساب</span></a></nav>`;
+ document.getElementById("bnCart").onclick=()=>{const b=document.getElementById("cartBtn");b&&b.click()};
+ const upd=()=>{const c=document.getElementById("cartCount"),n=document.getElementById("bnCnt");if(c&&n){n.hidden=c.hidden;n.textContent=c.textContent}};
+ new MutationObserver(upd).observe(document.getElementById("cartCount"),{attributes:true,childList:true,characterData:true,subtree:true});upd();})();
 function bindBook(){
   const f=$("bookForm"); if(!f)return;
   f.addEventListener("submit",e=>{
