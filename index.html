@@ -560,6 +560,15 @@ const WK={cam:"كاميرات",lock:"كوالين ذكية",home:"سمارت ه�
 const WORKS=[
  // {img:"img/w/اسم-الصورة.jpg",k:"cam",t:"وصف الشغل",place:"المكان (اختياري)"}  — والنسخة الصغيرة في img/w/t/
  {img:"img/w/pole-ptz-site.jpg",k:"cam",t:"تركيب كاميرا PTZ على عمود في موقع إنشائي"},
+ {img:"img/w/office-30cam.jpg",k:"cam",t:"نظام Hikvision بـ 30 كاميرا لمكاتب شركة"},
+ {img:"img/w/rack-patch-48.jpg",k:"net",t:"تنظيم راك شبكة وباتش بانل Cat6"},
+ {img:"img/w/showroom-imou.jpg",k:"cam",t:"كاميرات Imou لمعرض سيارات – أكتوبر"},
+ {img:"img/w/villa-imou-garden.jpg",k:"cam",t:"كاميرات Imou لجنينة ومدخل فيلا"},
+ {img:"img/w/rack-wall.jpg",k:"net",t:"راك حائط وتمديدات شبكة مرتبة"},
+ {img:"img/w/office-16cam.jpg",k:"cam",t:"16 كاميرا لمكاتب شركة"},
+ {img:"img/w/rack-floor.jpg",k:"net",t:"راك أرضي بـ 5 باتش بانل"},
+ {img:"img/w/rack-cable-mgmt.jpg",k:"net",t:"ترتيب كابلات الشبكة جوه الراك"},
+ {img:"img/w/rack-patch-close.jpg",k:"net",t:"باتش بانل وكابلات Cat6 مربوطة"},
  {img:"img/w/hik-domes-batch.jpg",k:"cam",t:"استلام وبرمجة دفعة كاميرات Hikvision لمشروع شركة"},
  {img:"img/w/hik-office-nvr.jpg",k:"cam",t:"نظام Hikvision بأكثر من 25 كاميرا لمكاتب شركة"},
  {img:"img/w/tiandy-live-building.jpg",k:"cam",t:"كاميرات Tiandy لعمارة سكنية ومشاهدة من الموبايل"},
@@ -622,7 +631,7 @@ const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban"
  <ul class="off-perks">${(o.perks||["ضمان 24 شهر","مشاهدة من الموبايل"]).map(x=>`<li>✔ ${x}</li>`).join("")}</ul>
  <div class="off-foot"><div><div class="off-price">${fmt(o.price)} <small>ج.م</small></div><div class="off-note">${o.note||"سعر بيع • بدون تركيب"}</div></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>`- ${i[1]} × ${i[2]}`).join("\n")}\nالسعر: ${fmt(o.price)} ج.م`)}">احجز العرض على الواتساب</a></div></div></article>`;
 const offersSec=()=>OFFERS.length?`<section class="sec" id="offers"><div class="sec-h"><h2>🔥 العروض</h2>${OFFERS.length>1?`<a href="#offers-all">كل العروض ←</a>`:""}</div><div class="offers">${OFFERS.map(offerCard).join("")}</div></section>`:"";
-const HERO_BG=["img/w/hero1.jpg","img/w/villa-corner-bullets.jpg","img/w/hik-office-nvr.jpg"];
+const HERO_BG=["img/w/hero1.jpg","img/w/villa-imou-garden.jpg","img/w/rack-patch-48.jpg"];
 function viewHome(){
   return `<section class="hero hero-bg"><div class="hbg" aria-hidden="true">${HERO_BG.map((u,i)=>`<i style="background-image:url(${u});animation-delay:${i*6}s"></i>`).join("")}</div><div class="hin">
     <div class="hbrand"><img src="img/logo-192.png" alt="شعار AR&amp;SMART" width="72" height="72"><div><h1 class="hname">AR<em>&amp;</em>SMART</h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span></div></div>
