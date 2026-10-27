@@ -190,6 +190,29 @@ button{font:inherit}
 .sortrow::-webkit-scrollbar{display:none}
 .sortrow span{flex:none}
 .sec{scroll-margin-top:120px}
+.hero-bg{position:relative;overflow:hidden;margin-inline:-16px;padding:0;min-height:min(82vh,640px);display:flex;align-items:flex-end;isolation:isolate;border-bottom:1px solid rgba(212,166,63,.35)}
+.hbg{position:absolute;inset:0;z-index:-2}
+.hbg i{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;animation:hfade 18s infinite}
+.hbg i:first-child{opacity:1}
+@keyframes hfade{0%{opacity:0;transform:scale(1.08)}5%{opacity:1}33%{opacity:1}38%{opacity:0;transform:scale(1)}100%{opacity:0}}
+.hero-bg::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(10,10,10,.35) 0%,rgba(10,10,10,.55) 40%,rgba(10,10,10,.92) 78%,#111 100%),radial-gradient(circle at 85% 10%,rgba(212,166,63,.25),transparent 55%)}
+.hin{display:grid;gap:16px;justify-items:start;padding:120px 16px 28px;width:100%;max-width:1200px;margin-inline:auto}
+.hero-bg .hline{font-size:clamp(1.7rem,6vw,3rem);line-height:1.3;max-width:20ch;text-shadow:0 4px 24px rgba(0,0,0,.6)}
+.hero-bg .hsub{color:#ddd;text-shadow:0 2px 10px rgba(0,0,0,.7)}
+@media (min-width:900px){.hero-bg::after{background:linear-gradient(270deg,rgba(10,10,10,.9) 0%,rgba(10,10,10,.6) 45%,rgba(10,10,10,.2) 100%),linear-gradient(180deg,transparent 60%,#111 100%)}}
+@media (prefers-reduced-motion:reduce){.hbg i{animation:none}.hbg i:not(:first-child){display:none}}
+.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:-6px 0 8px;position:relative;z-index:2}
+@media (max-width:760px){.badges{grid-template-columns:repeat(2,1fr)}}
+.badges div{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;background:#fff;color:#111;border-radius:14px;padding:12px;box-shadow:0 10px 30px -14px rgba(0,0,0,.7)}
+.badges span{grid-row:span 2;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(212,166,63,.15);color:#a37a1c}.badges span svg{width:22px;height:22px}
+.badges b{font-size:.9rem}.badges small{color:#666;font-size:.75rem}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.bgrid a{display:grid;place-items:center;align-content:center;gap:6px;height:120px;padding:14px;border-radius:16px;background:#fff;text-decoration:none;border:2px solid transparent;transition:transform .2s,border-color .2s,box-shadow .2s}
+.bgrid a:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 12px 30px -14px rgba(212,166,63,.7)}
+.bgrid img{max-width:100%;max-height:62px;object-fit:contain}
+@media (max-width:600px){.bgrid{grid-template-columns:repeat(3,1fr);gap:8px}.bgrid a{height:84px;padding:8px;border-radius:12px}.bgrid img{max-height:40px}.bgrid b{font-size:.95rem!important}.bgrid small{font-size:.65rem}}
+.bgrid b{font-family:var(--display);font-size:1.35rem;color:color-mix(in srgb,var(--c) 65%,#000);direction:ltr;letter-spacing:.02em}
+.bgrid small{color:#777;font-size:.75rem}
 .offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
 .offer{display:flex;flex-direction:column;border-radius:18px;overflow:hidden;border:2px solid var(--gold);background:linear-gradient(160deg,#1d1709,#121212 60%);box-shadow:0 18px 40px -20px rgba(212,166,63,.5)}
 .off-ban img{display:block;width:100%;aspect-ratio:1;object-fit:cover}
@@ -454,8 +477,8 @@ const BRANDS=[
  {id:"tplink",c:"#4ACBD6",bg:"#0B2226",logo:"",en:"TP-Link",ar:"تي بي لينك",k:["tp-link"]},{id:"tenda",c:"#F26B21",bg:"#2A1206",logo:"",en:"Tenda",ar:"تندا",k:["tenda"]},
  {id:"mercusys",c:"#00A0E9",bg:"#03202C",logo:"",en:"Mercusys",ar:"ميركسس",k:["mercusys"]},{id:"unifi",c:"#3B8CFF",bg:"#020F24",logo:"",en:"UniFi",ar:"يونيفاي",k:["unifi","ubiquiti"]},
  {id:"zkteco",c:"#00A651",bg:"#03200F",logo:"",en:"ZKTeco",ar:"زد كي تيكو",k:["zkteco"]},
- {id:"sib",c:"#FF3B3B",bg:"#1C0405",logo:"",en:"SIB",ar:"سيب",k:["sib"]},{id:"bosch",c:"#FF2B3A",bg:"#1A0306",logo:"",en:"Bosch",ar:"بوش",k:["bosch"]},{id:"lezn",c:"#FF5A5F",bg:"#08172A",logo:"",en:"Lezn",ar:"ليزن",k:["lezn"]},
- {id:"dnake",c:"#4FA3FF",bg:"#0A1A33",logo:"",en:"DNAKE",ar:"دي نيك",k:["dnake"]},{id:"levana",c:"#D9B45B",bg:"#1A1408",logo:"",en:"Levana",ar:"ليفانا",k:["levana"]},
+ {id:"sib",c:"#FF3B3B",bg:"#1C0405",logo:"img/brands/sib.png",en:"SIB",ar:"سيب",k:["sib"]},{id:"bosch",c:"#FF2B3A",bg:"#1A0306",logo:"img/brands/bosch.png",en:"Bosch",ar:"بوش",k:["bosch"]},{id:"lezn",c:"#FF5A5F",bg:"#08172A",logo:"img/brands/lezn.png",en:"Lezn",ar:"ليزن",k:["lezn"]},
+ {id:"dnake",c:"#4FA3FF",bg:"#0A1A33",logo:"img/brands/dnake.png",en:"DNAKE",ar:"دي نيك",k:["dnake"]},{id:"levana",c:"#D9B45B",bg:"#1A1408",logo:"img/brands/levana.png",en:"Levana",ar:"ليفانا",k:["levana"]},
  {id:"tuya",c:"#FF5A1F",bg:"#2A0E04",logo:"",en:"Tuya",ar:"توية",k:["tuya"]},{id:"sonoff",c:"#2F9BFF",bg:"#04182E",logo:"",en:"SONOFF",ar:"سونوف",k:["sonoff"]},
  {id:"surpass",c:"#E8E8E8",bg:"#1A1A1A",logo:"",en:"Surpass",ar:"سيرباس",k:["surpass"]},{id:"excelltel",c:"#3FA9F5",bg:"#06203A",logo:"",en:"Excelltel",ar:"إكسيلتيل",k:["excelltel"]},{id:"peaktel",c:"#4F8BFF",bg:"#0A1A3A",logo:"",en:"Peaktel",ar:"بيكتيل",k:["peaktel"]},{id:"masterteam",c:"#3D7BFF",bg:"#061433",logo:"",en:"Master Team",ar:"ماستر تيم",k:["master team"]}
 ];
@@ -530,6 +553,7 @@ const grid=list=>list.length?`<div class="grid">${list.map(card).join("")}</div>
 const catTiles=()=>`<div class="cats">${CATS.map(c=>{const n=inCat(c).length;return `<a class="cat" href="#c-${c.id}"><span class="ic">${ico(c.ic)}</span><b>${c.name}</b><small>${n?n+" منتج":"حسب الطلب"}</small></a>`}).join("")}</div>`;
 const bItem=(b,cur,dup)=>`<a href="#b-${b.id}" style="--c:${b.c};--bgc:${b.bg}"${b===cur?' aria-current="page"':""}${dup?' aria-hidden="true" tabindex="-1" class="dup"':""}>${b.logo?`<img src="${b.logo}" alt="${b.en}" loading="lazy">`:`<b${b.en.length>10?' class="long"':""}>${b.en}</b>`}<small>${b.ar}</small></a>`;
 const brandStrip=(cur,all)=>`<div class="brands${all?" wrapall":""}">${BRANDS.map(b=>bItem(b,cur)).join("")}</div>`;
+const brandGrid=()=>`<div class="bgrid">${[...BRANDS.filter(b=>b.logo),...BRANDS.filter(b=>!b.logo)].map(b=>`<a href="#b-${b.id}" style="--c:${b.c}">${b.logo?`<img src="${b.logo}" alt="${b.en}" loading="lazy">`:`<b>${b.en}</b>`}<small>${b.ar}</small></a>`).join("")}</div>`;
 const brandMarquee=()=>`<div class="mq" role="region" aria-label="الماركات"><div class="brands mq-track">${BRANDS.map(b=>bItem(b)).join("")}${BRANDS.map(b=>bItem(b,null,1)).join("")}</div></div>`;
 /* معرض الأعمال: ضيف صورة في img/w/ وسطر هنا — k = نوع الشغل */
 const WK={cam:"كاميرات",lock:"كوالين ذكية",home:"سمارت هوم",int:"إنتركم",acc:"أكسيس كنترول",net:"شبكات وراكات",sound:"ساوند وسنترالات",gate:"بوابات"};
@@ -598,20 +622,22 @@ const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban"
  <ul class="off-perks">${(o.perks||["ضمان 24 شهر","مشاهدة من الموبايل"]).map(x=>`<li>✔ ${x}</li>`).join("")}</ul>
  <div class="off-foot"><div><div class="off-price">${fmt(o.price)} <small>ج.م</small></div><div class="off-note">${o.note||"سعر بيع • بدون تركيب"}</div></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>`- ${i[1]} × ${i[2]}`).join("\n")}\nالسعر: ${fmt(o.price)} ج.م`)}">احجز العرض على الواتساب</a></div></div></article>`;
 const offersSec=()=>OFFERS.length?`<section class="sec" id="offers"><div class="sec-h"><h2>🔥 العروض</h2>${OFFERS.length>1?`<a href="#offers-all">كل العروض ←</a>`:""}</div><div class="offers">${OFFERS.map(offerCard).join("")}</div></section>`:"";
+const HERO_BG=["img/w/hero1.jpg","img/w/villa-corner-bullets.jpg","img/w/hik-office-nvr.jpg"];
 function viewHome(){
-  return `<section class="hero">
+  return `<section class="hero hero-bg"><div class="hbg" aria-hidden="true">${HERO_BG.map((u,i)=>`<i style="background-image:url(${u});animation-delay:${i*6}s"></i>`).join("")}</div><div class="hin">
     <div class="hbrand"><img src="img/logo-192.png" alt="شعار AR&amp;SMART" width="72" height="72"><div><h1 class="hname">AR<em>&amp;</em>SMART</h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span></div></div>
     <p class="hline">حلول أمنية وأنظمة سمارت هوم متكاملة <em>للفيلات والشركات والمحلات التجارية</em></p>
     <p class="hsub">توريد وتركيب وبرمجة وضمان: كاميرات مراقبة، كوالين ذكية، سمارت هوم و KNX، إنتركم صوتي ومرئي، أكسيس كنترول، حضور وانصراف، شبكات، ساوند سيستم، سنترالات، وبوابات إلكترونية.</p>
     <div class="ctas"><a class="btn gold" href="#book">${ico("cal")}اطلب معاينة مجانية</a><a class="btn ghost" href="#services">${ico("grid")}استعرض المنتجات والخدمات</a></div>
-    <div class="trust"><span>معاينة مجانية في الموقع</span><span>ضمان 24 شهر</span><span>شريك Ruijie معتمد</span><span>متابعة بعد التركيب</span></div>
+    </div>
   </section>
+  <div class="badges">${[["shield","ضمان 24 شهر","على المنتج والتركيب"],["tool","توريد وتركيب","وبرمجة كاملة"],["cal","معاينة مجانية","في الموقع"],["star","شريك Ruijie معتمد","أجهزة أصلية"]].map(([ic,t,d])=>`<div><span>${ico(ic)}</span><b>${t}</b><small>${d}</small></div>`).join("")}</div>
   ${offersSec()}
   <section class="sec" id="services"><div class="sec-h"><h2>خدماتنا</h2></div>${svcCards()}</section>
   ${worksSec()}
   <section class="sec" id="categories"><div class="sec-h"><h2>المتجر</h2><a href="#all">كل المنتجات ←</a></div>${catTiles()}</section>
   <section class="sec"><div class="sec-h"><h2>الأكثر طلباً</h2></div>${grid(TOP.map(id=>PRODUCTS.find(p=>p.id===id)).filter(Boolean))}</section>
-  <section class="sec" id="brandsec"><div class="sec-h"><h2>الماركات اللي بنتعامل معاها</h2><a href="#brands">كل الماركات ←</a></div>${brandMarquee()}</section>
+  <section class="sec" id="brandsec"><div class="sec-h"><h2>الماركات اللي بنتعامل معاها</h2><a href="#brands">كل الماركات ←</a></div>${brandGrid()}</section>
   <section class="sec" id="about"><div class="sec-h"><h2>مين إحنا</h2></div>
    <div class="panel about"><p><b>AR&amp;SMART</b> بإدارة <b>م. رجب مفتاح (Eng. Ragab Moftah)</b>، متخصصين في توريد وتركيب وبرمجة أنظمة الأمان والتحكم الذكي للفيلات والشقق الفاخرة في الكمبوندات، والشركات والمحلات.</p>
    <ul class="ticks"><li>بنعاين المكان مجاناً ونقترح الحل المناسب لميزانيتك</li><li>بنركّب ونبرمج ونسلّمك النظام شغال على موبايلك</li><li>ضمان 24 شهر، وعقود صيانة دورية حسب الموقع بعد المعاينة</li><li>شريك Ruijie / Reyee معتمد في الشبكات</li></ul>
