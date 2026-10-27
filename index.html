@@ -596,7 +596,7 @@ const sortList0=l=>{if(sortBy==="def"&&l.length&&l.every(p=>p.cat==="lock"))retu
  return a.sort((x,y)=>{const t=(x.t?TORD.indexOf(x.t):-1)-(y.t?TORD.indexOf(y.t):-1);if(t)return t;const f=FORD.indexOf(freqOf(x))-FORD.indexOf(freqOf(y));if(f)return f;return (x.p||1e9)-(y.p||1e9)})};
 const freqRow=l=>{const fs=FORD.filter(f=>f&&l.some(p=>freqOf(p)===f));if(!fs.includes(ffilt))ffilt="all";return fs.length>1||(fs.length===1&&l.some(p=>!freqOf(p))&&false)?chipRow(fs,ffilt,"data-fr","التردد",v=>FREQ[v]):""};
 const byFreq=l=>ffilt==="all"?l:l.filter(p=>freqOf(p)===ffilt);
-const sortRow=()=>`<div class="sortrow"><span>ترتيب:</span>${[["def","حسب النوع والتردد"],["asc","السعر: الأقل أولاً"],["desc","السعر: الأعلى أولاً"]].map(([k,t])=>`<button class="chip" type="button" data-sort="${k}" aria-pressed="${sortBy===k}">${t}</button>`).join("")}</div>`;
+const sortRow=(l)=>`<div class="sortrow"><span>ترتيب:</span>${[["def",l&&l.length&&l.every(p=>p.cat==="lock")?"الأفضل أولاً":"حسب النوع والتردد"],["asc","السعر: الأقل أولاً"],["desc","السعر: الأعلى أولاً"]].map(([k,t])=>`<button class="chip" type="button" data-sort="${k}" aria-pressed="${sortBy===k}">${t}</button>`).join("")}</div>`;
 const PAGE=24;
 const norm=t=>String(t).toLowerCase().replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[\s\-_/().]+/g,"");
 const matchQ=p=>!query||norm(p.n+" "+p.m+" "+(p.c||"")+" "+p.b).includes(norm(query));
@@ -613,7 +613,7 @@ function catBody(c){
   const byB=filt==="all"?byT:byT.filter(p=>p.b===filt);
   const fr=freqRow(byB);
   const shown=sortList(byFreq(byB).filter(matchQ));
-  return `${chipRow(ts,tfilt,"data-t","النوع",v=>TYPES[v]||v)}${chipRow(bs,filt,"data-f","الماركة")}${fr}${sortRow()}<p class="count">${shown.length} منتج</p>${pgrid(shown)}`;
+  return `${chipRow(ts,tfilt,"data-t","النوع",v=>TYPES[v]||v)}${chipRow(bs,filt,"data-f","الماركة")}${fr}${sortRow(shown)}<p class="count">${shown.length} منتج</p>${pgrid(shown)}`;
 }
 function viewCat(c){
   const n=inCat(c).length;
@@ -627,7 +627,7 @@ function brandBody(b){
   const byT=tfilt==="all"?list:list.filter(p=>p.t===tfilt);
   const fr=freqRow(byT);
   const shown=sortList(byFreq(byT).filter(matchQ));
-  return `${chipRow(ts,tfilt,"data-t","النوع",v=>TYPES[v]||v)}${fr}${sortRow()}<p class="count">${shown.length} منتج</p>${pgrid(shown)}`;
+  return `${chipRow(ts,tfilt,"data-t","النوع",v=>TYPES[v]||v)}${fr}${sortRow(shown)}<p class="count">${shown.length} منتج</p>${pgrid(shown)}`;
 }
 const USE={keypad:"جهاز بيتحكم في فتح الباب بالكارت أو الباسورد. مناسب للشقق والفيلات والشركات والمحلات ومداخل العمارات، وبيشتغل مع القفل المغناطيسي أو الكهربائي وزرار الخروج.",
 bio:"جهاز للتحكم في الدخول وتسجيل الحضور والانصراف بالبصمة أو الوجه. مناسب للشركات والمكاتب والمصانع والعيادات.",
