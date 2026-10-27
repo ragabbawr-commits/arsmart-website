@@ -579,16 +579,16 @@ const quickForm=()=>`<form class="panel form" id="quickForm" novalidate>
 
 /* ===== العروض: لإضافة عرض جديد ضيف عنصر في OFFERS ===== */
 const OFFERS=[
- {id:"cam4",tag:"عرض كاميرات",title:"باقة 4 كاميرات IP Tiandy",sub:"2 داخلي + 2 خارجي — صوت وصورة، ليل ونهار، ومشاهدة من الموبايل.",banner:"img/off/banner-cam4.jpg?v=3",
+ {id:"cam4",tag:"عرض كاميرات",title:"باقة 4 كاميرات IP Tiandy",sub:"2 داخلي + 2 خارجي — صوت وصورة، ليل ونهار، ومشاهدة من الموبايل.",banner:"img/off/banner-cam4.jpg?v=4",
   items:[["dome","2","كاميرا داخلي Tiandy IP"],["bullet","2","كاميرا خارجي Tiandy IP"],["nvr","1","جهاز تسجيل NVR 4 قنوات"],["hdd500","1","هارد 500 جيجا"],["cable","50 م","سلك شبكة"],["rj45","20","ارجي RJ45"]],
   price:8500},
- {id:"cam8",tag:"عرض كاميرات",title:"باقة 8 كاميرات IP Tiandy",sub:"4 داخلي + 4 خارجي — صوت وصورة، ليل ونهار، ومشاهدة من الموبايل.",banner:"img/off/banner-cam8.jpg?v=3",
+ {id:"cam8",tag:"عرض كاميرات",title:"باقة 8 كاميرات IP Tiandy",sub:"4 داخلي + 4 خارجي — صوت وصورة، ليل ونهار، ومشاهدة من الموبايل.",banner:"img/off/banner-cam8.jpg?v=4",
   items:[["dome","4","كاميرا داخلي Tiandy IP"],["bullet","4","كاميرا خارجي Tiandy IP"],["nvr","1","جهاز تسجيل NVR 8 قنوات"],["hdd1t","1","هارد WD Purple 1 تيرا"],["cable","100 م","سلك شبكة Cat6"],["rj45","20","ارجي RJ45"]],
   price:13500},
- {id:"lock",tag:"عرض كوالين",title:"باقة كالون الشفرات SIB",sub:"كالون كهربائي بيفتح بالتاج (الشفرة) أو المفتاح، مع مفتاح خروج ورداد — مناسب لأبواب العمارات والشقق والمكاتب.",banner:"img/off/banner-lock.jpg?v=2",
-  items:[["rimlock","1","كالون شفرات كهربائي SIB"],["tags","50","تاج (شفرة) ID 125KHz"],["closer","1","رداد باب حتى 120 كجم"],["exitbtn","1","مفتاح خروج (Exit)"]],
-  shots:[],perks:["ضمان 24 شهر","فتح بالتاج أو المفتاح"],
-  price:4500}
+ {id:"lock",tag:"عرض كوالين",title:"باقة كالون الشفرات SIB",sub:"كالون كهربائي بيفتح بالتاج (الشفرة) أو الريموت أو المفتاح، مع مفتاح خروج ورداد — مناسب لأبواب العمارات والشقق والمكاتب.",banner:"img/off/banner-lock.jpg?v=4",
+  items:[["rimlock2","1","كالون شفرات كهربائي SIB"],["tags2","50","تاج (شفرة) ID 125KHz"],["closer","1","رداد باب حتى 120 كجم"],["exitbtn","1","مفتاح خروج (Exit)"],["cable","10 م","سلك"]],
+  shots:[],perks:["شامل التركيب","ضمان 24 شهر","فتح بالتاج أو الريموت أو المفتاح"],note:"شامل التركيب",
+  price:6000}
 ];
 const OFF_SHOTS=[["نهار","img/w/offer-day.jpg"],["ليل","img/w/offer-night.jpg"]];
 const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban" href="${o.banner}" target="_blank" rel="noopener"><img src="${o.banner}" alt="${o.title}" loading="lazy"></a>
@@ -596,7 +596,7 @@ const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban"
  <h4>محتويات الباقة</h4><ul class="off-items">${o.items.map(([im,q,t])=>`<li><img src="img/off/${im}.jpg" alt="" loading="lazy"><b>${q}</b><span>${t}</span></li>`).join("")}</ul>
  ${(o.shots||OFF_SHOTS).length?`<h4>صورة حقيقية من كاميرات ركّبناها</h4><div class="off-shots">${(o.shots||OFF_SHOTS).map(([l,i])=>`<a href="${i}" target="_blank" rel="noopener"><img src="${i.replace("img/w/","img/w/t/")}" alt="${l}" loading="lazy"><span>${l==="ليل"?"🌙":"☀️"} ${l}</span></a>`).join("")}</div>`:""}
  <ul class="off-perks">${(o.perks||["ضمان 24 شهر","مشاهدة من الموبايل"]).map(x=>`<li>✔ ${x}</li>`).join("")}</ul>
- <div class="off-foot"><div><div class="off-price">${fmt(o.price)} <small>ج.م</small></div><div class="off-note">سعر بيع • بدون تركيب</div></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>`- ${i[1]} × ${i[2]}`).join("\n")}\nالسعر: ${fmt(o.price)} ج.م`)}">احجز العرض على الواتساب</a></div></div></article>`;
+ <div class="off-foot"><div><div class="off-price">${fmt(o.price)} <small>ج.م</small></div><div class="off-note">${o.note||"سعر بيع • بدون تركيب"}</div></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>`- ${i[1]} × ${i[2]}`).join("\n")}\nالسعر: ${fmt(o.price)} ج.م`)}">احجز العرض على الواتساب</a></div></div></article>`;
 const offersSec=()=>OFFERS.length?`<section class="sec" id="offers"><div class="sec-h"><h2>🔥 العروض</h2>${OFFERS.length>1?`<a href="#offers-all">كل العروض ←</a>`:""}</div><div class="offers">${OFFERS.map(offerCard).join("")}</div></section>`:"";
 function viewHome(){
   return `<section class="hero">
