@@ -198,6 +198,7 @@ button{font:inherit}
 .off-body{display:grid;gap:10px;padding:16px;align-content:start}
 .off-body h3{margin:0;font-family:var(--display);font-size:1.35rem;color:var(--gold2)}
 .off-sub{margin:0;color:var(--muted)}
+.off-shots{display:grid;grid-template-columns:1fr 1fr;gap:8px}.off-shots a{position:relative;display:block;border-radius:10px;overflow:hidden;border:1px solid var(--line)}.off-shots img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}.off-shots span{position:absolute;inset:auto 0 0 0;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff;font-size:.78rem;padding:14px 8px 5px}
 .off-items{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .off-items li{display:flex;gap:8px;align-items:center;font-size:.9rem;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:8px}
 .off-items svg{width:20px;height:20px;color:var(--gold);flex:none}
@@ -577,15 +578,17 @@ const quickForm=()=>`<form class="panel form" id="quickForm" novalidate>
 const OFFERS=[
  {id:"cam4",tag:"عرض كاميرات",title:"باقة 4 كاميرات IP Tiandy",sub:"2 داخلي + 2 خارجي، كل اللي محتاجه لنظام مراقبة كامل.",
   imgs:["img/p/td-dome.jpg?v=2","img/p/td-dome.jpg?v=2","img/p/td-c321n-cnb.jpg?v=2","img/p/td-c321n-cnb.jpg?v=2"],
-  items:[["cam","2 كاميرا IP Tiandy داخلي"],["cam","2 كاميرا IP Tiandy خارجي"],["rec","جهاز تسجيل NVR 4 قنوات"],["rec","هارد تسجيل 500 جيجا"],["net","50 متر سلك شبكة"],["plus","20 ارجي RJ45"]],
+  items:[["cam","2 كاميرا IP Tiandy داخلي"],["cam","2 كاميرا IP Tiandy خارجي"],["rec","جهاز تسجيل NVR 4 قنوات"],["rec","هارد تسجيل 500 جيجا"],["net","50 متر سلك شبكة"],["plus","20 ارجي RJ45"],["mic","صوت وصورة (مايك مدمج)"],["moon","صورة واضحة ليل ونهار"]],
+  shots:[["نهار","img/w/offer-day.jpg"],["ليل","img/w/offer-night.jpg"]],
   price:8500},
  {id:"cam8",tag:"عرض كاميرات",title:"باقة 8 كاميرات IP Tiandy",sub:"4 داخلي + 4 خارجي، نظام مراقبة كامل للفيلات والشركات.",
   imgs:["img/p/td-dome.jpg?v=2","img/p/td-dome.jpg?v=2","img/p/td-c321n-cnb.jpg?v=2","img/p/td-c321n-cnb.jpg?v=2"],
-  items:[["cam","4 كاميرا IP Tiandy داخلي"],["cam","4 كاميرا IP Tiandy خارجي"],["rec","جهاز تسجيل NVR 8 قنوات"],["rec","هارد تسجيل 1 تيرا"],["net","100 متر سلك شبكة Cat6"],["plus","20 ارجي RJ45"]],
+  items:[["cam","4 كاميرا IP Tiandy داخلي"],["cam","4 كاميرا IP Tiandy خارجي"],["rec","جهاز تسجيل NVR 8 قنوات"],["rec","هارد تسجيل 1 تيرا"],["net","100 متر سلك شبكة Cat6"],["plus","20 ارجي RJ45"],["mic","صوت وصورة (مايك مدمج)"],["moon","صورة واضحة ليل ونهار"]],
+  shots:[["نهار","img/w/offer-day.jpg"],["ليل","img/w/offer-night.jpg"]],
   price:13500}
 ];
 const offerCard=o=>`<article class="offer" id="offer-${o.id}"><div class="off-imgs">${o.imgs.map(i=>`<img src="${esc(i)}" alt="" loading="lazy">`).join("")}<span class="off-tag">🔥 ${o.tag}</span></div>
- <div class="off-body"><h3>${o.title}</h3><p class="off-sub">${o.sub}</p><ul class="off-items">${o.items.map(([ic,t])=>`<li>${ico(ic)}<span>${t}</span></li>`).join("")}</ul>
+ <div class="off-body"><h3>${o.title}</h3><p class="off-sub">${o.sub}</p>${o.shots?`<div class="off-shots">${o.shots.map(([l,i])=>`<a href="${esc(i)}" target="_blank" rel="noopener"><img src="${esc(i.replace("img/w/","img/w/t/"))}" alt="صورة حقيقية من كاميرات ركّبناها - ${l}" loading="lazy"><span>${l==="ليل"?"🌙":"☀️"} ${l} – صورة حقيقية</span></a>`).join("")}</div>`:""}<ul class="off-items">${o.items.map(([ic,t])=>`<li>${ico(ic)}<span>${t}</span></li>`).join("")}</ul>
  <div class="off-foot"><div class="off-price">${fmt(o.price)} <small>ج.م</small></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>"- "+i[1]).join("\n")}\nالسعر: ${fmt(o.price)} ج.م`)}">احجز العرض على الواتساب</a></div></div></article>`;
 const offersSec=()=>OFFERS.length?`<section class="sec" id="offers"><div class="sec-h"><h2>🔥 العروض</h2>${OFFERS.length>1?`<a href="#offers-all">كل العروض ←</a>`:""}</div><div class="offers">${OFFERS.map(offerCard).join("")}</div></section>`:"";
 function viewHome(){
