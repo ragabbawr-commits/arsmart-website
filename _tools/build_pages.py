@@ -139,7 +139,7 @@ def page(path, title, desc, body, ld=None, img="img/og-cover.jpg", crumb=None):
 <meta name="theme-color" content="#111111"><link rel="icon" href="{up}img/logo-192.png"><link rel="apple-touch-icon" href="{up}img/logo-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Readex+Pro:wght@300;400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
-<link rel="stylesheet" href="{up}assets/site.css">{lds}</head><body>
+<link rel="stylesheet" href="{up}assets/site.css"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KJRENB4RR2"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag('js',new Date());gtag('config','G-KJRENB4RR2');document.addEventListener('click',function(e){{var a=e.target.closest('a[href*="wa.me"]');if(a)gtag('event','whatsapp_click',{{page:location.pathname}});var t=e.target.closest('a[href^="tel:"]');if(t)gtag('event','phone_click',{{}});}},true);</script>{lds}</head><body>
 <header><div class="w"><a class="logo" href="{up}"><img src="{up}img/logo-192.png" alt="AR&amp;SMART">AR&amp;SMART</a>
 <nav class="top"><a href="{up}#home">الرئيسية</a><a href="{up}#services">الخدمات</a><a href="{up}#works">أعمالنا</a><a class="keep" href="{up}#categories">المتجر</a><a href="{up}#calc">حاسبة الهارد</a><a class="keep" href="{up}#contact">اتصل بنا</a></nav></div></header>
 <main class="w">{cr}{body}</main>
