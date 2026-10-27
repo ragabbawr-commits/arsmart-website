@@ -376,7 +376,7 @@ footer .areas{line-height:1.9}
   </div>
 </div>
 
-<script src="catalog.js?v=10"></script>
+<script src="catalog.js?v=11"></script>
 <script>
 const WA="201144772044";
 const PRODUCTS=[
@@ -421,6 +421,7 @@ const CATS=[
  {id:"rec",short:"التسجيل والهاردات",name:"أجهزة التسجيل والهاردات",sub:"NVR وهاردات مراقبة",ic:"rec",match:["rec"]},
  {id:"intercom",short:"الإنتركم",name:"إنتركم صوتي ومرئي",sub:"كيتات وشاشات وسماعات",ic:"int",match:["int"]},
  {id:"locks",short:"الكوالين الذكية",name:"الكوالين الذكية (Smart Lock)",sub:"بصمة، وجه، كاميرا عين سحرية",ic:"lock",match:["lock"]},
+ {id:"lockacc",short:"إكسسوارات سمارت لوك",name:"إكسسوارات سمارت لوك",sub:"كروت وتاجات، ريموتات، كروت ومستلزمات الفنادق",ic:"card",match:["lockacc"]},
  {id:"access",short:"أكسيس كنترول",name:"أكسيس كنترول وإكسسوارات البوابات",sub:"أجهزة، أقفال مغناطيسية، أزرار خروج، ريموتات، ردادات",ic:"acc",match:["access","acc"]},
  {id:"smarthome",short:"المنزل الذكي",name:"المنزل الذكي (Smart Home)",sub:"مفاتيح، حساسات، برايز، جيتواي، شاشات",ic:"home",match:["home"]},
  {id:"sound",short:"ساوند سيستم",name:"ساوند سيستم وسماعات",sub:"سماعات سقف وحائط، أمبليفاير، مايكات",ic:"sound",match:["sound"]},
@@ -591,7 +592,7 @@ const FREQ={"125":"125KHz (EM)","1356":"13.56MHz (IC)","dual":"125KHz + 13.56MHz
 const freqOf=p=>{const h=(p.h||[]).find(x=>x[0]==="التردد");if(!h)return "";const v=h[1];const a=/125/.test(v),b=/13\.56/.test(v);return /UHF/.test(v)?"uhf":a&&b?"dual":a?"125":b?"1356":""};
 const TORD=Object.keys(TYPES);const FORD=["125","1356","dual","uhf",""];
 const sortList=l=>{const r=sortList0(l);return [...r.filter(p=>p.p),...r.filter(p=>!p.p)]};
-const sortList0=l=>{const a=[...l];if(sortBy==="asc")return a.sort((x,y)=>(x.p||1e9)-(y.p||1e9));if(sortBy==="desc")return a.sort((x,y)=>(y.p||0)-(x.p||0));
+const sortList0=l=>{if(sortBy==="def"&&l.length&&l.every(p=>p.cat==="lock"))return [...l].sort((x,y)=>(y.p||0)-(x.p||0));const a=[...l];if(sortBy==="asc")return a.sort((x,y)=>(x.p||1e9)-(y.p||1e9));if(sortBy==="desc")return a.sort((x,y)=>(y.p||0)-(x.p||0));
  return a.sort((x,y)=>{const t=(x.t?TORD.indexOf(x.t):-1)-(y.t?TORD.indexOf(y.t):-1);if(t)return t;const f=FORD.indexOf(freqOf(x))-FORD.indexOf(freqOf(y));if(f)return f;return (x.p||1e9)-(y.p||1e9)})};
 const freqRow=l=>{const fs=FORD.filter(f=>f&&l.some(p=>freqOf(p)===f));if(!fs.includes(ffilt))ffilt="all";return fs.length>1||(fs.length===1&&l.some(p=>!freqOf(p))&&false)?chipRow(fs,ffilt,"data-fr","التردد",v=>FREQ[v]):""};
 const byFreq=l=>ffilt==="all"?l:l.filter(p=>freqOf(p)===ffilt);
@@ -812,7 +813,7 @@ function route(){
   if(!html){html=viewHome()}
   $("view").innerHTML=html; document.title=title||baseTitle;
   $("menuLinks").innerHTML=menuLinks(h);
-  $("catnav").innerHTML=[["#home","الرئيسية"],...CATS.flatMap(c=>c.id==="locks"?[["#c-locks",c.short],["#c-locks/glass","سمارت لوك سيكوريت"]]:[["#c-"+c.id,c.short]])].map(([u,t])=>`<a href="${u}"${(h===u||(u==="#home"&&!location.hash))?' aria-current="page"':""}>${t}</a>`).join("");
+  $("catnav").innerHTML=[["#home","الرئيسية"],...CATS.filter(c=>c.id!=="lockacc").flatMap(c=>c.id==="locks"?[["#c-locks",c.short],["#c-locks/glass","سمارت لوك سيكوريت"],["#c-lockacc","إكسسوارات سمارت لوك"]]:[["#c-"+c.id,c.short]])].map(([u,t])=>`<a href="${u}"${(h===u||(u==="#home"&&!location.hash))?' aria-current="page"':""}>${t}</a>`).join("");
   const cur=$("catnav").querySelector("[aria-current]");cur&&cur.scrollIntoView({block:"nearest",inline:"center"});
   setMenu(false);
   const anchor=["#categories","#services","#works","#about","#contact","#brandsec","#faq","#process"].includes(h)?$(h.slice(1)):null;
