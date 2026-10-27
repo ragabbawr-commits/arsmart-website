@@ -205,6 +205,7 @@ button{font:inherit}
 .off-shots{display:grid;grid-template-columns:1fr 1fr;gap:8px}.off-shots a{position:relative;display:block;border-radius:10px;overflow:hidden;border:1px solid var(--line)}.off-shots img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}.off-shots span{position:absolute;inset:auto 0 0 0;background:linear-gradient(transparent,rgba(0,0,0,.85));color:#fff;font-size:.78rem;padding:14px 8px 5px}
 .off-perks{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--ink);font-size:.9rem}
 .off-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:4px}
+.off-note{color:var(--muted);font-size:.82rem}
 .off-price{font-family:var(--display);font-size:2.1rem;font-weight:700;color:var(--gold2)}.off-price small{font-size:1rem;color:var(--gold)}
 @media (max-width:420px){.off-foot .btn{flex:1 1 100%}}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -578,10 +579,10 @@ const quickForm=()=>`<form class="panel form" id="quickForm" novalidate>
 
 /* ===== العروض: لإضافة عرض جديد ضيف عنصر في OFFERS ===== */
 const OFFERS=[
- {id:"cam4",tag:"عرض كاميرات",title:"باقة 4 كاميرات IP Tiandy",sub:"2 داخلي + 2 خارجي — صوت وصورة، ليل ونهار، ومشاهدة من الموبايل.",banner:"img/off/banner-cam4.jpg",
+ {id:"cam4",tag:"عرض كاميرات",title:"باقة 4 كاميرات IP Tiandy",sub:"2 داخلي + 2 خارجي — صوت وصورة، ليل ونهار، ومشاهدة من الموبايل.",banner:"img/off/banner-cam4.jpg?v=2",
   items:[["dome","2","كاميرا داخلي Tiandy IP"],["bullet","2","كاميرا خارجي Tiandy IP"],["nvr","1","جهاز تسجيل NVR 4 قنوات"],["hdd500","1","هارد 500 جيجا"],["cable","50 م","سلك شبكة"],["rj45","20","ارجي RJ45"]],
   price:8500},
- {id:"cam8",tag:"عرض كاميرات",title:"باقة 8 كاميرات IP Tiandy",sub:"4 داخلي + 4 خارجي — صوت وصورة، ليل ونهار، ومشاهدة من الموبايل.",banner:"img/off/banner-cam8.jpg",
+ {id:"cam8",tag:"عرض كاميرات",title:"باقة 8 كاميرات IP Tiandy",sub:"4 داخلي + 4 خارجي — صوت وصورة، ليل ونهار، ومشاهدة من الموبايل.",banner:"img/off/banner-cam8.jpg?v=2",
   items:[["dome","4","كاميرا داخلي Tiandy IP"],["bullet","4","كاميرا خارجي Tiandy IP"],["nvr","1","جهاز تسجيل NVR 8 قنوات"],["hdd1t","1","هارد WD Purple 1 تيرا"],["cable","100 م","سلك شبكة Cat6"],["rj45","20","ارجي RJ45"]],
   price:13500}
 ];
@@ -590,8 +591,8 @@ const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban"
  <div class="off-body"><span class="off-tag">🔥 ${o.tag}</span><h3>${o.title}</h3><p class="off-sub">${o.sub}</p>
  <h4>محتويات الباقة</h4><ul class="off-items">${o.items.map(([im,q,t])=>`<li><img src="img/off/${im}.jpg" alt="" loading="lazy"><b>${q}</b><span>${t}</span></li>`).join("")}</ul>
  <h4>صورة حقيقية من كاميرات ركّبناها</h4><div class="off-shots">${OFF_SHOTS.map(([l,i])=>`<a href="${i}" target="_blank" rel="noopener"><img src="${i.replace("img/w/","img/w/t/")}" alt="${l}" loading="lazy"><span>${l==="ليل"?"🌙":"☀️"} ${l}</span></a>`).join("")}</div>
- <ul class="off-perks"><li>✔ ضمان 24 شهر</li><li>✔ معاينة مجانية</li><li>✔ مشاهدة من الموبايل</li></ul>
- <div class="off-foot"><div class="off-price">${fmt(o.price)} <small>ج.م</small></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>`- ${i[1]} × ${i[2]}`).join("\n")}\nالسعر: ${fmt(o.price)} ج.م`)}">احجز العرض على الواتساب</a></div></div></article>`;
+ <ul class="off-perks"><li>✔ ضمان 24 شهر</li><li>✔ معاينة مجانية</li><li>✔ التركيب متاح بسعر منفصل</li><li>✔ مشاهدة من الموبايل</li></ul>
+ <div class="off-foot"><div><div class="off-price">${fmt(o.price)} <small>ج.م</small></div><div class="off-note">سعر توريد • التركيب حسب الموقع بعد المعاينة</div></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>`- ${i[1]} × ${i[2]}`).join("\n")}\nالسعر: ${fmt(o.price)} ج.م (توريد)\nوعايز أعرف تكلفة التركيب`)}">احجز العرض على الواتساب</a></div></div></article>`;
 const offersSec=()=>OFFERS.length?`<section class="sec" id="offers"><div class="sec-h"><h2>🔥 العروض</h2>${OFFERS.length>1?`<a href="#offers-all">كل العروض ←</a>`:""}</div><div class="offers">${OFFERS.map(offerCard).join("")}</div></section>`:"";
 function viewHome(){
   return `<section class="hero">
