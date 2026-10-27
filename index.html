@@ -190,6 +190,20 @@ button{font:inherit}
 .sortrow::-webkit-scrollbar{display:none}
 .sortrow span{flex:none}
 .sec{scroll-margin-top:120px}
+.offers{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.offer{display:grid;grid-template-rows:auto 1fr;border-radius:18px;overflow:hidden;border:2px solid var(--gold);background:linear-gradient(160deg,#1d1709,#121212 60%);box-shadow:0 18px 40px -20px rgba(212,166,63,.5)}
+.off-imgs{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:#fff;padding:10px}
+.off-imgs img{width:100%;aspect-ratio:1;object-fit:contain}
+.off-tag{position:absolute;top:10px;right:10px;background:#e0482f;color:#fff;font-weight:700;font-size:.85rem;padding:4px 12px;border-radius:999px}
+.off-body{display:grid;gap:10px;padding:16px;align-content:start}
+.off-body h3{margin:0;font-family:var(--display);font-size:1.35rem;color:var(--gold2)}
+.off-sub{margin:0;color:var(--muted)}
+.off-items{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.off-items li{display:flex;gap:8px;align-items:center;font-size:.9rem;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:8px}
+.off-items svg{width:20px;height:20px;color:var(--gold);flex:none}
+.off-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:4px}
+.off-price{font-family:var(--display);font-size:2rem;font-weight:700;color:var(--gold2)}.off-price small{font-size:1rem;color:var(--gold)}
+@media (max-width:420px){.off-items{grid-template-columns:1fr}.off-foot .btn{flex:1 1 100%}}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .stats div{background:var(--surface);border:1px solid rgba(212,166,63,.3);border-radius:12px;padding:10px 6px;text-align:center;display:grid;gap:2px}
 .stats b{font-family:var(--display);color:var(--gold2);font-size:1.05rem}.stats small{color:var(--muted);font-size:.78rem}
@@ -558,6 +572,18 @@ const quickForm=()=>`<form class="panel form" id="quickForm" novalidate>
   <label>المدينة / الكمبوند<input id="qCity" placeholder="مثال: التجمع الخامس"></label>
   <p class="err full" id="qErr" hidden></p>
   <button class="btn wa full" type="submit">اطلب معاينة على الواتساب</button></form>`;
+
+/* ===== العروض: لإضافة عرض جديد ضيف عنصر في OFFERS ===== */
+const OFFERS=[
+ {id:"cam4",tag:"عرض كاميرات",title:"باقة 4 كاميرات IP Tiandy",sub:"2 داخلي + 2 خارجي، كل اللي محتاجه لنظام مراقبة كامل.",
+  imgs:["img/p/td-dome.jpg?v=2","img/p/td-dome.jpg?v=2","img/p/td-c321n-cnb.jpg?v=2","img/p/td-c321n-cnb.jpg?v=2"],
+  items:[["cam","2 كاميرا IP Tiandy داخلي"],["cam","2 كاميرا IP Tiandy خارجي"],["rec","جهاز تسجيل NVR 4 قنوات"],["rec","هارد تسجيل 500 جيجا"],["net","50 متر سلك شبكة"],["plus","20 ارجي RJ45"]],
+  price:8000}
+];
+const offerCard=o=>`<article class="offer" id="offer-${o.id}"><div class="off-imgs">${o.imgs.map(i=>`<img src="${esc(i)}" alt="" loading="lazy">`).join("")}<span class="off-tag">🔥 ${o.tag}</span></div>
+ <div class="off-body"><h3>${o.title}</h3><p class="off-sub">${o.sub}</p><ul class="off-items">${o.items.map(([ic,t])=>`<li>${ico(ic)}<span>${t}</span></li>`).join("")}</ul>
+ <div class="off-foot"><div class="off-price">${fmt(o.price)} <small>ج.م</small></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>"- "+i[1]).join("\n")}\nالسعر: ${fmt(o.price)} ج.م`)}">احجز العرض على الواتساب</a></div></div></article>`;
+const offersSec=()=>OFFERS.length?`<section class="sec" id="offers"><div class="sec-h"><h2>🔥 العروض</h2>${OFFERS.length>1?`<a href="#offers-all">كل العروض ←</a>`:""}</div><div class="offers">${OFFERS.map(offerCard).join("")}</div></section>`:"";
 function viewHome(){
   return `<section class="hero">
     <div class="hbrand"><img src="img/logo-192.png" alt="شعار AR&amp;SMART" width="72" height="72"><div><h1 class="hname">AR<em>&amp;</em>SMART</h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span></div></div>
@@ -566,6 +592,7 @@ function viewHome(){
     <div class="ctas"><a class="btn gold" href="#book">${ico("cal")}اطلب معاينة مجانية</a><a class="btn ghost" href="#services">${ico("grid")}استعرض المنتجات والخدمات</a></div>
     <div class="trust"><span>معاينة مجانية في الموقع</span><span>ضمان 24 شهر</span><span>شريك Ruijie معتمد</span><span>متابعة بعد التركيب</span></div>
   </section>
+  ${offersSec()}
   <section class="sec" id="services"><div class="sec-h"><h2>خدماتنا</h2></div>${svcCards()}</section>
   ${worksSec()}
   <section class="sec" id="categories"><div class="sec-h"><h2>المتجر</h2><a href="#all">كل المنتجات ←</a></div>${catTiles()}</section>
@@ -791,7 +818,7 @@ function viewBook(){
 }
 function menuLinks(cur){
   const a=(h,ic,t)=>`<a href="${h}"${cur===h?' aria-current="page"':""}>${ico(ic)}${t}</a>`;
-  return a("#home","home","الرئيسية")+a("#services","grid","الخدمات")+a("#works","photo","أعمالنا")+a("#about","star","مين إحنا")+a("#faq","search","أسئلة شائعة")+a("#calc","rec","حاسبة الهارد")+a("#contact","cal","اطلب معاينة مجانية")
+  return a("#home","home","الرئيسية")+(OFFERS.length?a("#offers-all","star","🔥 العروض"):"")+a("#services","grid","الخدمات")+a("#works","photo","أعمالنا")+a("#about","star","مين إحنا")+a("#faq","search","أسئلة شائعة")+a("#calc","rec","حاسبة الهارد")+a("#contact","cal","اطلب معاينة مجانية")
    +`<div class="sep"></div><div class="label">الأقسام</div>`+CATS.map(c=>a("#c-"+c.id,c.ic,c.name)+(c.id==="locks"?a("#c-locks/glass","lock","سمارت لوك سيكوريت (أبواب زجاج)"):"")).join("")
    +`<div class="sep"></div>`+a("#brands","tag","الماركات")
    +`<a class="wa-link" href="https://wa.me/${WA}" target="_blank" rel="noopener">${ico("int")}تواصل على الواتساب</a>`;
@@ -808,15 +835,16 @@ function route(){
   else if(h.startsWith("#p-")){const p=PRODUCTS.find(x=>"#p-"+x.id===h);if(p){html=viewProduct(p);title=p.n+" "+p.m+" | AR&SMART"}}
   else if(h==="#book"){html=viewBook();title="احجز معاينة | AR&SMART"}
   else if(h==="#all"){html=viewAll();title="كل المنتجات | AR&SMART"}
+  else if(h==="#offers-all"){html=`<div class="crumb"><a href="#home">الرئيسية</a> / العروض</div>`+offersSec();title="العروض | AR&SMART"}
   else if(h==="#calc"){html=viewCalc();title="حاسبة مساحة هارد الكاميرات | AR&SMART"}
   else if(h==="#brands"){html=`<div class="crumb"><a href="#home">الرئيسية</a> / الماركات</div><section class="sec"><div class="sec-h"><h2>الماركات</h2></div>${brandStrip(null,true)}</section>`}
   if(!html){html=viewHome()}
   $("view").innerHTML=html; document.title=title||baseTitle;
   $("menuLinks").innerHTML=menuLinks(h);
-  $("catnav").innerHTML=[["#home","الرئيسية"],...CATS.filter(c=>c.id!=="lockacc").flatMap(c=>c.id==="locks"?[["#c-locks",c.short],["#c-locks/glass","سمارت لوك سيكوريت"],["#c-lockacc","إكسسوارات سمارت لوك"]]:[["#c-"+c.id,c.short]])].map(([u,t])=>`<a href="${u}"${(h===u||(u==="#home"&&!location.hash))?' aria-current="page"':""}>${t}</a>`).join("");
+  $("catnav").innerHTML=[["#home","الرئيسية"],...(OFFERS.length?[["#offers-all","🔥 العروض"]]:[]),...CATS.filter(c=>c.id!=="lockacc").flatMap(c=>c.id==="locks"?[["#c-locks",c.short],["#c-locks/glass","سمارت لوك سيكوريت"],["#c-lockacc","إكسسوارات سمارت لوك"]]:[["#c-"+c.id,c.short]])].map(([u,t])=>`<a href="${u}"${(h===u||(u==="#home"&&!location.hash))?' aria-current="page"':""}>${t}</a>`).join("");
   const cur=$("catnav").querySelector("[aria-current]");cur&&cur.scrollIntoView({block:"nearest",inline:"center"});
   setMenu(false);
-  const anchor=["#categories","#services","#works","#about","#contact","#brandsec","#faq","#process"].includes(h)?$(h.slice(1)):null;
+  const anchor=["#offers","#categories","#services","#works","#about","#contact","#brandsec","#faq","#process"].includes(h)?$(h.slice(1)):null;
   if(anchor)anchor.scrollIntoView(); else window.scrollTo(0,0);
   bindBook();bindQuick();bindCalc();refreshCards();
 }
