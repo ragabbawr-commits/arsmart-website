@@ -578,7 +578,11 @@ const OFFERS=[
  {id:"cam4",tag:"عرض كاميرات",title:"باقة 4 كاميرات IP Tiandy",sub:"2 داخلي + 2 خارجي، كل اللي محتاجه لنظام مراقبة كامل.",
   imgs:["img/p/td-dome.jpg?v=2","img/p/td-dome.jpg?v=2","img/p/td-c321n-cnb.jpg?v=2","img/p/td-c321n-cnb.jpg?v=2"],
   items:[["cam","2 كاميرا IP Tiandy داخلي"],["cam","2 كاميرا IP Tiandy خارجي"],["rec","جهاز تسجيل NVR 4 قنوات"],["rec","هارد تسجيل 500 جيجا"],["net","50 متر سلك شبكة"],["plus","20 ارجي RJ45"]],
-  price:8000}
+  price:8000},
+ {id:"cam8",tag:"عرض كاميرات",title:"باقة 8 كاميرات IP Tiandy",sub:"4 داخلي + 4 خارجي، نظام مراقبة كامل للفيلات والشركات.",
+  imgs:["img/p/td-dome.jpg?v=2","img/p/td-dome.jpg?v=2","img/p/td-c321n-cnb.jpg?v=2","img/p/td-c321n-cnb.jpg?v=2"],
+  items:[["cam","4 كاميرا IP Tiandy داخلي"],["cam","4 كاميرا IP Tiandy خارجي"],["rec","جهاز تسجيل NVR 8 قنوات"],["rec","هارد تسجيل 1 تيرا"],["net","100 متر سلك شبكة Cat6"],["plus","20 ارجي RJ45"]],
+  price:13500}
 ];
 const offerCard=o=>`<article class="offer" id="offer-${o.id}"><div class="off-imgs">${o.imgs.map(i=>`<img src="${esc(i)}" alt="" loading="lazy">`).join("")}<span class="off-tag">🔥 ${o.tag}</span></div>
  <div class="off-body"><h3>${o.title}</h3><p class="off-sub">${o.sub}</p><ul class="off-items">${o.items.map(([ic,t])=>`<li>${ico(ic)}<span>${t}</span></li>`).join("")}</ul>
