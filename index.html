@@ -417,7 +417,7 @@ footer .areas{line-height:1.9}
   </div>
 </div>
 
-<script src="catalog.js?v=12"></script>
+<script src="catalog.js?v=13"></script>
 <script>
 const WA="201144772044";
 const PRODUCTS=[
@@ -775,8 +775,8 @@ function featsOf(p){
     if(has("finger","بصمة")) f.push("finger");
     if(has("card","كارت","nfc","mifare"," ic ","em ","تاج")) f.push("card");
     if(has("password","باسورد","code","keypad","كود")) f.push("pass");
-    if(has("tuya","app","تطبيق","wifi","smart life")) f.push("app");
-    if(has("cat eye","camera","كاميرا","video")) f.push("eye");
+    if(has("tuya","app","تطبيق","wifi","wi-fi","smart life")) f.push("app");
+    if(has("cat eye","camera","كاميرا","video","peephole")) f.push("eye");
     if(/remote(?! unlock)|ريموت/.test(t)) f.push("remote");
     if(/\bkey\b(?!pad)|مفتاح/.test(t)&&!/keypad\b(?![\s\S]*\bkey\b(?!pad))/.test(t)) f.push("key");
     if(has("record","history","log","سجل")) f.push("log");
