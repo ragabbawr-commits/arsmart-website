@@ -22,6 +22,24 @@ while y < H and row_std[y] < 6:
     y += 1
 top = y
 
+# 2.5) شريط "جديد" (أخضر أو أزرق) في الركن فوق يمين: يتمسح قبل أي حساب
+#      (لو اتساب، ممكن يتحسب هو المنتج ويضيع المنتج الحقيقي)
+W = a.shape[1]
+a = a.copy()
+r_, g_, b_ = a[..., 0], a[..., 1], a[..., 2]
+rib = ((g_ > r_ + 35) & (g_ > b_ + 35)) | ((b_ > r_ + 60) & (b_ > g_ + 40))
+zone = np.zeros_like(rib)
+zone[max(0, top - 10):top + int(H * 0.1), int(W * 0.7):] = True
+rib &= zone
+if rib.sum() > 200:
+    for _ in range(4):  # توسيع بسيط عشان حواف الشريط
+        d = rib.copy()
+        d[1:] |= rib[:-1]; d[:-1] |= rib[1:]; d[:, 1:] |= rib[:, :-1]; d[:, :-1] |= rib[:, 1:]
+        rib = d
+    a[rib] = 255
+    # الكلام الأبيض اللي جوه الشريط بيفضل أبيض، فمش محتاج حاجة
+row_std = a.std(axis=(1, 2))
+
 # 3) صفوف فيها محتوى (مش أبيض)
 content = ((a < 238).any(axis=2).sum(axis=1) > 3) & (row_std > 6)
 # أول صف فيه محتوى بعد top = بداية صورة المنتج
@@ -40,8 +58,6 @@ while y < H:
 end = y - run + 1
 
 # أسهم السلايدر البرتقاني على الجناب: نمسح المربع بتاعها
-W = a.shape[1]
-a = a.copy()
 orange = (a[..., 0] > 200) & (a[..., 1] > 110) & (a[..., 1] < 190) & (a[..., 2] < 80)
 for x0, x1 in [(0, int(W * 0.145)), (int(W * 0.865), W)]:
     ys, xs = np.where(orange[start:end, x0:x1])
@@ -52,15 +68,6 @@ for x0, x1 in [(0, int(W * 0.145)), (int(W * 0.865), W)]:
         # خط ظل السلايدر حوالين السهم: رمادي فاتح في نفس الشريط يبقى أبيض
         band = a[max(start, cy - 2 * h2):cy + 2 * h2, x0:x1]
         band[band.min(axis=2) > 200] = 255
-# شريط "جديد" الأخضر في الركن اللي فوق يمين يتمسح
-r_, g_, b_ = a[..., 0], a[..., 1], a[..., 2]
-green = (g_ > r_ + 35) & (g_ > b_ + 35)
-zone = np.zeros_like(green)
-zone[start:start + int((end - start) * 0.3), int(W * 0.7):] = True
-gz = green & zone
-if gz.sum() > 200:
-    ys, xs = np.where(gz)
-    a[ys.min() - 4:ys.max() + 5, xs.min() - 4:xs.max() + 5] = 255
 # الظلال الرمادي الفاتح جداً حوالين الصورة تبقى أبيض
 light = (a.min(axis=2) > 243) & ((a.max(axis=2) - a.min(axis=2)) < 10)
 a[light] = 255
