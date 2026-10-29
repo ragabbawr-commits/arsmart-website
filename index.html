@@ -665,9 +665,23 @@ const brandStrip=(cur,all)=>`<div class="brands${all?" wrapall":""}">${BRANDS.ma
 const brandGrid=()=>`<div class="bgrid">${[...BRANDS.filter(b=>b.logo),...BRANDS.filter(b=>!b.logo)].map(b=>`<a href="#b-${b.id}" style="--c:${b.c}">${b.logo?`<img src="${b.logo}" alt="${b.en}" loading="lazy">`:`<b>${b.en}</b>`}<small>${b.ar}</small></a>`).join("")}</div>`;
 const brandMarquee=()=>`<div class="mq" role="region" aria-label="الماركات"><div class="brands mq-track">${BRANDS.map(b=>bItem(b)).join("")}${BRANDS.map(b=>bItem(b,null,1)).join("")}</div></div>`;
 /* معرض الأعمال: ضيف صورة في img/w/ وسطر هنا — k = نوع الشغل */
-const WK={cam:"كاميرات",lock:"كوالين ذكية",home:"سمارت هوم",int:"إنتركم",acc:"أكسيس كنترول",net:"شبكات وراكات",sound:"ساوند وسنترالات",gate:"بوابات"};
+const WK={cam:"كاميرات",lock:"كوالين ذكية",home:"سمارت هوم",int:"إنتركم",acc:"أكسيس كنترول",net:"شبكات وراكات",sound:"ساوند وسنترالات",gate:"بوابات",elec:"لوحات كهرباء"};
 const WORKS=[
  // {img:"img/w/اسم-الصورة.jpg",k:"cam",t:"وصف الشغل",place:"المكان (اختياري)"}  — والنسخة الصغيرة في img/w/t/
+ {img:"img/w/levana-face-1.jpg",k:"lock",t:"كالون Levana بالوجه AI Camera وبصمة وكارت على باب شقة"},
+ {img:"img/w/rack-engineer-1.jpg",k:"net",t:"برمجة كاميرات Hikvision جنب راك الشبكة والـ NVR"},
+ {img:"img/w/sib-glass-lock.jpg",k:"lock",t:"كالون SIB ذكي لباب زجاج – بصمة وكود وكارت وتطبيق"},
+ {img:"img/w/ruijie-heatmap.jpg",k:"net",t:"تصميم تغطية الكاميرات والواي فاي ببرنامج Ruijie قبل التنفيذ"},
+ {img:"img/w/levana-handle.jpg",k:"lock",t:"تسليم وتركيب كالون Levana بالبصمة والكارت"},
+ {img:"img/w/cisco-stack.jpg",k:"net",t:"سويتشات Cisco Catalyst 3850 و 3650 PoE في الراك"},
+ {img:"img/w/sib-keypad.jpg",k:"acc",t:"جهاز أكسيس كنترول SIB بالبصمة والكود"},
+ {img:"img/w/cam-label-55.jpg",k:"cam",t:"ترقيم كل كاميرا Hikvision عشان الصيانة تبقى أسهل"},
+ {img:"img/w/levana-face-2.jpg",k:"lock",t:"كالون Levana بالوجه – تركيب نظيف بـ 3 ألسنة"},
+ {img:"img/w/ivms-devices.jpg",k:"cam",t:"متابعة الكاميرات والسويتش أونلاين على iVMS-4200"},
+ {img:"img/w/ruijie-cabling.jpg",k:"net",t:"تخطيط أماكن الكاميرات ومسارات الكابلات على المسقط"},
+ {img:"img/w/cisco-console.jpg",k:"net",t:"استرجاع وإعادة ضبط سويتش Cisco من الكونسول"},
+ {img:"img/w/rack-engineer-2.jpg",k:"cam",t:"تجهيز وبرمجة كاميرات Hikvision قبل التركيب"},
+ {img:"img/w/elec-panel.jpg",k:"elec",t:"لوحة كهرباء وتحكم Schneider بتايمر وريليهات"},
  {img:"img/w/pole-ptz-site.jpg",k:"cam",t:"تركيب كاميرا PTZ على عمود في موقع إنشائي"},
  {img:"img/w/entrance-cam-1.jpg",k:"cam",t:"كاميرا Hikvision لمدخل مبنى إداري – صورة حقيقية"},
  {img:"img/w/entrance-cam-2.jpg",k:"cam",t:"تغطية الممشى والباركينج بوضوح عالي"},
