@@ -204,6 +204,33 @@ button{font:inherit}
 .hero-bg .hsub{color:#ddd;text-shadow:0 2px 10px rgba(0,0,0,.7)}
 @media (min-width:900px){.hero-bg::after{background:linear-gradient(270deg,rgba(10,10,10,.9) 0%,rgba(10,10,10,.6) 45%,rgba(10,10,10,.2) 100%),linear-gradient(180deg,transparent 60%,#111 100%)}}
 @media (prefers-reduced-motion:reduce){.hbg i{animation:none}.hbg i:not(:first-child){display:none}}
+/* hero lux */
+.hero-bg.hlux{min-height:auto}
+.hbg.lux{background:radial-gradient(ellipse 90% 60% at 50% 22%,#2b210c 0%,#140f06 38%,#0a0a0a 72%)}
+.lux .lgrid{position:absolute;inset:0;background-image:linear-gradient(rgba(212,166,63,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(212,166,63,.08) 1px,transparent 1px);background-size:40px 40px;-webkit-mask-image:radial-gradient(ellipse 70% 45% at 50% 25%,#000 10%,transparent 75%);mask-image:radial-gradient(ellipse 70% 45% at 50% 25%,#000 10%,transparent 75%)}
+.lux .lbeam{position:absolute;inset:-20% -60%;background:linear-gradient(105deg,transparent 42%,rgba(240,205,120,.10) 50%,transparent 58%);animation:lbeam 7s ease-in-out infinite}
+@keyframes lbeam{0%{transform:translateX(-40%)}60%,100%{transform:translateX(40%)}}
+.lux .emb{position:absolute;left:50%;top:150px;width:190px;height:190px;transform:translate(-50%,-50%);display:grid;place-items:center}
+.lux .emb img{width:118px;height:118px;border-radius:50%;filter:drop-shadow(0 0 28px rgba(212,166,63,.55));animation:lpulse 4s ease-in-out infinite}
+.lux .ring{position:absolute;inset:0;border-radius:50%}
+.lux .r1{background:conic-gradient(from 0deg,transparent 0 55%,rgba(240,205,120,.9) 72%,transparent 88%);-webkit-mask:radial-gradient(circle,transparent 63%,#000 64.5%,#000 66%,transparent 67.5%);mask:radial-gradient(circle,transparent 63%,#000 64.5%,#000 66%,transparent 67.5%);animation:lspin 6s linear infinite}
+.lux .r2{inset:-22px;border:1px solid rgba(212,166,63,.28)}
+.lux .r3{inset:-48px;border:1px dashed rgba(212,166,63,.16);animation:lspin 40s linear infinite reverse}
+@keyframes lspin{to{transform:rotate(360deg)}}
+@keyframes lpulse{50%{filter:drop-shadow(0 0 44px rgba(240,205,120,.8))}}
+.hlux::after{background:linear-gradient(180deg,transparent 0%,transparent 45%,rgba(10,10,10,.6) 75%,#111 100%)!important}
+.hlux .hin{padding-top:330px}
+.hlux .hbrand{justify-content:center;width:100%;text-align:center}
+.hlux .hline,.hlux .hsub{text-align:center;margin-inline:auto}
+.hlux .hin{justify-items:center}
+.hlux .ctas{justify-content:center;width:100%}
+@media (min-width:900px){.lux .emb{top:50%;left:20%;transform:translate(-50%,-50%);width:260px;height:260px}.lux .emb img{width:160px;height:160px}.hlux .hin{padding-top:110px;justify-items:start}.hlux .hbrand{justify-content:flex-start;width:auto}.hlux .hline,.hlux .hsub{text-align:start;margin-inline:0}.hlux .ctas{justify-content:flex-start}}
+
+.lux .hvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hlux::after{background:linear-gradient(180deg,rgba(10,10,10,.15) 0%,rgba(10,10,10,.25) 30%,rgba(10,10,10,.82) 58%,#111 100%)!important}
+@media (min-width:900px){.hero-bg.hlux{min-height:640px}.hlux .hin{padding-left:calc(7% + 360px)}.lux .hvid{inset:auto;left:7%;top:50%;transform:translateY(-50%);width:300px;height:533px;border-radius:26px;border:1px solid rgba(212,166,63,.55);box-shadow:0 0 0 8px rgba(212,166,63,.06),0 30px 80px -20px rgba(212,166,63,.45)}.hlux::after{background:linear-gradient(270deg,rgba(10,10,10,.5) 0%,transparent 60%)!important}}
+@media (prefers-reduced-motion:reduce){.lux .lbeam,.lux .ring,.lux .emb img{animation:none}}
+
 .badges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:-6px 0 8px;position:relative;z-index:2}
 @media (max-width:760px){.badges{grid-template-columns:repeat(2,1fr)}}
 .badges a{text-decoration:none}.badges div,.badges a{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;background:#fff;color:#111;border-radius:14px;padding:12px;box-shadow:0 10px 30px -14px rgba(0,0,0,.7)}
@@ -643,7 +670,7 @@ const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban"
 const offersSec=()=>OFFERS.length?`<section class="sec" id="offers"><div class="sec-h"><h2>🔥 العروض</h2>${OFFERS.length>1?`<a href="#offers-all">كل العروض ←</a>`:""}</div><div class="offers">${OFFERS.map(offerCard).join("")}</div>${OFFERS.length>1?`<p class="offers-hint">← اسحب لتشوف باقي العروض (${OFFERS.length}) →</p>`:""}</section>`:"";
 const HERO_BG=["img/w/hero1.jpg","img/w/villa-imou-garden.jpg","img/w/rack-patch-48.jpg"];
 function viewHome(){
-  return `<section class="hero hero-bg"><div class="hbg" aria-hidden="true">${HERO_BG.map((u,i)=>`<i style="background-image:url(${u});animation-delay:${i*6}s"></i>`).join("")}</div><div class="hin">
+  return `<section class="hero hero-bg hlux"><div class="hbg lux" aria-hidden="true"><span class="lgrid"></span><span class="lbeam"></span><video class="hvid" autoplay muted loop playsinline preload="auto" poster="img/w/hero-poster.jpg?v=2"><source src="img/w/hero.mp4?v=2" type="video/mp4"></video></div><div class="hin">
     <div class="hbrand"><img src="img/logo-192.png" alt="شعار AR&amp;SMART" width="72" height="72"><div><h1 class="hname">AR<em>&amp;</em>SMART</h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span></div></div>
     <p class="hline">حلول أمنية وأنظمة سمارت هوم متكاملة <em>للفيلات والشركات والمحلات التجارية</em></p>
     <p class="hsub">توريد وتركيب وبرمجة وضمان: كاميرات مراقبة، كوالين ذكية، سمارت هوم و KNX، إنتركم صوتي ومرئي، أكسيس كنترول، حضور وانصراف، شبكات، ساوند سيستم، سنترالات، وبوابات إلكترونية.</p>
