@@ -234,7 +234,8 @@ for p in P:
     btns = (f'<a class="btn wa" href="{e(wa(msg))}" target="_blank" rel="noopener">اطلب على الواتساب</a><a class="btn gold" href="{up}#p-{p["id"]}">أضف للسلة في المتجر</a><a class="btn inst" href="{e(wa(inst))}" target="_blank" rel="noopener">اطلب توريد وتركيب</a>' if p.get("p")
             else f'<a class="btn wa" href="{e(wa(ask))}" target="_blank" rel="noopener">اسأل عن التوفر على الواتساب</a>')
     rel = [x for x in by_cat.get(p.get("catId"), []) if x is not p and (x.get("t") or "") == (p.get("t") or "")][:4]
-    body = f"""<div class="pd"><div class="im">{f'<img src="{up}{e(img)}" alt="{e(p["n"])} {e(p["m"])}">' if img else ""}</div><div>
+    gal = "".join(f'<img src="{up}{e(u)}" alt="{e(p["n"])} - صورة {k+2}" loading="lazy" style="width:100%;border-radius:12px;margin-top:10px;background:#fff">' for k, u in enumerate(p.get("imgs") or []))
+    body = f"""<div class="pd"><div><div class="im">{f'<img src="{up}{e(img)}" alt="{e(p["n"])} {e(p["m"])}">' if img else ""}</div>{gal}</div><div>
 <h1>{e(p["n"])}</h1><p class="mono" style="color:var(--muted);margin:0">{e(p["b"])} · {e(p["m"])}</p>{price}{p.get("stats","")}
 {f'<p>{e(p["use"])}</p>' if p.get("use") else ""}{f'<ul class="ticks">{feats}</ul>' if feats else ""}
 <table>{"".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in rows)}</table>

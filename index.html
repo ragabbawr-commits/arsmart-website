@@ -169,6 +169,7 @@ button{font:inherit}
 @media (max-width:760px){.pd{grid-template-columns:1fr}}
 .pd-img{background:#fff;border-radius:16px;border:1px solid rgba(212,166,63,.35);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .pd-img img{width:100%;height:100%;object-fit:contain}
+.pd-gal{display:grid;gap:10px;align-content:start}.pd-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.pd-thumbs button{padding:0;border:2px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;aspect-ratio:1;cursor:pointer}.pd-thumbs button[aria-pressed="true"]{border-color:var(--gold)}.pd-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
 .pd-img .ph svg{width:120px;color:#bbb}
 .pd-info{display:grid;gap:12px}
 .pd-info h1{font-family:var(--display);font-size:clamp(1.3rem,4.5vw,1.8rem);line-height:1.4}
@@ -423,7 +424,7 @@ footer .areas{line-height:1.9}
   </div>
 </div>
 
-<script src="catalog.js?v=16"></script>
+<script src="catalog.js?v=17"></script>
 <script>
 const WA="201144772044";
 const PRODUCTS=[
@@ -829,7 +830,7 @@ function viewProduct(p){
   const det=(p.d||[]).length?`<section class="sec"><div class="sec-h"><h2>المواصفات التفصيلية</h2></div><ul class="feat">${p.d.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>`:"";
   const rel=PRODUCTS.filter(x=>x!==p&&x.cat===p.cat&&(x.t||"")===(p.t||"")).slice(0,4);
   return `<div class="crumb"><a href="#home">الرئيسية</a> / ${c?`<a href="#c-${c.id}">${c.short||c.name}</a> / `:""}${esc(p.m)}</div>
-  <section class="sec"><div class="pd"><div class="pd-img">${pic}</div>
+  <section class="sec"><div class="pd"><div class="pd-gal"><div class="pd-img" id="pdMain">${pic}</div>${(p.imgs||[]).length?`<div class="pd-thumbs">${[p.img,...p.imgs].map((u,i)=>`<button type="button" data-gi="${esc(u)}"${i?"":" aria-pressed=\"true\""} aria-label="صورة ${i+1}"><img src="${esc(u)}" alt="" loading="lazy"></button>`).join("")}</div>`:""}</div>
   <div class="pd-info"><h1>${esc(p.n)}</h1>
    <div class="pd-meta">${b?`<a class="pd-brand" href="#b-${b.id}">${esc(p.b)}</a>`:`<span class="pd-brand">${esc(p.b)}</span>`}<span class="mono">${esc(p.m)}</span></div>
    ${price}
@@ -959,6 +960,7 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("drawer").hidden=
 ["cName","cPhone","cPlace","cArea","cInst"].forEach(id=>$(id).addEventListener("input",()=>{$("sendWa").href=wa(cartMsg())}));
 
 
+document.addEventListener("click",e=>{const g=e.target.closest("[data-gi]");if(!g)return;const m=$("pdMain");if(m)m.innerHTML=`<img src="${g.dataset.gi}" alt="">`;g.parentNode.querySelectorAll("[data-gi]").forEach(b=>b.setAttribute("aria-pressed",b===g))});
 let lbI=0;
 function lbShow(i){if(!WORKS.length)return;lbI=(i+WORKS.length)%WORKS.length;const w=WORKS[lbI];$("lbImg").src=w.img;$("lbImg").alt=w.t;$("lbCap").textContent=w.t+(w.place?" · "+w.place:"");$("lb").hidden=false;document.body.style.overflow="hidden";$("lbX").focus()}
 function lbClose(){$("lb").hidden=true;document.body.style.overflow=""}
