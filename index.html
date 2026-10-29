@@ -393,6 +393,13 @@ footer .areas{line-height:1.9}
 .drawer{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:40;display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:var(--surface);width:100%;max-width:560px;max-height:85%;overflow:auto;border-radius:20px 20px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));display:grid;gap:12px;border:1px solid var(--line)}
 .sheet label{display:grid;gap:4px;font-size:.86rem;color:var(--muted)}
+.sheet textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:.95rem;resize:vertical}
+.sheet .bad{border-color:#e0482f!important}
+.cerr{margin:0;color:#ff8a8a;font-size:.88rem}.chint{margin:0;color:var(--muted);font-size:.8rem;text-align:center}
+.ci .rm{background:none;border:0;color:var(--muted);font-size:.78rem;padding:2px 0;cursor:pointer;text-decoration:underline}
+.ctoast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);opacity:0;z-index:45;background:var(--surface2);color:var(--ink);border:1px solid rgba(212,166,63,.5);border-radius:14px;padding:10px 12px 10px 14px;display:flex;gap:12px;align-items:center;font-size:.9rem;box-shadow:0 12px 30px -10px rgba(0,0,0,.7);transition:.25s;pointer-events:none;width:max-content;max-width:calc(100% - 32px)}
+.ctoast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.ctoast button{background:var(--gold);color:#111;border:0;border-radius:10px;padding:7px 12px;font:inherit;font-weight:600;cursor:pointer;white-space:nowrap}
 .ci{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px}
 .ci img,.ci .noimg{width:52px;height:52px;border-radius:8px;background:#fff;object-fit:contain}
 .ci div{min-width:0}
@@ -436,17 +443,21 @@ footer .areas{line-height:1.9}
 <div id="bnavHost"></div>
 <a class="fab" href="https://wa.me/201144772044" target="_blank" rel="noopener" aria-label="كلّمنا على الواتساب"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 2.9 2.9 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg></a>
 
+<div class="ctoast" id="ctoast" role="status" aria-live="polite"><span id="ctoastT"></span><button type="button" id="ctoastGo">عرض السلة</button></div>
 <div class="drawer" id="drawer" dir="rtl" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetH">
     <div style="display:flex;justify-content:space-between;align-items:center"><h3 id="sheetH">طلبك</h3><button class="icon-btn" id="closeCart" type="button" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
     <div id="lines"></div>
     <div class="total" id="totalRow" hidden><span>الإجمالي التقريبي</span><b id="totalVal"></b></div>
-    <label>الاسم<input id="cName" autocomplete="name"></label>
-    <label>رقم الموبايل<input id="cPhone" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx" dir="ltr"></label>
+    <label>الاسم *<input id="cName" autocomplete="name" required></label>
+    <label>رقم الموبايل *<input id="cPhone" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx" dir="ltr" required></label>
     <label>نوع المكان<select id="cPlace"><option>فيلا</option><option>شقة</option><option>شركة / مكتب</option><option>محل / معرض</option><option>مبنى / عمارة</option><option>مصنع / مخزن</option></select></label>
     <label>المنطقة<select id="cArea"><option>الشروق</option><option>التجمع الخامس</option><option>العبور</option><option>بدر</option><option>مدينتي</option><option>سوديك إيست</option><option>سوديك فيليت</option><option>الشيخ زايد</option><option>الرحاب</option><option>القطامية</option><option>المقطم</option><option>مدينة نصر</option><option>العاصمة الإدارية</option><option>منطقة تانية</option></select></label>
+    <label>العنوان / ملاحظات (اختياري)<textarea id="cNote" rows="2" placeholder="مثال: كمبوند ...، فيلا رقم ...، أو أي تفاصيل عن الطلب"></textarea></label>
     <label>النوع<select id="cInst"><option>توريد وتركيب</option><option>توريد فقط</option></select></label>
+    <p class="cerr" id="cErr" role="alert" hidden></p>
     <a class="btn wa" id="sendWa" href="#" target="_blank" rel="noopener">ابعت الطلب على الواتساب</a>
+    <p class="chint">هيفتح الواتساب برسالة فيها طلبك كامل، دوس إرسال وهنرد عليك بالتأكيد والسعر النهائي.</p>
     <button class="btn ghost" id="clearCart" type="button">تفريغ السلة</button>
   </div>
 </div>
@@ -1013,17 +1024,21 @@ $("menuBtn").onclick=()=>setMenu(true);$("menuClose").onclick=()=>setMenu(false)
 $("menu").addEventListener("click",e=>{if(e.target.closest("a"))setMenu(false)});
 
 const count=()=>Object.values(cart).reduce((a,b)=>a+b,0);
+let _ono="";const orderNo=()=>{if(!_ono){const d=new Date();_ono="AR-"+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"-"+Math.floor(1000+Math.random()*9000)}return _ono};
+const phoneOk=v=>/^(\+?20|0)?1[0125]\d{8}$/.test(v.replace(/[\s-]/g,"").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)));
+let _tt;function cartToast(p){$("ctoastT").textContent="اتضاف للسلة ✓ ("+count()+" منتج)";const t=$("ctoast");t.classList.add("on");clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove("on"),2600)}
 function cartMsg(){
   const lines=Object.keys(cart).map(id=>{const p=PRODUCTS.find(x=>x.id===id);return p?`- ${p.n} (${p.b} ${p.m}${p.c?` - كود ${p.c}`:""}) × ${cart[id]}${p.p?` — ${fmt(p.p*cart[id])} ج.م`:""}`:""}).filter(Boolean);
   const name=$("cName").value.trim();
   const tot=Object.keys(cart).reduce((s,id)=>{const p=PRODUCTS.find(x=>x.id===id);return s+(p&&p.p||0)*cart[id]},0), ph=$("cPhone").value.trim();
-  return ["السلام عليكم، عايز أطلب من موقع AR&SMART:",...lines].concat(tot?[`الإجمالي التقريبي: ${fmt(tot)} ج.م`]:[],["",
-   ...(name?[`الاسم: ${name}`]:[]),...(ph?[`الموبايل: ${ph}`]:[]),`نوع المكان: ${$("cPlace").value}`,`المنطقة: ${$("cArea").value}`,`الطلب: ${$("cInst").value}`]).join("\n");
+  const note=$("cNote").value.trim();
+  return [`السلام عليكم، طلب جديد من موقع AR&SMART — رقم الطلب: ${orderNo()}`,"",...lines].concat(tot?[`الإجمالي التقريبي: ${fmt(tot)} ج.م`]:[],["",
+   ...(name?[`الاسم: ${name}`]:[]),...(ph?[`الموبايل: ${ph}`]:[]),`نوع المكان: ${$("cPlace").value}`,`المنطقة: ${$("cArea").value}`,...(note?[`العنوان / ملاحظات: ${note}`]:[]),`الطلب: ${$("cInst").value}`]).join("\n");
 }
 function renderCart(){
   const n=count(); $("cartCount").hidden=!n; $("cartCount").textContent=n;
   const ids=Object.keys(cart);
-  $("lines").innerHTML=ids.map(id=>{const p=PRODUCTS.find(x=>x.id===id);return `<div class="ci">${p.img?`<img src="${esc(p.img)}" alt="">`:`<span class="noimg"></span>`}<div><b>${esc(p.n)}</b><small>${esc(p.m)}${p.p?" · "+fmt(p.p)+" ج.م":""}</small></div>
+  $("lines").innerHTML=ids.map(id=>{const p=PRODUCTS.find(x=>x.id===id);return `<div class="ci">${p.img?`<img src="${esc(p.img)}" alt="">`:`<span class="noimg"></span>`}<div><b>${esc(p.n)}</b><small>${esc(p.m)}${p.p?" · "+fmt(p.p)+" ج.م":""}</small><button type="button" class="rm" data-rm="${id}">حذف</button></div>
     <div class="qty"><button type="button" data-dec="${id}" aria-label="تقليل">−</button><output>${cart[id]}</output><button type="button" data-inc="${id}" aria-label="زيادة">+</button></div></div>`}).join("")||'<p style="color:var(--muted)">السلة فاضية. دوس + على أي منتج عشان تضيفه.</p>';
   const tot=ids.reduce((s,id)=>{const p=PRODUCTS.find(x=>x.id===id);return s+(p.p||0)*cart[id]},0);
   $("totalRow").hidden=!tot; $("totalVal").textContent=fmt(tot)+" ج.م";
@@ -1039,7 +1054,9 @@ document.addEventListener("click",e=>{
   if(t.dataset.fr){ffilt=t.dataset.fr;lim=PAGE;rerender();return}
   if(t.dataset.sort){sortBy=t.dataset.sort;lim=PAGE;rerender();return}
   if(t.dataset.more){lim+=PAGE*2;rerender();return}
-  if(t.dataset.add){cart[t.dataset.add]=(cart[t.dataset.add]||0)+1;sync();return}
+  if(t.dataset.add){cart[t.dataset.add]=(cart[t.dataset.add]||0)+1;sync();cartToast();return}
+  if(t.dataset.rm){delete cart[t.dataset.rm];sync();return}
+  if(t.id==="ctoastGo"){$("ctoast").classList.remove("on");renderCart();$("drawer").hidden=false;$("closeCart").focus();return}
   if(t.dataset.inc){cart[t.dataset.inc]++;sync();return}
   if(t.dataset.dec){if(--cart[t.dataset.dec]<=0)delete cart[t.dataset.dec];sync();return}
   if(t.id==="cartBtn"){renderCart();$("drawer").hidden=false;$("closeCart").focus();return}
@@ -1048,7 +1065,19 @@ document.addEventListener("click",e=>{
 });
 $("drawer").addEventListener("click",e=>{if(e.target.id==="drawer")$("drawer").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("drawer").hidden=true;setMenu(false)}});
-["cName","cPhone","cPlace","cArea","cInst"].forEach(id=>$(id).addEventListener("input",()=>{$("sendWa").href=wa(cartMsg())}));
+["cName","cPhone","cPlace","cArea","cInst","cNote"].forEach(id=>$(id).addEventListener("input",()=>{$(id).classList.remove("bad");$("cErr").hidden=true;$("sendWa").href=wa(cartMsg())}));
+// حفظ بيانات العميل على الجهاز عشان مايكتبهاش تاني
+try{const c=JSON.parse(localStorage.getItem("arsmart-cust")||"{}");["cName","cPhone","cArea","cPlace"].forEach(k=>{if(c[k])$(k).value=c[k]})}catch(e){}
+$("sendWa").addEventListener("click",e=>{
+  const n=$("cName"),ph=$("cPhone"),errs=[];
+  if(!n.value.trim()){n.classList.add("bad");errs.push("اكتب اسمك")}
+  if(!phoneOk(ph.value.trim())){ph.classList.add("bad");errs.push("اكتب رقم موبايل صحيح (01xxxxxxxxx)")}
+  if(errs.length){e.preventDefault();$("cErr").textContent=errs.join(" · ");$("cErr").hidden=false;(n.value.trim()?ph:n).focus();return}
+  try{localStorage.setItem("arsmart-cust",JSON.stringify({cName:n.value.trim(),cPhone:ph.value.trim(),cArea:$("cArea").value,cPlace:$("cPlace").value}))}catch(_){}
+  $("sendWa").href=wa(cartMsg());
+  try{gaEv('purchase',{transaction_id:orderNo(),currency:'EGP',value:Object.keys(cart).reduce((s,id)=>{const p=PRODUCTS.find(x=>x.id===id);return s+(p&&p.p||0)*cart[id]},0)})}catch(_){}
+  setTimeout(()=>{_ono=""},1500);
+});
 
 
 document.addEventListener("click",e=>{const g=e.target.closest("[data-gi]");if(!g)return;const m=$("pdMain");if(m)m.innerHTML=`<img src="${g.dataset.gi}" alt="">`;g.parentNode.querySelectorAll("[data-gi]").forEach(b=>b.setAttribute("aria-pressed",b===g))});
