@@ -26,8 +26,8 @@ y = top
 while y < H and not content[y]:
     y += 1
 start = y
-# نهاية الصورة: أول مسافة بيضا طولها >= 4% من الطول
-gap = int(H * 0.04)
+# نهاية الصورة: أول مسافة بيضا طولها >= 1.8% من الطول (قبل سطر "المتجر / ...")
+gap = int(H * 0.018)
 run = 0
 while y < H:
     run = run + 1 if not content[y] else 0
@@ -36,6 +36,23 @@ while y < H:
     y += 1
 end = y - run + 1
 
+# أسهم السلايدر البرتقاني على الجناب: نمسح المربع بتاعها
+W = a.shape[1]
+a = a.copy()
+orange = (a[..., 0] > 200) & (a[..., 1] > 110) & (a[..., 1] < 190) & (a[..., 2] < 80)
+for x0, x1 in [(0, int(W * 0.145)), (int(W * 0.865), W)]:
+    ys, xs = np.where(orange[start:end, x0:x1])
+    if len(ys):
+        cy = start + int(ys.mean())
+        h2 = int(W * 0.075)
+        a[max(start, cy - h2):cy + h2, x0:x1] = 255
+        # خط ظل السلايدر حوالين السهم: رمادي فاتح في نفس الشريط يبقى أبيض
+        band = a[max(start, cy - 2 * h2):cy + 2 * h2, x0:x1]
+        band[band.min(axis=2) > 200] = 255
+# الظلال الرمادي الفاتح جداً حوالين الصورة تبقى أبيض
+light = (a.min(axis=2) > 243) & ((a.max(axis=2) - a.min(axis=2)) < 10)
+a[light] = 255
+im = Image.fromarray(a.astype("uint8"))
 reg = a[start:end]
 cols = np.where((reg < 238).any(axis=2).any(axis=0))[0]
 p = im.crop((cols.min(), start, cols.max() + 1, end))
