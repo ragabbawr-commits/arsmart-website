@@ -672,7 +672,7 @@ const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban"
 const offersSec=()=>OFFERS.length?`<section class="sec" id="offers"><div class="sec-h"><h2>🔥 العروض</h2>${OFFERS.length>1?`<a href="#offers-all">كل العروض ←</a>`:""}</div><div class="offers">${OFFERS.map(offerCard).join("")}</div>${OFFERS.length>1?`<p class="offers-hint">← اسحب لتشوف باقي العروض (${OFFERS.length}) →</p>`:""}</section>`:"";
 const HERO_BG=["img/w/hero1.jpg","img/w/villa-imou-garden.jpg","img/w/rack-patch-48.jpg"];
 function viewHome(){
-  return `<section class="hero hero-bg hlux"><div class="hbg lux" aria-hidden="true"><span class="lgrid"></span><span class="lbeam"></span><video class="hvid" autoplay muted loop playsinline preload="auto" poster="img/w/hero-poster.jpg"><source src="img/w/hero.mp4" type="video/mp4"></video></div><div class="hin">
+  return `<section class="hero hero-bg hlux"><div class="hbg lux" aria-hidden="true"><span class="lgrid"></span><span class="lbeam"></span><video class="hvid" autoplay muted loop playsinline preload="auto" poster="img/w/hero-poster.jpg?v=2"><source src="img/w/hero.mp4?v=2" type="video/mp4"></video></div><div class="hin">
     <div class="hbrand"><img src="img/logo-192.png" alt="شعار AR&amp;SMART" width="72" height="72"><div><h1 class="hname">AR<em>&amp;</em>SMART</h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span></div></div>
     <p class="hline">حلول أمنية وأنظمة سمارت هوم متكاملة <em>للفيلات والشركات والمحلات التجارية</em></p>
     <p class="hsub">توريد وتركيب وبرمجة وضمان: كاميرات مراقبة، كوالين ذكية، سمارت هوم و KNX، إنتركم صوتي ومرئي، أكسيس كنترول، حضور وانصراف، شبكات، ساوند سيستم، سنترالات، وبوابات إلكترونية.</p>
