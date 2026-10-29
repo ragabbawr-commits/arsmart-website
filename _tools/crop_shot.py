@@ -10,9 +10,12 @@ a = np.asarray(im).astype(int)
 H = a.shape[0]
 row_mean = a.mean(axis=(1, 2))
 
-# 1) نهاية الهيدر الغامق: آخر صف غامق في أول 30% من الصورة
-dark = np.where(row_mean[: int(H * 0.3)] < 120)[0]
-y = (dark.max() + 4) if len(dark) else 0  # +4 يتخطى حافة الهيدر المتدرجة
+# 1) نهاية الهيدر الغامق: أول مكان من فوق بعده 20 صف فاتح ورا بعض
+#    (مش "آخر صف غامق"، عشان منتج أسود عريض زي جهاز تسجيل مايتحسبش هيدر)
+y = 0
+while y < H - 20 and not (row_mean[y:y + 20] > 170).all():
+    y += 1
+y += 4  # يتخطى حافة الهيدر المتدرجة
 # 2) نتخطى ظل الهيدر (صفوف رمادي متساوي) لحد أول صف فيه تفاصيل
 row_std = a.std(axis=(1, 2))
 while y < H and row_std[y] < 6:
@@ -49,6 +52,15 @@ for x0, x1 in [(0, int(W * 0.145)), (int(W * 0.865), W)]:
         # خط ظل السلايدر حوالين السهم: رمادي فاتح في نفس الشريط يبقى أبيض
         band = a[max(start, cy - 2 * h2):cy + 2 * h2, x0:x1]
         band[band.min(axis=2) > 200] = 255
+# شريط "جديد" الأخضر في الركن اللي فوق يمين يتمسح
+r_, g_, b_ = a[..., 0], a[..., 1], a[..., 2]
+green = (g_ > r_ + 35) & (g_ > b_ + 35)
+zone = np.zeros_like(green)
+zone[start:start + int((end - start) * 0.3), int(W * 0.7):] = True
+gz = green & zone
+if gz.sum() > 200:
+    ys, xs = np.where(gz)
+    a[ys.min() - 4:ys.max() + 5, xs.min() - 4:xs.max() + 5] = 255
 # الظلال الرمادي الفاتح جداً حوالين الصورة تبقى أبيض
 light = (a.min(axis=2) > 243) & ((a.max(axis=2) - a.min(axis=2)) < 10)
 a[light] = 255
@@ -56,6 +68,12 @@ im = Image.fromarray(a.astype("uint8"))
 reg = a[start:end]
 cols = np.where((reg < 238).any(axis=2).any(axis=0))[0]
 p = im.crop((cols.min(), start, cols.max() + 1, end))
+# قص نهائي على حدود المنتج بعد أي مسح (عشان يفضل في النص)
+pa = np.asarray(p).astype(int)
+m = (pa < 225).any(axis=2)  # الخطوط الرمادي الباهتة مش بتتحسب
+ry, rx = np.where(m.sum(axis=1) > 3)[0], np.where(m.sum(axis=0) > 3)[0]
+if len(ry) and len(rx):
+    p = p.crop((rx.min(), ry.min(), rx.max() + 1, ry.max() + 1))
 w, h = p.size
 s = int(max(w, h) * 1.12)
 c = Image.new("RGB", (s, s), "white")
