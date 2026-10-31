@@ -181,6 +181,7 @@ button{font:inherit}
 .pd-use{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;line-height:1.8;font-size:.95rem}
 .pd-acts{display:flex;gap:8px;flex-wrap:wrap}
 .price.oos,.pd-price.oos{color:#e07a6a}
+.price.soon,.pd-price.soon{color:#7fd1ff}
 .pd-acts .btn{flex:1 1 160px}
 .spec{width:100%;border-collapse:collapse;font-size:.92rem}
 .spec th,.spec td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
@@ -652,12 +653,12 @@ const save=()=>{try{localStorage.setItem("arsmart-cart",JSON.stringify(cart))}ca
 function card(p){
   const q=cart[p.id]||0;
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">`:`<div class="ph">${ico(catOf(p).ic,1.2)}<span>${esc(p.m)}</span></div>`;
-  const price=p.p?`<div class="price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price oos">نفذ المخزون</div>`;
+  const price=p.soon?`<div class="price soon">قريباً</div>`:p.p?`<div class="price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price oos">نفذ المخزون</div>`;
   const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
   return `<article class="card"><a class="pic" href="#p-${p.id}" aria-label="${esc(p.n)}">${pic}<span class="tag">${esc(p.b)}</span></a>
   <div class="body"><h3><a href="#p-${p.id}">${esc(p.n)}</a></h3><div class="model">${esc(p.m)}${freqOf(p)?` · <b class="fq">${FREQ[freqOf(p)].replace(/ \(.*\)/,"")}</b>`:""}</div>${price}
   <div class="row">${p.p?`<a class="btn" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
-  <button class="add${q?" in":""}" type="button" data-add="${p.id}" aria-label="${q?"في السلة: "+q:"أضف للسلة"}">${ico(q?"check":"plus",2)}</button>`:`<a class="btn ghost" href="${wa(`السلام عليكم، المنتج ده هيتوفر إمتى؟\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`)}" target="_blank" rel="noopener">اسأل عن التوفر</a>`}</div></div></article>`;
+  <button class="add${q?" in":""}" type="button" data-add="${p.id}" aria-label="${q?"في السلة: "+q:"أضف للسلة"}">${ico(q?"check":"plus",2)}</button>`:p.soon?`<a class="btn ghost" href="${wa(`السلام عليكم، عايز أحجز المنتج ده أول ما ينزل:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`)}" target="_blank" rel="noopener">احجز أول ما ينزل</a>`:`<a class="btn ghost" href="${wa(`السلام عليكم، المنتج ده هيتوفر إمتى؟\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`)}" target="_blank" rel="noopener">اسأل عن التوفر</a>`}</div></div></article>`;
 }
 const grid=list=>list.length?`<div class="grid">${list.map(card).join("")}</div>`:`<div class="empty"><p>المنتجات دي بنوفّرها حسب الطلب. ابعتلنا اللي محتاجه على الواتساب ونرد عليك بالسعر والتوفّر.</p><a class="btn wa" href="${wa("السلام عليكم، عايز أسأل عن منتجات")}" target="_blank" rel="noopener">اسأل على الواتساب</a></div>`;
 const catTiles=()=>`<div class="cats">${CATS.map(c=>{const n=inCat(c).length;return `<a class="cat" href="#c-${c.id}"><span class="ic">${ico(c.ic)}</span><b>${c.name}</b><small>${n?n+" منتج":"حسب الطلب"}</small></a>`}).join("")}</div>`;
@@ -939,7 +940,7 @@ const pdStats=p=>`<div class="stats"><div><b>24 شهر</b><small>ضمان</small
 function viewProduct(p){
   const c=catOf(p), b=brandOf(p);
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}">`:`<div class="ph">${ico(c?c.ic:"tag",1.2)}</div>`;
-  const price=p.p?`<div class="pd-price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="pd-price oos" style="font-size:1.2rem">نفذ المخزون حالياً</div>`;
+  const price=p.soon?`<div class="pd-price soon" style="font-size:1.3rem">قريباً</div>`:p.p?`<div class="pd-price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="pd-price oos" style="font-size:1.2rem">نفذ المخزون حالياً</div>`;
   const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
   const ask=`السلام عليكم، عايز أسأل عن:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`;
   const rows=[["الماركة",p.b],["الموديل",`<span class="mono">${esc(p.m)}</span>`],...(p.c?[["الكود",`<span class="mono">${esc(p.c)}</span>`]]:[]),...(p.t&&TYPES[p.t]?[["النوع",TYPES[p.t]]]:[]),...(p.h||[]).map(([k,v])=>[k,esc(v)])];
@@ -955,7 +956,7 @@ function viewProduct(p){
    ${USE[p.t]?`<p class="pd-use">${USE[p.t]}</p>`:""}
    ${specs}
    <table class="spec">${rows.map(([k,v])=>`<tr><th>${k}</th><td>${v}</td></tr>`).join("")}</table>
-   <div class="pd-acts">${p.p?`<a class="btn gold" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن على الواتساب</a><button class="btn ghost" type="button" data-add="${p.id}">${ico("plus",2)}أضف للسلة</button><a class="btn inst" href="${wa(`السلام عليكم، عايز أطلب توريد وتركيب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`)}" target="_blank" rel="noopener">${ico("tool")}اطلب توريد وتركيب</a>`:`<a class="btn gold" href="${wa(ask.replace("عايز أسأل عن:","المنتج ده هيتوفر إمتى؟"))}" target="_blank" rel="noopener">اسأل عن التوفر على الواتساب</a>`}</div>
+   <div class="pd-acts">${p.p?`<a class="btn gold" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن على الواتساب</a><button class="btn ghost" type="button" data-add="${p.id}">${ico("plus",2)}أضف للسلة</button><a class="btn inst" href="${wa(`السلام عليكم، عايز أطلب توريد وتركيب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`)}" target="_blank" rel="noopener">${ico("tool")}اطلب توريد وتركيب</a>`:p.soon?`<a class="btn gold" href="${wa(ask.replace("عايز أسأل عن:","عايز أحجز المنتج ده أول ما ينزل:"))}" target="_blank" rel="noopener">احجز أول ما ينزل على الواتساب</a>`:`<a class="btn gold" href="${wa(ask.replace("عايز أسأل عن:","المنتج ده هيتوفر إمتى؟"))}" target="_blank" rel="noopener">اسأل عن التوفر على الواتساب</a>`}</div>
    <a class="btn ghost" href="${wa(ask)}" target="_blank" rel="noopener" style="justify-self:start">عندك سؤال عن المنتج؟ اسألنا</a>
   </div></div></section>${pdExtras(p)}${det}
   ${rel.length?`<section class="sec"><div class="sec-h"><h2>منتجات مشابهة</h2></div>${grid(rel)}</section>`:""}`;
