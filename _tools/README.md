@@ -34,6 +34,7 @@ Static site on GitHub Pages (branch `main`, domain in `CNAME`). No build server:
   - else → to the nearest 50
 - EXCEPTION (owner, 31-10-2026): SIB catalog items (ids `sib-*`, `sibl-*`, `zoom-*`) must be the catalog price exactly, no +15%. Not applied yet.
 - Never show wholesale/cost prices on the site.
+- Retail power items (categories `strips`, `chargers`, `powerbank`; cat values `strip`, `chg`, `pbank`): owner (31-10-2026) said to use the HIGHER of the Amazon.eg price and the shop sticker price. These products have no install button, steps or 24-month claim (`RETAIL()` in index.html, `RETAIL_CATS` in build_pages.py).
 
 ## Photos
 Blur faces and car plates in portfolio photos, except the owner's own face.
