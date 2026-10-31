@@ -245,12 +245,12 @@ for p in P:
 <h1>{e(p["n"])}</h1>{('<p class="fb">' + " · ".join(e(f["l"]) for f in feats_of(p)) + '</p>') if feats_of(p) else ""}<p class="mono" style="color:var(--muted);margin:0">{e(p["b"])} · {e(p["m"])}</p>{price}{p.get("stats","")}
 {f'<p>{e(p["use"])}</p>' if p.get("use") else ""}{f'<ul class="ticks">{feats}</ul>' if feats else ""}
 <table>{"".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in rows)}</table>
-<div class="btns">{btns}</div><p style="color:var(--muted);font-size:.9rem">{"منتج أصلي · توصيل في القاهرة الجديدة والشروق" if retail else "توريد وتركيب وبرمجة · ضمان 24 شهر · توصيل في القاهرة الجديدة والشروق"}</p></div></div>
+<div class="btns">{btns}</div><p style="color:var(--muted);font-size:.9rem">{"ضمان سنة · منتج أصلي · توصيل في القاهرة الجديدة والشروق" if retail else "توريد وتركيب وبرمجة · ضمان 24 شهر · توصيل في القاهرة الجديدة والشروق"}</p></div></div>
 {p.get("extra","").replace('src="img/','src="../img/')}
 {f'<h2>المواصفات التفصيلية</h2><ul class="det">{det}</ul>' if det else ""}
 {f'<h2>منتجات مشابهة</h2><div class="grid">' + "".join(card(x, up) for x in rel) + "</div>" if rel else ""}"""
     title = f"{p['n']} {p['b']} {p['m']}" + (f" | سعر {fmt(p['p'])} ج.م" if p.get("p") else "") + " | AR&SMART"
-    desc = f"{p['n']} {p['b']} {p['m']}" + (f" بسعر {fmt(p['p'])} جنيه" if p.get("p") else "") + ". " + (p.get("use") or "") + (" منتج أصلي وتوصيل. واتساب 01144772044" if retail else " توريد وتركيب وضمان 24 شهر. واتساب 01144772044")
+    desc = f"{p['n']} {p['b']} {p['m']}" + (f" بسعر {fmt(p['p'])} جنيه" if p.get("p") else "") + ". " + (p.get("use") or "") + (" ضمان سنة ومنتج أصلي وتوصيل. واتساب 01144772044" if retail else " توريد وتركيب وضمان 24 شهر. واتساب 01144772044")
     ld = {"@context": "https://schema.org", "@type": "Product", "name": f"{p['n']} {p['m']}", "brand": {"@type": "Brand", "name": p["b"]}, "model": p["m"], **({"sku": str(p["c"])} if p.get("c") else {}), **({"image": f"{SITE}/{img}"} if img else {}), "description": desc,
           **({"offers": {"@type": "Offer", "price": p["p"], "priceCurrency": "EGP", "availability": "https://schema.org/InStock", "url": f"{SITE}/p/{p['id']}.html", "seller": {"@type": "Organization", "name": "AR&SMART"}}} if p.get("p") else {})}
     cat = p.get("catName") or "المتجر"
