@@ -4,6 +4,8 @@ import json, os, html, re, datetime, urllib.parse
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 D = json.load(open(os.path.join(ROOT, "_tools", "products.json"), encoding="utf-8"))
 P, CATS, BRANDS, FAQ = D["products"], D["cats"], D["brands"], D["faq"]
+FEATS = D.get("feats", {})
+feats_of = lambda p: [FEATS[k] for k in (p.get("f") or []) if k in FEATS]
 SITE = "https://arsmart-eg.com"
 WA = "201144772044"
 TODAY = datetime.date.today().isoformat()
@@ -55,7 +57,8 @@ SERVICES = [
 ]
 WORKS = ["pole-ptz-site", "hik-domes-batch", "villa-corner-bullets", "ruijie-poe-box", "dome-villa-ceiling", "rack-nvr"]
 
-CSS = """.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+CSS = """.fb{color:var(--gold2);font-size:.85rem;margin:4px 0 6px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .stats div{background:var(--surface);border:1px solid rgba(212,166,63,.3);border-radius:12px;padding:10px 6px;text-align:center;display:grid;gap:2px}
 .stats b{font-family:var(--display);color:var(--gold2);font-size:1.05rem}.stats small{color:var(--muted);font-size:.78rem}
 .btn.inst{flex-basis:100%;background:transparent;border:1px solid var(--gold);color:var(--gold2)}
@@ -235,9 +238,9 @@ for p in P:
             else f'<a class="btn wa" href="{e(wa(ask.replace("المنتج ده هيتوفر إمتى؟", "عايز أحجز المنتج ده أول ما ينزل:")))}" target="_blank" rel="noopener">احجز أول ما ينزل على الواتساب</a>' if p.get("soon")
             else f'<a class="btn wa" href="{e(wa(ask))}" target="_blank" rel="noopener">اسأل عن التوفر على الواتساب</a>')
     rel = [x for x in by_cat.get(p.get("catId"), []) if x is not p and (x.get("t") or "") == (p.get("t") or "")][:4]
-    gal = "".join(f'<img src="{up}{e(u)}" alt="{e(p["n"])} - صورة {k+2}" loading="lazy" style="width:100%;border-radius:12px;margin-top:10px;background:#fff">' for k, u in enumerate(p.get("imgs") or []))
+    gal = "".join(f'<img src="{up}{e(u)}" alt="{e(p["n"])} - صورة {k+2}" loading="lazy" style="width:100%;border-radius:12px;margin-top:10px;background:#fff">' for k, u in enumerate((p.get("imgs") or []) + [f["img"] for f in feats_of(p) if f.get("img")]))
     body = f"""<div class="pd"><div><div class="im">{f'<img src="{up}{e(img)}" alt="{e(p["n"])} {e(p["m"])}">' if img else ""}</div>{gal}</div><div>
-<h1>{e(p["n"])}</h1><p class="mono" style="color:var(--muted);margin:0">{e(p["b"])} · {e(p["m"])}</p>{price}{p.get("stats","")}
+<h1>{e(p["n"])}</h1>{('<p class="fb">' + " · ".join(e(f["l"]) for f in feats_of(p)) + '</p>') if feats_of(p) else ""}<p class="mono" style="color:var(--muted);margin:0">{e(p["b"])} · {e(p["m"])}</p>{price}{p.get("stats","")}
 {f'<p>{e(p["use"])}</p>' if p.get("use") else ""}{f'<ul class="ticks">{feats}</ul>' if feats else ""}
 <table>{"".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in rows)}</table>
 <div class="btns">{btns}</div><p style="color:var(--muted);font-size:.9rem">توريد وتركيب وبرمجة · ضمان 24 شهر · توصيل في القاهرة الجديدة والشروق</p></div></div>

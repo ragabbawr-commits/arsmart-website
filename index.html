@@ -182,6 +182,7 @@ button{font:inherit}
 .pd-acts{display:flex;gap:8px;flex-wrap:wrap}
 .price.oos,.pd-price.oos{color:#e07a6a}
 .price.soon,.pd-price.soon{color:#7fd1ff}
+.fbadges{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}.fbadges span{font-size:.78rem;padding:4px 10px;border-radius:999px;border:1px solid rgba(212,166,63,.45);color:var(--gold2);background:rgba(212,166,63,.08)}
 .pd-acts .btn{flex:1 1 160px}
 .spec{width:100%;border-collapse:collapse;font-size:.92rem}
 .spec th,.spec td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
@@ -802,14 +803,16 @@ const freqRow=l=>{const fs=FORD.filter(f=>f&&l.some(p=>freqOf(p)===f));if(!fs.in
 const byFreq=l=>ffilt==="all"?l:l.filter(p=>freqOf(p)===ffilt);
 const sortRow=(l)=>`<div class="sortrow"><span>ترتيب:</span>${[["def",l&&l.length&&l.every(p=>p.cat==="lock")?"الأفضل أولاً":"حسب النوع والتردد"],["asc","السعر: الأقل أولاً"],["desc","السعر: الأعلى أولاً"]].map(([k,t])=>`<button class="chip" type="button" data-sort="${k}" aria-pressed="${sortBy===k}">${t}</button>`).join("")}</div>`;
 const PAGE=24;
+const tIdx=t=>{const i=Object.keys(TYPES).indexOf(t);return i<0?999:i};
+const fBadges=p=>(p.f||[]).map(k=>(window.FEATS||{})[k]).filter(Boolean);
 const norm=t=>String(t).toLowerCase().replace(/[أإآ]/g,"ا").replace(/ة/g,"ه").replace(/ى/g,"ي").replace(/[\s\-_/().]+/g,"");
-const matchQ=p=>{if(!query)return true;const t=norm(p.n+" "+p.m+" "+(p.c||"")+" "+p.b+" "+(TYPES[p.t]||""));return query.split(/\s+/).map(norm).filter(Boolean).every(w=>t.includes(w))};
+const matchQ=p=>{if(!query)return true;const t=norm(p.n+" "+p.m+" "+(p.c||"")+" "+p.b+" "+(TYPES[p.t]||"")+" "+fBadges(p).map(f=>f.l).join(" "));return query.split(/\s+/).map(norm).filter(Boolean).every(w=>t.includes(w))};
 const pgrid=list=>list.length?`${grid(list.slice(0,lim))}${list.length>lim?`<div class="more"><button class="btn ghost" type="button" data-more="1">عرض المزيد (${list.length-lim})</button></div>`:""}`:(query?`<div class="empty"><p>مفيش نتايج لـ "${esc(query)}". جرّب كلمة تانية أو اسأل على الواتساب.</p></div>`:grid([]));
 const chipRow=(arr,cur,attr,label,lab)=>arr.length>1?`<div class="chips" role="group" aria-label="${label}">${["all",...arr].map(v=>`<button class="chip" type="button" ${attr}="${esc(v)}" aria-pressed="${v===cur}">${v==="all"?"الكل":esc(lab?lab(v):v)}</button>`).join("")}</div>`:"";
 const searchBox=()=>`<label class="search">${ico("search")}<input id="q" type="search" placeholder="ابحث بالاسم أو الموديل أو الكود" value="${esc(query)}" autocomplete="off"></label>`;
 function catBody(c){
   const list=inCat(c);
-  const ts=[...new Set(list.map(p=>p.t).filter(Boolean))];
+  const ts=[...new Set(list.map(p=>p.t).filter(Boolean))].sort((a,b)=>tIdx(a)-tIdx(b));
   if(!ts.includes(tfilt))tfilt="all";
   const byT=tfilt==="all"?list:list.filter(p=>p.t===tfilt);
   const bs=[...new Set(byT.map(p=>p.b))];
@@ -826,7 +829,7 @@ function viewCat(c){
 }
 function brandBody(b){
   const list=inBrand(b);
-  const ts=[...new Set(list.map(p=>p.t).filter(Boolean))];
+  const ts=[...new Set(list.map(p=>p.t).filter(Boolean))].sort((a,b)=>tIdx(a)-tIdx(b));
   if(!ts.includes(tfilt))tfilt="all";
   const byT=tfilt==="all"?list:list.filter(p=>p.t===tfilt);
   const fr=freqRow(byT);
@@ -854,7 +857,7 @@ cam:"كالون ذكي بكاميرا عين سحرية، تشوف مين على
 face:"كالون ذكي بيفتح بالتعرف على الوجه 3D، ومعاه البصمة والباسورد والكارت، وكاميرا تشوف بيها الباب من الموبايل.",
 hotel:"حلول للفنادق والشقق الفندقية: كروت الغرف وتوفير الكهربا.",
 sw:"مفتاح إضاءة ذكي بيتركب مكان المفتاح العادي، وتتحكم فيه من الموبايل أو بالصوت (Alexa و Google)، وتعمله مواعيد وسيناريوهات.",
-module:"موديول صغير بيتركب ورا المفتاح العادي جوه العلبة، فيحوّل أي مفتاح لمفتاح ذكي من غير ما يتغير شكله.",
+wfmini:"موديول ميني سويتش واي فاي صغير بيتركب ورا المفتاح العادي جوه العلبة، فيحوّل أي مفتاح عادي لمفتاح ذكي تتحكم فيه من الموبايل من غير جيتواي.",zbmini:"موديول صغير بيتركب ورا المفتاح العادي جوه العلبة، فيحوّل أي مفتاح لمفتاح ذكي من غير ما يتغير شكله.",
 plug:"بريزة ذكية بتتحكم فيها من الموبايل، وتعمل مواعيد تشغيل وقفل للأجهزة.",
 sensor:"حساس أو زرار لاسلكي للسمارت هوم، بيبعتلك تنبيه على الموبايل ويشغّل سيناريوهات تلقائي (نور، تكييف، إنذار).",
 alarm:"جهاز إنذار ذكي بيبعتلك تنبيه على الموبايل وبيطلع صوت عالي عند الخطر.",
@@ -948,8 +951,8 @@ function viewProduct(p){
   const det=(p.d||[]).length?`<section class="sec"><div class="sec-h"><h2>المواصفات التفصيلية</h2></div><ul class="feat">${p.d.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></section>`:"";
   const rel=PRODUCTS.filter(x=>x!==p&&x.cat===p.cat&&(x.t||"")===(p.t||"")).slice(0,4);
   return `<div class="crumb"><a href="#home">الرئيسية</a> / ${c?`<a href="#c-${c.id}">${c.short||c.name}</a> / `:""}${esc(p.m)}</div>
-  <section class="sec"><div class="pd"><div class="pd-gal"><div class="pd-img" id="pdMain">${pic}</div>${(p.imgs||[]).length?`<div class="pd-thumbs">${[p.img,...p.imgs].map((u,i)=>`<button type="button" data-gi="${esc(u)}"${i?"":" aria-pressed=\"true\""} aria-label="صورة ${i+1}"><img src="${esc(u)}" alt="" loading="lazy"></button>`).join("")}</div>`:""}</div>
-  <div class="pd-info"><h1>${esc(p.n)}</h1>
+  <section class="sec"><div class="pd"><div class="pd-gal"><div class="pd-img" id="pdMain">${pic}</div>${(()=>{const G=[...(p.imgs||[]),...fBadges(p).map(f=>f.img).filter(Boolean)];return G.length?`<div class="pd-thumbs">${[p.img,...G].map((u,i)=>`<button type="button" data-gi="${esc(u)}"${i?"":" aria-pressed=\"true\""} aria-label="صورة ${i+1}"><img src="${esc(u)}" alt="" loading="lazy"></button>`).join("")}</div>`:""})()}</div>
+  <div class="pd-info"><h1>${esc(p.n)}</h1>${fBadges(p).length?`<div class="fbadges">${fBadges(p).map(f=>`<span>${esc(f.l)}</span>`).join("")}</div>`:""}
    <div class="pd-meta">${b?`<a class="pd-brand" href="#b-${b.id}">${esc(p.b)}</a>`:`<span class="pd-brand">${esc(p.b)}</span>`}<span class="mono">${esc(p.m)}</span></div>
    ${price}
    ${pdStats(p)}
