@@ -747,10 +747,10 @@ const OFFERS=[
  {id:"cam8",tag:"عرض كاميرات",title:"باقة 8 كاميرات IP Tiandy",sub:"4 داخلي + 4 خارجي — صوت وصورة، ليل ونهار، ومشاهدة من الموبايل.",banner:"img/off/web-cam8.jpg?v=1",
   items:[["dome","4","كاميرا داخلي Tiandy IP"],["bullet","4","كاميرا خارجي Tiandy IP"],["nvr","1","جهاز تسجيل NVR 8 قنوات"],["hdd1t","1","هارد WD Purple 1 تيرا"],["cable","100 م","سلك شبكة Cat6"],["rj45","20","ارجي RJ45"]],
   price:13500},
- {id:"lock",tag:"عرض كوالين",title:"باقة كالون الشفرات SIB",sub:"كالون كهربائي بيفتح بالتاج (الشفرة) أو الريموت أو المفتاح، مع مفتاح خروج ورداد — مناسب لأبواب العمارات والشقق والمكاتب.",banner:"img/off/web-lock.jpg?v=1",
-  items:[["rimlock2","1","كالون شفرات كهربائي SIB"],["tags2","35","تاج (شفرة) ID 125KHz"],["closer","1","رداد باب حتى 120 كجم"],["exitbtn","1","مفتاح خروج (Exit)"],["cable","10 م","سلك"]],
-  shots:[],perks:["شامل التركيب","ضمان 24 شهر","فتح بالتاج أو الريموت أو المفتاح"],note:"شامل التركيب",
-  price:6000}
+ {id:"lock",tag:"عرض حتى نفاذ الكمية",title:"باقة كالون الشفرات SIB",sub:"كالون كهربائي بيفتح بالتاج (الشفرة) أو الريموت أو المفتاح، مع رداد وإكزيت بوتن وأدابتور وسلك — مناسب لأبواب العمارات والشقق والمكاتب.",banner:"img/off/web-lock.jpg?v=2",
+  items:[["rimlock2","1","كالون شفرات كهربائي SIB"],["tags2","40","تاج (شفرة) ID 125KHz"],["closer","1","رداد هيدروليك 120 كجم"],["exitbtn","1","إكزيت بوتن"],["adapter","1","أدابتور 12V 2A"],["cable","10 م","سلك"]],
+  shots:[],perks:["توريد وتركيب","ضمان 24 شهر","فتح بالتاج أو الريموت أو المفتاح","العرض حتى نفاذ الكمية"],note:"شامل التوريد والتركيب",
+  price:6999}
 ];
 const OFF_SHOTS=[["نهار","img/w/offer-day.jpg"],["ليل","img/w/offer-night.jpg"]];
 const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban" href="${o.banner.replace("web-","banner-").split("?")[0]}" target="_blank" rel="noopener"><img src="${o.banner}" alt="${o.title}" loading="lazy"></a>
