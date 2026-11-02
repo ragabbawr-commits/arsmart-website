@@ -181,6 +181,12 @@ button{font:inherit}
 .pd-use{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;line-height:1.8;font-size:.95rem}
 .pd-acts{display:flex;gap:8px;flex-wrap:wrap}
 .price.oos,.pd-price.oos{color:#e07a6a}
+.price s.was{font-size:.72rem;color:#9a9a9a;font-weight:400;margin-inline-end:5px;text-decoration-thickness:1px}
+.pd-price s.was,.off-price s.was{font-size:.6em;color:#9a9a9a;font-weight:400;text-decoration-thickness:1.5px}
+.dbadge{display:inline-block;font-size:.8rem;vertical-align:middle;background:#e0482f;color:#fff;border-radius:999px;padding:3px 10px;font-family:var(--body);font-weight:600}
+.card .im,.card .pic{position:relative}
+.dtag{position:absolute;top:8px;inset-inline-end:8px;z-index:2;background:#e0482f;color:#fff;font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 8px;font-family:var(--body)}
+.dstrip{background:linear-gradient(90deg,#b8321f,#e0482f);color:#fff;text-align:center;font-weight:600;padding:8px 12px;font-size:.92rem}
 .price.soon,.pd-price.soon{color:#7fd1ff}
 .fbadges{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}.fbadges span{font-size:.78rem;padding:4px 10px;border-radius:999px;border:1px solid rgba(212,166,63,.45);color:var(--gold2);background:rgba(212,166,63,.08)}
 .pd-acts .btn{flex:1 1 160px}
@@ -425,6 +431,7 @@ footer .areas{line-height:1.9}
     </div>
   </div><nav class="catnav" id="catnav" aria-label="الأقسام"></nav></header>
 
+  <div class="dstrip" id="dstrip" hidden></div>
   <main id="view"></main>
 
   <footer>
@@ -450,7 +457,7 @@ footer .areas{line-height:1.9}
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetH">
     <div style="display:flex;justify-content:space-between;align-items:center"><h3 id="sheetH">طلبك</h3><button class="icon-btn" id="closeCart" type="button" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
     <div id="lines"></div>
-    <div class="total" id="totalRow" hidden><span>الإجمالي التقريبي</span><b id="totalVal"></b></div>
+    <div class="total" id="totalRow" hidden><span id="totalLbl">الإجمالي التقريبي</span><b id="totalVal"></b></div>
     <label>الاسم *<input id="cName" autocomplete="name" required></label>
     <label>رقم الموبايل *<input id="cPhone" inputmode="tel" autocomplete="tel" placeholder="01xxxxxxxxx" dir="ltr" required></label>
     <label>نوع المكان<select id="cPlace"><option>فيلا</option><option>شقة</option><option>شركة / مكتب</option><option>محل / معرض</option><option>مبنى / عمارة</option><option>مصنع / مخزن</option></select></label>
@@ -579,6 +586,12 @@ const PRODUCTS=[
  {"id": "anker-4ac", "img": "img/p/anker-4ac.jpg?v=1", "imgs": ["img/p/anker-4ac-1.jpg?v=1"], "cat": "strip", "t": "pstrip", "b": "Anker", "n": "مشترك كهرباء Anker بـ 4 مقابس أوروبي وحماية من اندفاع التيار", "m": "A9143L21", "s": ["4 مقابس أوروبي (شوكو)", "حماية من اندفاع التيار", "زرار تشغيل وإطفاء بلمبة بيان", "فيشة أوروبي بزاوية", "ينفع يتعلق على الحيطة"], "p": 675}
 ];
 PRODUCTS.push(...(window.CATALOG||[]));
+/* ===== الخصم العام: غيّر الرقم (0 = مفيش خصم) ===== */
+const DISC=10;
+const dp=v=>v<200?Math.round(v*(100-DISC)/100):Math.round(v*(100-DISC)/100/5)*5;
+if(DISC)PRODUCTS.forEach(x=>{if(x.p){x.p0=x.p;x.p=dp(x.p)}});
+if(DISC){const d=document.getElementById("dstrip");if(d){d.textContent=`🔥 خصم ${DISC}% على كل المنتجات — الأسعار المعروضة بعد الخصم`;d.hidden=false}const t=document.getElementById("totalLbl");if(t)t.textContent=`الإجمالي بعد خصم ${DISC}%`}
+const was=(p,cls)=>p.p0?`<s class="${cls||"was"}">${fmt(p.p0)}</s>`:"";
 const TYPES=window.TYPES||{};
 Object.assign(TYPES,{pstrip:"مشتركات بمخارج USB",ptower:"أبراج كهرباء بشاشة",charger:"شواحن سريعة",pbank:"باور بانك"});
 const RETAIL=p=>["strip","chg","pbank"].includes(p.cat);
@@ -674,9 +687,9 @@ const save=()=>{try{localStorage.setItem("arsmart-cart",JSON.stringify(cart))}ca
 function card(p){
   const q=cart[p.id]||0;
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">`:`<div class="ph">${ico(catOf(p).ic,1.2)}<span>${esc(p.m)}</span></div>`;
-  const price=p.soon?`<div class="price soon">قريباً</div>`:p.p?`<div class="price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price oos">نفذ المخزون</div>`;
-  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
-  return `<article class="card"><a class="pic" href="#p-${p.id}" aria-label="${esc(p.n)}">${pic}<span class="tag">${esc(p.b)}</span></a>
+  const price=p.soon?`<div class="price soon">قريباً</div>`:p.p?`<div class="price">${was(p)}${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price oos">نفذ المخزون</div>`;
+  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م${p.p0?` (بعد خصم ${DISC}%)`:""}`:""}`;
+  return `<article class="card"><a class="pic" href="#p-${p.id}" aria-label="${esc(p.n)}">${pic}<span class="tag">${esc(p.b)}</span>${p.p0?`<span class="dtag">خصم ${DISC}%</span>`:""}</a>
   <div class="body"><h3><a href="#p-${p.id}">${esc(p.n)}</a></h3><div class="model">${esc(p.m)}${freqOf(p)?` · <b class="fq">${FREQ[freqOf(p)].replace(/ \(.*\)/,"")}</b>`:""}</div>${price}
   <div class="row">${p.p?`<a class="btn" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
   <button class="add${q?" in":""}" type="button" data-add="${p.id}" aria-label="${q?"في السلة: "+q:"أضف للسلة"}">${ico(q?"check":"plus",2)}</button>`:p.soon?`<a class="btn ghost" href="${wa(`السلام عليكم، عايز أحجز المنتج ده أول ما ينزل:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`)}" target="_blank" rel="noopener">احجز أول ما ينزل</a>`:`<a class="btn ghost" href="${wa(`السلام عليكم، المنتج ده هيتوفر إمتى؟\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`)}" target="_blank" rel="noopener">اسأل عن التوفر</a>`}</div></div></article>`;
@@ -781,12 +794,13 @@ const OFFERS=[
   price:7999}
 ];
 const OFF_SHOTS=[["نهار","img/w/offer-day.jpg"],["ليل","img/w/offer-night.jpg"]];
+if(DISC)OFFERS.forEach(o=>{if(o.price){o.price0=o.price;o.price=dp(o.price)}});
 const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban" href="${o.banner.replace("web-","banner-").split("?")[0]}" target="_blank" rel="noopener"><img src="${o.banner}" alt="${o.title}" loading="lazy"></a>
  <div class="off-body"><span class="off-tag">🔥 ${o.tag}</span><h3>${o.title}</h3><p class="off-sub">${o.sub}</p>
  <h4>محتويات الباقة</h4><ul class="off-items">${o.items.map(([im,q,t])=>`<li><img src="img/off/${im}.jpg" alt="${t}" loading="lazy"><b>${q}</b><span data-q="${q}">${t}</span></li>`).join("")}</ul>
  ${(o.shots||OFF_SHOTS).length?`<h4>صورة حقيقية من كاميرات ركّبناها</h4><div class="off-shots">${(o.shots||OFF_SHOTS).map(([l,i])=>`<a href="${i}" target="_blank" rel="noopener"><img src="${i.replace("img/w/","img/w/t/")}" alt="${l}" loading="lazy"><span>${l==="ليل"?"🌙":"☀️"} ${l}</span></a>`).join("")}</div>`:""}
  <ul class="off-perks">${(o.perks||["ضمان 24 شهر","مشاهدة من الموبايل"]).map(x=>`<li>✔ ${x}</li>`).join("")}</ul>
- <div class="off-foot"><div><div class="off-price">${fmt(o.price)} <small>ج.م</small></div><div class="off-note">${o.note||"سعر بيع • بدون تركيب"}</div></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>`- ${i[1]} × ${i[2]}`).join("\n")}\nالسعر: ${fmt(o.price)} ج.م`)}">احجز العرض على الواتساب</a></div></div></article>`;
+ <div class="off-foot"><div><div class="off-price">${o.price0?`<s class="was">${fmt(o.price0)}</s> `:""}${fmt(o.price)} <small>ج.م</small></div><div class="off-note">${o.note||"سعر بيع • بدون تركيب"}</div></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>`- ${i[1]} × ${i[2]}`).join("\n")}\nالسعر: ${fmt(o.price)} ج.م`)}">احجز العرض على الواتساب</a></div></div></article>`;
 const offersSec=()=>OFFERS.length?`<section class="sec" id="offers"><div class="sec-h"><h2>🔥 العروض</h2>${OFFERS.length>1?`<a href="#offers-all">كل العروض ←</a>`:""}</div><div class="offers">${OFFERS.map(offerCard).join("")}</div>${OFFERS.length>1?`<p class="offers-hint">← اسحب لتشوف باقي العروض (${OFFERS.length}) →</p>`:""}</section>`:"";
 const HERO_BG=["img/w/hero1.jpg","img/w/villa-imou-garden.jpg","img/w/rack-patch-48.jpg"];
 function viewHome(){
@@ -964,7 +978,7 @@ const WHY={
  pbx:["ليه سنترال؟",[["pbx","خط واحد لكل المكاتب","توزيع الخطوط والتحويل بين الأوض."],["users","اتصال داخلي مجاني","بين الموظفين أو أفراد البيت."],["tool","تركيب وبرمجة","أرقام داخلية وتحويلات زي ما تحب."],["shield","ضمان وصيانة","ومتابعة بعد التركيب."]]]};
 const fCard=([ic,t,d])=>`<div class="fx"><span class="ic">${ico(ic)}</span><b>${t}</b><small>${d}</small></div>`;
 function pdExtras(p){
-  if(RETAIL(p))return `<section class="sec cta"><h2>عايز تطلبه؟</h2><p>ابعتلنا على الواتساب ونأكدلك التوفر والتوصيل.</p><div class="ctas"><a class="btn wa" href="${wa(`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`)}" target="_blank" rel="noopener">كلّمنا على الواتساب</a><a class="btn ghost" href="tel:+201144772044">${ico("phone")}اتصل 01144772044</a></div></section>`;
+  if(RETAIL(p))return `<section class="sec cta"><h2>عايز تطلبه؟</h2><p>ابعتلنا على الواتساب ونأكدلك التوفر والتوصيل.</p><div class="ctas"><a class="btn wa" href="${wa(`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م${p.p0?` (بعد خصم ${DISC}%)`:""}`:""}`)}" target="_blank" rel="noopener">كلّمنا على الواتساب</a><a class="btn ghost" href="tel:+201144772044">${ico("phone")}اتصل 01144772044</a></div></section>`;
   const fs=featsOf(p), why=WHY[p.cat], isLock=p.cat==="lock";
   const featHtml=fs.length?`<section class="sec"><div class="sec-h"><h2>${isLock||p.cat==="access"?"طرق الفتح والمميزات":"المميزات"}</h2></div><div class="fxs">${fs.map(k=>fCard(FEAT[k])).join("")}</div></section>`:"";
   const whyHtml=why?`<section class="sec why"><h2>${why[0]}</h2><div class="why-in"><div class="fxs">${why[1].map(fCard).join("")}</div>${p.img?`<div class="why-img"><img src="${esc(p.img)}" alt="" loading="lazy"></div>`:""}</div></section>`:"";
@@ -976,8 +990,8 @@ const pdStats=p=>RETAIL(p)?`<div class="stats"><div><b>سنة</b><small>ضمان
 function viewProduct(p){
   const c=catOf(p), b=brandOf(p);
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}">`:`<div class="ph">${ico(c?c.ic:"tag",1.2)}</div>`;
-  const price=p.soon?`<div class="pd-price soon" style="font-size:1.3rem">قريباً</div>`:p.p?`<div class="pd-price">${fmt(p.p)} <small>ج.م</small></div>`:`<div class="pd-price oos" style="font-size:1.2rem">نفذ المخزون حالياً</div>`;
-  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م`:""}`;
+  const price=p.soon?`<div class="pd-price soon" style="font-size:1.3rem">قريباً</div>`:p.p?`<div class="pd-price">${p.p0?`<span class="dbadge">خصم ${DISC}%</span> <s class="was">${fmt(p.p0)}</s> `:""}${fmt(p.p)} <small>ج.م</small></div>`:`<div class="pd-price oos" style="font-size:1.2rem">نفذ المخزون حالياً</div>`;
+  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م${p.p0?` (بعد خصم ${DISC}%)`:""}`:""}`;
   const ask=`السلام عليكم، عايز أسأل عن:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`;
   const rows=[["الماركة",p.b],["الموديل",`<span class="mono">${esc(p.m)}</span>`],...(p.c?[["الكود",`<span class="mono">${esc(p.c)}</span>`]]:[]),...(p.t&&TYPES[p.t]?[["النوع",TYPES[p.t]]]:[]),...(p.h||[]).map(([k,v])=>[k,esc(v)])];
   const specs=(p.s||[]).length?`<ul class="feat" style="direction:rtl;text-align:right;padding:0 18px 0 0">${p.s.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
@@ -1084,7 +1098,7 @@ function cartMsg(){
   const name=$("cName").value.trim();
   const tot=Object.keys(cart).reduce((s,id)=>{const p=PRODUCTS.find(x=>x.id===id);return s+(p&&p.p||0)*cart[id]},0), ph=$("cPhone").value.trim();
   const note=$("cNote").value.trim();
-  return [`السلام عليكم، طلب جديد من موقع AR&SMART — رقم الطلب: ${orderNo()}`,"",...lines].concat(tot?[`الإجمالي التقريبي: ${fmt(tot)} ج.م`]:[],["",
+  return [`السلام عليكم، طلب جديد من موقع AR&SMART — رقم الطلب: ${orderNo()}`,"",...lines,...(DISC?[`(الأسعار بعد خصم ${DISC}%)`]:[])].concat(tot?[`الإجمالي التقريبي: ${fmt(tot)} ج.م`]:[],["",
    ...(name?[`الاسم: ${name}`]:[]),...(ph?[`الموبايل: ${ph}`]:[]),`نوع المكان: ${$("cPlace").value}`,`المنطقة: ${$("cArea").value}`,...(note?[`العنوان / ملاحظات: ${note}`]:[]),`الطلب: ${$("cInst").value}`]).join("\n");
 }
 function renderCart(){

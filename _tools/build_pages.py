@@ -156,7 +156,7 @@ def page(path, title, desc, body, ld=None, img="img/og-cover.jpg", crumb=None):
 
 def card(p, up):
     im = f'<img src="{up}{e(p["img"].split("?")[0])}" alt="{e(p["n"])}" loading="lazy">' if p.get("img") else f'<span class="phm">{e(p["m"])}</span>'
-    pr = '<span style="color:#7fd1ff">قريباً</span>' if p.get("soon") else f'{fmt(p["p"])} ج.م' if p.get("p") else '<span class="oos">نفذ المخزون</span>'
+    pr = '<span style="color:#7fd1ff">قريباً</span>' if p.get("soon") else (f'<s style="color:#9a9a9a;font-weight:400;font-size:.8em">{fmt(p["p0"])}</s> ' if p.get("p0") else "") + f'{fmt(p["p"])} ج.م' if p.get("p") else '<span class="oos">نفذ المخزون</span>'
     return f'<a class="card" href="{up}p/{p["id"]}.html"><span class="im">{im}</span><b>{e(p["n"])}</b><small>{e(p["b"])} {e(p["m"])}</small><span class="pr">{pr}</span></a>'
 
 def cta(msg, up):
@@ -231,7 +231,7 @@ for p in P:
     rows = [("الماركة", e(p["b"])), ("الموديل", f'<span class="mono">{e(p["m"])}</span>')] + ([("الكود", f'<span class="mono">{e(p["c"])}</span>')] if p.get("c") else []) + ([("النوع", e(p["type"]))] if p.get("type") else []) + ([("التردد", e(p["freq"]))] if p.get("freq") else []) + [(e(k), e(v)) for k, v in (p.get("h") or [])]
     feats = "".join(f"<li>{e(x)}</li>" for x in (p.get("s") or []))
     det = "".join(f"<li>{e(x)}</li>" for x in (p.get("d") or []))
-    price = '<div class="price" style="font-size:1.3rem;color:#7fd1ff">قريباً</div>' if p.get("soon") else f'<div class="price">{fmt(p["p"])} <small>ج.م</small></div>' if p.get("p") else '<div class="price oos" style="font-size:1.3rem">نفذ المخزون حالياً</div>'
+    price = '<div class="price" style="font-size:1.3rem;color:#7fd1ff">قريباً</div>' if p.get("soon") else f'<div class="price">' + (f'<span style="display:inline-block;font-size:.8rem;background:#e0482f;color:#fff;border-radius:999px;padding:3px 10px;vertical-align:middle">خصم {round(100-100*p["p"]/p["p0"])}%</span> <s style="color:#9a9a9a;font-weight:400;font-size:.6em">{fmt(p["p0"])}</s> ' if p.get("p0") else "") + f'{fmt(p["p"])} <small>ج.م</small></div>' if p.get("p") else '<div class="price oos" style="font-size:1.3rem">نفذ المخزون حالياً</div>'
     msg = f"السلام عليكم، عايز أطلب:\n{p['n']}\n{p['b']} {p['m']}" + (f"\nكود: {p['c']}" if p.get("c") else "") + (f"\nالسعر: {fmt(p['p'])} ج.م" if p.get("p") else "")
     inst = f"السلام عليكم، عايز أطلب توريد وتركيب:\n{p['n']}\n{p['b']} {p['m']}" + (f"\nكود: {p['c']}" if p.get("c") else "")
     ask = f"السلام عليكم، المنتج ده هيتوفر إمتى؟\n{p['n']}\n{p['b']} {p['m']}" + (f"\nكود: {p['c']}" if p.get("c") else "")
