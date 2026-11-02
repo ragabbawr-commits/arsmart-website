@@ -794,7 +794,7 @@ const OFFERS=[
   price:7999}
 ];
 const OFF_SHOTS=[["نهار","img/w/offer-day.jpg"],["ليل","img/w/offer-night.jpg"]];
-if(DISC)OFFERS.forEach(o=>{if(o.price){o.price0=o.price;o.price=dp(o.price)}});
+/* العروض والباقات مش داخلة في الخصم العام */
 const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban" href="${o.banner.replace("web-","banner-").split("?")[0]}" target="_blank" rel="noopener"><img src="${o.banner}" alt="${o.title}" loading="lazy"></a>
  <div class="off-body"><span class="off-tag">🔥 ${o.tag}</span><h3>${o.title}</h3><p class="off-sub">${o.sub}</p>
  <h4>محتويات الباقة</h4><ul class="off-items">${o.items.map(([im,q,t])=>`<li><img src="img/off/${im}.jpg" alt="${t}" loading="lazy"><b>${q}</b><span data-q="${q}">${t}</span></li>`).join("")}</ul>
