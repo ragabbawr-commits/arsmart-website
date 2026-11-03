@@ -138,15 +138,15 @@ def page(path, title, desc, body, ld=None, img="img/og-cover.jpg", crumb=None):
     area_links = " · ".join(f'<a href="{up}areas/{a}.html">{e(n)}</a>' for a, n in AREAS)
     out = f"""<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{e(title)}</title><meta name="description" content="{e(desc)}"><link rel="canonical" href="{canon}">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AR&amp;SMART"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{SITE}/{img}"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AR SMART"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{SITE}/{img}"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#111111"><link rel="icon" href="{up}img/logo-192.png"><link rel="apple-touch-icon" href="{up}img/logo-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Readex+Pro:wght@300;400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <link rel="stylesheet" href="{up}assets/site.css"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KJRENB4RR2"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag('js',new Date());gtag('config','G-KJRENB4RR2');document.addEventListener('click',function(e){{var a=e.target.closest('a[href*="wa.me"]');if(a)gtag('event','whatsapp_click',{{page:location.pathname}});var t=e.target.closest('a[href^="tel:"]');if(t)gtag('event','phone_click',{{}});}},true);</script>{lds}</head><body>
-<header><div class="w"><a class="logo" href="{up}"><img src="{up}img/logo-192.png" alt="AR&amp;SMART">AR&amp;SMART</a>
+<header><div class="w"><a class="logo" href="{up}"><img src="{up}img/logo-192.png" alt="AR SMART">AR SMART</a>
 <nav class="top"><a href="{up}#home">الرئيسية</a><a href="{up}#services">الخدمات</a><a href="{up}#works">أعمالنا</a><a class="keep" href="{up}#categories">المتجر</a><a href="{up}#calc">حاسبة الهارد</a><a class="keep" href="{up}#contact">اتصل بنا</a></nav></div></header>
 <main class="w">{cr}{body}</main>
-<footer><div class="w cols"><div><b>AR&amp;SMART · م. رجب مفتاح</b>Eng. Ragab Moftah<br>توريد وتركيب وبرمجة أنظمة الأمان والتحكم الذكي<br>واتساب واتصال: <span class="mono">01144772044</span> · <span class="mono">01061503410</span><br>ضمان 24 شهر · معاينة مجانية</div>
+<footer><div class="w cols"><div><b>AR SMART · م. رجب مفتاح</b>Eng. Ragab Moftah<br>توريد وتركيب وبرمجة أنظمة الأمان والتحكم الذكي<br>واتساب واتصال: <span class="mono">01144772044</span> · <span class="mono">01061503410</span><br>ضمان 24 شهر · معاينة مجانية</div>
 <div><b>خدماتنا</b>{svc_links}</div><div><b>المناطق اللي بنخدمها</b>{area_links}</div></div></footer>
 {FAB}<nav class="bnav"><a href="{up}#home">🏠<span>الرئيسية</span></a><a href="{up}#categories">🛒<span>المتجر</span></a><a href="tel:+201144772044">📞<span>اتصل</span></a><a class="wa" href="https://wa.me/{WA}" target="_blank" rel="noopener">💬<span>واتساب</span></a></nav></body></html>"""
     full = os.path.join(ROOT, path)
@@ -166,7 +166,7 @@ STEPS = ["تواصل معانا واتساب أو من الموقع", "معاي�
 steps_html = '<ol class="steps">' + "".join(f"<li>{s}</li>" for s in STEPS) + "</ol>"
 faq_html = lambda qs: "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in qs)
 faq_ld = lambda qs: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in qs]}
-BIZ = {"@context": "https://schema.org", "@type": "LocalBusiness", "@id": SITE + "/#business", "name": "AR&SMART - Eng. Ragab Moftah", "url": SITE + "/", "telephone": ["+201144772044", "+201061503410"], "image": SITE + "/img/og-cover.jpg", "address": {"@type": "PostalAddress", "addressLocality": "El Shorouk City", "addressRegion": "Cairo", "addressCountry": "EG"}}
+BIZ = {"@context": "https://schema.org", "@type": "LocalBusiness", "@id": SITE + "/#business", "name": "AR SMART - Eng. Ragab Moftah", "url": SITE + "/", "telephone": ["+201144772044", "+201061503410"], "image": SITE + "/img/og-cover.jpg", "address": {"@type": "PostalAddress", "addressLocality": "El Shorouk City", "addressRegion": "Cairo", "addressCountry": "EG"}}
 
 urls = []
 RETAIL_CATS = {"strips", "chargers", "powerbank"}
@@ -194,12 +194,12 @@ for s in SERVICES:
 {cta(f"السلام عليكم، عايز أسأل عن {s['name']}", up)}
 <div class="panel"><ul class="ticks">{"".join(f"<li>{e(x)}</li>" for x in s["pts"])}</ul><p style="margin:12px 0 0;color:var(--muted)">الماركات: <span class="mono">{e(s["brands"])}</span></p></div>
 {"<h2>منتجات من المتجر</h2><div class='grid'>" + "".join(card(p, up) for p in prods) + f"</div><p><a href='{up}#c-{s['cats'][0]}'>شوف كل المنتجات بالأسعار ←</a></p>" if prods else ""}
-<h2>صور من شغلنا</h2><div class="works">{"".join(f'<img src="{up}img/w/t/{w}.jpg" alt="أعمال AR&amp;SMART" loading="lazy">' for w in WORKS[:4])}</div><p><a href="{up}#works">كل الأعمال ←</a></p>
+<h2>صور من شغلنا</h2><div class="works">{"".join(f'<img src="{up}img/w/t/{w}.jpg" alt="أعمال AR SMART" loading="lazy">' for w in WORKS[:4])}</div><p><a href="{up}#works">كل الأعمال ←</a></p>
 <h2>إزاي بنشتغل</h2>{steps_html}
 <h2>بنركّب {e(s["name"])} في</h2><div class="chips">{areas}</div>
 <h2>أسئلة شائعة</h2>{faq_html(qs)}
 {cta(f"السلام عليكم، عايز معاينة {s['name']}", up)}"""
-    title = f"{s['h1']} | التجمع الخامس والشروق | AR&SMART"
+    title = f"{s['h1']} | التجمع الخامس والشروق | AR SMART"
     desc = f"{s['intro'][:120]}… معاينة مجانية وضمان 24 شهر. واتساب 01144772044"
     svc_ld = {"@context": "https://schema.org", "@type": "Service", "name": s["h1"], "serviceType": s["name"], "provider": BIZ, "areaServed": [n for _, n in AREAS], "description": s["intro"]}
     urls.append(page(f"services/{s['slug']}.html", title, desc, body, [svc_ld, faq_ld(qs)], crumb=[("الرئيسية", ""), ("الخدمات", "#services"), (s["name"], None)]))
@@ -211,7 +211,7 @@ for a, n in AREAS:
     qs = [(f"هل المعاينة في {n} مجانية؟", f"أيوه، المعاينة مجانية في {n}. بنيجي نشوف المكان ونقترح الحل المناسب لميزانيتك من غير أي التزام."), FAQ[1], FAQ[2], FAQ[7]]
     others = " · ".join(f'<a href="{x}.html">{e(m)}</a>' for x, m in AREAS if x != a)
     body = f"""<h1>كاميرات مراقبة وسمارت هوم وكوالين ذكية في {e(n)}</h1>
-<p class="lead">AR&amp;SMART بتوصلك في {e(n)}: توريد وتركيب وبرمجة كاميرات المراقبة، الكوالين الذكية، السمارت هوم و KNX، الإنتركم الصوتي والمرئي، الأكسيس كنترول والحضور والانصراف، الشبكات والواي فاي، الساوند سيستم والسنترالات، والبوابات الإلكترونية — للفيلات والشقق والشركات والمحلات. معاينة مجانية وضمان 24 شهر.</p>
+<p class="lead">AR SMART بتوصلك في {e(n)}: توريد وتركيب وبرمجة كاميرات المراقبة، الكوالين الذكية، السمارت هوم و KNX، الإنتركم الصوتي والمرئي، الأكسيس كنترول والحضور والانصراف، الشبكات والواي فاي، الساوند سيستم والسنترالات، والبوابات الإلكترونية — للفيلات والشقق والشركات والمحلات. معاينة مجانية وضمان 24 شهر.</p>
 {cta(f"السلام عليكم، عايز معاينة في {n}", up)}
 <h2>خدماتنا في {e(n)}</h2><div class="svcs">{svcs}</div>
 <h2>صور من شغلنا</h2><div class="works">{"".join(f'<img src="{up}img/w/t/{w}.jpg" alt="تركيب كاميرات وأنظمة أمان" loading="lazy">' for w in WORKS)}</div>
@@ -219,7 +219,7 @@ for a, n in AREAS:
 <h2>أسئلة شائعة</h2>{faq_html(qs)}
 <h2>مناطق تانية بنخدمها</h2><p>{others}</p>
 {cta(f"السلام عليكم، عايز أسأل عن خدماتكم في {n}", up)}"""
-    title = f"كاميرات مراقبة وسمارت هوم في {n} | AR&SMART"
+    title = f"كاميرات مراقبة وسمارت هوم في {n} | AR SMART"
     desc = f"تركيب كاميرات مراقبة وكوالين ذكية وسمارت هوم وإنتركم وأكسيس كنترول وشبكات في {n}. معاينة مجانية وضمان 24 شهر. واتساب 01144772044"
     ld = dict(BIZ, areaServed=n)
     urls.append(page(f"areas/{a}.html", title, desc, body, [ld, faq_ld(qs)], crumb=[("الرئيسية", ""), ("المناطق", None), (n, None)]))
@@ -249,10 +249,10 @@ for p in P:
 {p.get("extra","").replace('src="img/','src="../img/')}
 {f'<h2>المواصفات التفصيلية</h2><ul class="det">{det}</ul>' if det else ""}
 {f'<h2>منتجات مشابهة</h2><div class="grid">' + "".join(card(x, up) for x in rel) + "</div>" if rel else ""}"""
-    title = f"{p['n']} {p['b']} {p['m']}" + (f" | سعر {fmt(p['p'])} ج.م" if p.get("p") else "") + " | AR&SMART"
+    title = f"{p['n']} {p['b']} {p['m']}" + (f" | سعر {fmt(p['p'])} ج.م" if p.get("p") else "") + " | AR SMART"
     desc = f"{p['n']} {p['b']} {p['m']}" + (f" بسعر {fmt(p['p'])} جنيه" if p.get("p") else "") + ". " + (p.get("use") or "") + (" ضمان سنة ومنتج أصلي وتوصيل. واتساب 01144772044" if retail else " توريد وتركيب وضمان 24 شهر. واتساب 01144772044")
     ld = {"@context": "https://schema.org", "@type": "Product", "name": f"{p['n']} {p['m']}", "brand": {"@type": "Brand", "name": p["b"]}, "model": p["m"], **({"sku": str(p["c"])} if p.get("c") else {}), **({"image": f"{SITE}/{img}"} if img else {}), "description": desc,
-          **({"offers": {"@type": "Offer", "price": p["p"], "priceCurrency": "EGP", "availability": "https://schema.org/InStock", "url": f"{SITE}/p/{p['id']}.html", "seller": {"@type": "Organization", "name": "AR&SMART"}}} if p.get("p") else {})}
+          **({"offers": {"@type": "Offer", "price": p["p"], "priceCurrency": "EGP", "availability": "https://schema.org/InStock", "url": f"{SITE}/p/{p['id']}.html", "seller": {"@type": "Organization", "name": "AR SMART"}}} if p.get("p") else {})}
     cat = p.get("catName") or "المتجر"
     urls.append(page(f"p/{p['id']}.html", title, desc[:300], body, [ld], img=img or "img/og-cover.jpg", crumb=[("الرئيسية", ""), (cat, f"#c-{p.get('catId')}"), (p["m"], None)]))
 

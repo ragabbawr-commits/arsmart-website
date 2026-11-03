@@ -1,4 +1,4 @@
-# AR&SMART website — notes for whoever edits it next
+# AR SMART website — notes for whoever edits it next
 
 Static site on GitHub Pages (branch `main`, domain in `CNAME`). No build server: you edit files, commit and push, and the site goes live a minute later.
 
