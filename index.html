@@ -586,11 +586,11 @@ const PRODUCTS=[
  {"id": "anker-4ac", "img": "img/p/anker-4ac.jpg?v=1", "imgs": ["img/p/anker-4ac-1.jpg?v=1"], "cat": "strip", "t": "pstrip", "b": "Anker", "n": "مشترك كهرباء Anker بـ 4 مقابس أوروبي وحماية من اندفاع التيار", "m": "A9143L21", "s": ["4 مقابس أوروبي (شوكو)", "حماية من اندفاع التيار", "زرار تشغيل وإطفاء بلمبة بيان", "فيشة أوروبي بزاوية", "ينفع يتعلق على الحيطة"], "p": 675}
 ];
 PRODUCTS.push(...(window.CATALOG||[]));
-/* ===== الخصم العام: غيّر الرقم (0 = مفيش خصم) ===== */
+/* ===== خصم الكوالين الذكية بس: غيّر الرقم (0 = مفيش خصم) ===== */
 const DISC=10;
 const dp=v=>v<200?Math.round(v*(100-DISC)/100):Math.round(v*(100-DISC)/100/5)*5;
-if(DISC)PRODUCTS.forEach(x=>{if(x.p){x.p0=x.p;x.p=dp(x.p)}});
-if(DISC){const d=document.getElementById("dstrip");if(d){d.textContent=`🔥 خصم ${DISC}% على كل المنتجات — الأسعار المعروضة بعد الخصم`;d.hidden=false}const t=document.getElementById("totalLbl");if(t)t.textContent=`الإجمالي بعد خصم ${DISC}%`}
+const DISC_ON=x=>x.cat==="lock"&&x.t!=="elock";
+if(DISC)PRODUCTS.forEach(x=>{if(x.p&&DISC_ON(x)){x.p0=x.p;x.p=dp(x.p)}});
 const was=(p,cls)=>p.p0?`<s class="${cls||"was"}">${fmt(p.p0)}</s>`:"";
 const TYPES=window.TYPES||{};
 Object.assign(TYPES,{pstrip:"مشتركات بمخارج USB",ptower:"أبراج كهرباء بشاشة",charger:"شواحن سريعة",pbank:"باور بانك"});
@@ -1098,7 +1098,7 @@ function cartMsg(){
   const name=$("cName").value.trim();
   const tot=Object.keys(cart).reduce((s,id)=>{const p=PRODUCTS.find(x=>x.id===id);return s+(p&&p.p||0)*cart[id]},0), ph=$("cPhone").value.trim();
   const note=$("cNote").value.trim();
-  return [`السلام عليكم، طلب جديد من موقع AR&SMART — رقم الطلب: ${orderNo()}`,"",...lines,...(DISC?[`(الأسعار بعد خصم ${DISC}%)`]:[])].concat(tot?[`الإجمالي التقريبي: ${fmt(tot)} ج.م`]:[],["",
+  return [`السلام عليكم، طلب جديد من موقع AR&SMART — رقم الطلب: ${orderNo()}`,"",...lines,...(Object.keys(cart).some(id=>(PRODUCTS.find(x=>x.id===id)||{}).p0)?[`(أسعار الكوالين الذكية بعد خصم ${DISC}%)`]:[])].concat(tot?[`الإجمالي التقريبي: ${fmt(tot)} ج.م`]:[],["",
    ...(name?[`الاسم: ${name}`]:[]),...(ph?[`الموبايل: ${ph}`]:[]),`نوع المكان: ${$("cPlace").value}`,`المنطقة: ${$("cArea").value}`,...(note?[`العنوان / ملاحظات: ${note}`]:[]),`الطلب: ${$("cInst").value}`]).join("\n");
 }
 function renderCart(){
