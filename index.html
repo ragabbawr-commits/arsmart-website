@@ -788,8 +788,8 @@ const OFFERS=[
   items:[["keypad","1","جهاز أكسيس كنترول كارت + كود"],["maglock","1","قفل مغناطيسي SIB"],["psu","1","باور سبلاي 12V 3.5A"],["closer-black","1","رداد هيدروليك أسود"],["exitbtn","1","إكزيت بوتن"],["tags2","40","تاج (شفرة) ID 125KHz"],["cable","10 م","سلك"]],
   shots:[],perks:["توريد وتركيب","ضمان 24 شهر","فتح بالكارت أو الكود"],note:"شامل التوريد والتركيب",
   price:5999},
- {id:"panda",tag:"عرض حصري",title:"قفل باندا الاحترافي PANDA Smart Lock",sub:"الكالون الغني عن التعريف: بصمة الإصبع، بصمة الوجه 3D، ميداليات IC، باسورد دائم، كود مؤقت للضيوف، ومفتاح طوارئ. ومع أبلكيشن Tuya Smart لما حد يرن الجرس تكلمه ويكلمك صوت وصورة لمدة 55 ثانية وتفتحله من الموبايل من أي مكان.",banner:"img/off/web-panda.jpg?v=1",
-  items:[["panda","1","قفل باندا PANDA الاحترافي"],["tags2","✔","ميداليات IC"]],
+ {id:"panda",tag:"عرض حصري",title:"قفل باندا الاحترافي PANDA Smart Lock",sub:"الكالون الغني عن التعريف: بصمة الإصبع، بصمة الوجه 3D، ميداليات IC، باسورد دائم، كود مؤقت للضيوف، ومفتاح طوارئ. ومع أبلكيشن Tuya Smart لما حد يرن الجرس تكلمه ويكلمك صوت وصورة لمدة 55 ثانية وتفتحله من الموبايل من أي مكان.",banner:"img/off/web-panda.jpg?v=2",
+  items:[],
   shots:[],perks:["شامل التوريد والتركيب","ضمان سنتين","بصمة وجه 3D + بصمة إصبع","فتح من الموبايل بأبلكيشن Tuya"],note:"شامل التوريد والتركيب — أسعار الكوالين في المتجر توريد فقط",
   price:15000},
  {id:"fp",tag:"عرض لفترة محدودة",title:"باقة سمارت لوك بصمة SIB L03F335",sub:"كالون سمارت لوك بيفتح بالبصمة والباسورد وكارت IC والمفتاح، ومن الموبايل بالأبلكيشن لما حد يرن الجرس — مع رداد هيدروليك وإكزيت بوتن وأدابتور وسلك، كل اللي محتاجه لتأمين بابك في عرض واحد.",banner:"img/off/web-fp.jpg?v=3",
@@ -801,7 +801,7 @@ const OFF_SHOTS=[["نهار","img/w/offer-day.jpg"],["ليل","img/w/offer-night
 /* العروض والباقات مش داخلة في الخصم العام */
 const offerCard=o=>`<article class="offer" id="offer-${o.id}"><a class="off-ban" href="${o.banner.replace("web-","banner-").split("?")[0]}" target="_blank" rel="noopener"><img src="${o.banner}" alt="${o.title}" loading="lazy"></a>
  <div class="off-body"><span class="off-tag">🔥 ${o.tag}</span><h3>${o.title}</h3><p class="off-sub">${o.sub}</p>
- <h4>محتويات الباقة</h4><ul class="off-items">${o.items.map(([im,q,t])=>`<li><img src="img/off/${im}.jpg" alt="${t}" loading="lazy"><b>${q}</b><span data-q="${q}">${t}</span></li>`).join("")}</ul>
+ ${o.items.length?`<h4>محتويات الباقة</h4><ul class="off-items">${o.items.map(([im,q,t])=>`<li><img src="img/off/${im}.jpg" alt="${t}" loading="lazy"><b>${q}</b><span data-q="${q}">${t}</span></li>`).join("")}</ul>`:""}
  ${(o.shots||OFF_SHOTS).length?`<h4>صورة حقيقية من كاميرات ركّبناها</h4><div class="off-shots">${(o.shots||OFF_SHOTS).map(([l,i])=>`<a href="${i}" target="_blank" rel="noopener"><img src="${i.replace("img/w/","img/w/t/")}" alt="${l}" loading="lazy"><span>${l==="ليل"?"🌙":"☀️"} ${l}</span></a>`).join("")}</div>`:""}
  <ul class="off-perks">${(o.perks||["ضمان 24 شهر","مشاهدة من الموبايل"]).map(x=>`<li>✔ ${x}</li>`).join("")}</ul>
  <div class="off-foot"><div><div class="off-price">${o.price0?`<s class="was">${fmt(o.price0)}</s> `:""}${fmt(o.price)} <small>ج.م</small></div><div class="off-note">${o.note||"سعر بيع • بدون تركيب"}</div></div><a class="btn gold" target="_blank" rel="noopener" href="${wa(`السلام عليكم، عايز عرض: ${o.title}\n${o.items.map(i=>`- ${i[1]} × ${i[2]}`).join("\n")}\nالسعر: ${fmt(o.price)} ج.م`)}">احجز العرض على الواتساب</a></div></div></article>`;
