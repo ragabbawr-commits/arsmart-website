@@ -104,6 +104,7 @@ button{font:inherit}
 .hbrand img{width:72px;height:72px;border-radius:18px;box-shadow:0 10px 30px -10px rgba(212,166,63,.5)}
 .hname{font-family:var(--mono);font-weight:600;font-size:clamp(2.3rem,9vw,4rem);line-height:1;direction:ltr;background:linear-gradient(180deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hname em{font-style:normal;color:var(--ink);-webkit-text-fill-color:var(--ink)}
+.hsafe{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:10px;direction:ltr;font-family:var(--mono);font-weight:700;font-size:1rem;letter-spacing:.14em;color:#fff}.hsafe b{color:var(--gold2)}
 .htag{display:block;font-family:var(--mono);font-size:.7rem;letter-spacing:.3em;color:var(--muted);margin-top:6px;direction:ltr}
 .hline{font-family:var(--display);font-size:clamp(1.25rem,4.4vw,1.9rem);line-height:1.45;max-width:24ch}
 .hline em{font-style:normal;color:var(--gold2)}
@@ -809,7 +810,7 @@ const offersSec=()=>OFFERS.length?`<section class="sec" id="offers"><div class="
 const HERO_BG=["img/w/hero1.jpg","img/w/villa-imou-garden.jpg","img/w/rack-patch-48.jpg"];
 function viewHome(){
   return `<section class="hero hero-bg hlux"><div class="hbg lux" aria-hidden="true"><span class="lgrid"></span><span class="lbeam"></span><video class="hvid" autoplay muted loop playsinline preload="auto" poster="img/w/hero-poster.jpg?v=2"><source src="img/w/hero.mp4?v=2" type="video/mp4"></video></div><div class="hin">
-    <div class="hbrand"><img src="img/logo-192.png" alt="شعار AR SMART" width="72" height="72"><div><h1 class="hname">AR<em> SMART</em></h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span></div></div>
+    <div class="hbrand"><img src="img/logo-192.png" alt="شعار AR SMART" width="72" height="72"><div><h1 class="hname">AR<em> SMART</em></h1><span class="htag">SECURITY &amp; SMART SYSTEMS</span><span class="hsafe"><svg width="20" height="22" viewBox="0 0 24 26" fill="none" aria-hidden="true"><path d="M12 1.5 3 5v7c0 5.6 3.8 10.4 9 12 5.2-1.6 9-6.4 9-12V5l-9-3.5Z" stroke="#E9BC4C" stroke-width="1.8"/><rect x="8.2" y="11.5" width="7.6" height="6.5" rx="1.2" fill="#E9BC4C"/><path d="M9.8 11.5V9.6a2.2 2.2 0 0 1 4.4 0v1.9" stroke="#E9BC4C" stroke-width="1.6"/></svg><b>AR</b> SAFE</span></div></div>
     <p class="hline">حلول أمنية وأنظمة سمارت هوم متكاملة <em>للفيلات والشركات والمحلات التجارية</em></p>
     <p class="hsub">توريد وتركيب وبرمجة وضمان: كاميرات مراقبة، كوالين ذكية، سمارت هوم و KNX، إنتركم صوتي ومرئي، أكسيس كنترول، حضور وانصراف، شبكات، ساوند سيستم، سنترالات، وبوابات إلكترونية.</p>
     <div class="ctas"><a class="btn gold" href="#book">${ico("cal")}اطلب معاينة مجانية</a><a class="btn ghost" href="#services">${ico("grid")}استعرض المنتجات والخدمات</a></div>
