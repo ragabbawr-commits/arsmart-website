@@ -125,7 +125,7 @@ footer{margin:50px -16px 0;padding:24px 16px;border-top:1px solid var(--line);co
 .fab{position:fixed;left:16px;bottom:18px;width:54px;height:54px;border-radius:50%;background:var(--wa);display:grid;place-items:center;z-index:15;box-shadow:0 10px 30px -8px rgba(37,184,100,.7)}.fab svg{width:28px;height:28px}
 """
 
-def page(path, title, desc, body, ld=None, img="img/og-cover.jpg", crumb=None):
+def page(path, title, desc, body, ld=None, img="img/og-cover.jpg?v=2", crumb=None):
     depth = path.count("/")
     up = "../" * depth
     canon = f"{SITE}/{path}"
@@ -139,11 +139,11 @@ def page(path, title, desc, body, ld=None, img="img/og-cover.jpg", crumb=None):
     out = f"""<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{e(title)}</title><meta name="description" content="{e(desc)}"><link rel="canonical" href="{canon}">
 <meta property="og:type" content="website"><meta property="og:site_name" content="AR SMART"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canon}"><meta property="og:image" content="{SITE}/{img}"><meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#111111"><link rel="icon" href="{up}img/logo-192.png"><link rel="apple-touch-icon" href="{up}img/logo-192.png">
+<meta name="theme-color" content="#111111"><link rel="icon" href="{up}img/logo-192.png?v=2"><link rel="apple-touch-icon" href="{up}img/logo-192.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;700&family=Readex+Pro:wght@300;400;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <link rel="stylesheet" href="{up}assets/site.css"><script async src="https://www.googletagmanager.com/gtag/js?id=G-KJRENB4RR2"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag('js',new Date());gtag('config','G-KJRENB4RR2');document.addEventListener('click',function(e){{var a=e.target.closest('a[href*="wa.me"]');if(a)gtag('event','whatsapp_click',{{page:location.pathname}});var t=e.target.closest('a[href^="tel:"]');if(t)gtag('event','phone_click',{{}});}},true);</script>{lds}</head><body>
-<header><div class="w"><a class="logo" href="{up}"><img src="{up}img/logo-192.png" alt="AR SMART">AR SMART</a>
+<header><div class="w"><a class="logo" href="{up}"><img src="{up}img/logo-192.png?v=2" alt="AR SMART">AR SMART</a>
 <nav class="top"><a href="{up}#home">الرئيسية</a><a href="{up}#services">الخدمات</a><a href="{up}#works">أعمالنا</a><a class="keep" href="{up}#categories">المتجر</a><a href="{up}#calc">حاسبة الهارد</a><a class="keep" href="{up}#contact">اتصل بنا</a></nav></div></header>
 <main class="w">{cr}{body}</main>
 <footer><div class="w cols"><div><b>AR SMART · م. رجب مفتاح</b>Eng. Ragab Moftah<br>توريد وتركيب وبرمجة أنظمة الأمان والتحكم الذكي<br>واتساب واتصال: <span class="mono">01144772044</span> · <span class="mono">01061503410</span><br>ضمان 24 شهر · معاينة مجانية</div>
@@ -166,7 +166,7 @@ STEPS = ["تواصل معانا واتساب أو من الموقع", "معاي�
 steps_html = '<ol class="steps">' + "".join(f"<li>{s}</li>" for s in STEPS) + "</ol>"
 faq_html = lambda qs: "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in qs)
 faq_ld = lambda qs: {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in qs]}
-BIZ = {"@context": "https://schema.org", "@type": "LocalBusiness", "@id": SITE + "/#business", "name": "AR SMART - Eng. Ragab Moftah", "alternateName": ["AR&SMART", "ار سمارت", "م. رجب مفتاح"], "url": SITE + "/", "telephone": ["+201144772044", "+201061503410"], "image": SITE + "/img/og-cover.jpg", "address": {"@type": "PostalAddress", "addressLocality": "El Shorouk City", "addressRegion": "Cairo", "addressCountry": "EG"}}
+BIZ = {"@context": "https://schema.org", "@type": "LocalBusiness", "@id": SITE + "/#business", "name": "AR SMART - Eng. Ragab Moftah", "alternateName": ["AR&SMART", "ار سمارت", "م. رجب مفتاح"], "url": SITE + "/", "telephone": ["+201144772044", "+201061503410"], "image": SITE + "/img/og-cover.jpg?v=2", "address": {"@type": "PostalAddress", "addressLocality": "El Shorouk City", "addressRegion": "Cairo", "addressCountry": "EG"}}
 
 urls = []
 RETAIL_CATS = {"strips", "chargers", "powerbank"}
@@ -254,7 +254,7 @@ for p in P:
     ld = {"@context": "https://schema.org", "@type": "Product", "name": f"{p['n']} {p['m']}", "brand": {"@type": "Brand", "name": p["b"]}, "model": p["m"], **({"sku": str(p["c"])} if p.get("c") else {}), **({"image": f"{SITE}/{img}"} if img else {}), "description": desc,
           **({"offers": {"@type": "Offer", "price": p["p"], "priceCurrency": "EGP", "availability": "https://schema.org/InStock", "url": f"{SITE}/p/{p['id']}.html", "seller": {"@type": "Organization", "name": "AR SMART"}}} if p.get("p") else {})}
     cat = p.get("catName") or "المتجر"
-    urls.append(page(f"p/{p['id']}.html", title, desc[:300], body, [ld], img=img or "img/og-cover.jpg", crumb=[("الرئيسية", ""), (cat, f"#c-{p.get('catId')}"), (p["m"], None)]))
+    urls.append(page(f"p/{p['id']}.html", title, desc[:300], body, [ld], img=img or "img/og-cover.jpg?v=2", crumb=[("الرئيسية", ""), (cat, f"#c-{p.get('catId')}"), (p["m"], None)]))
 
 os.makedirs(os.path.join(ROOT, "assets"), exist_ok=True)
 open(os.path.join(ROOT, "assets", "site.css"), "w", encoding="utf-8").write(CSS)
