@@ -168,7 +168,7 @@ button{font:inherit}
 .card h3 a{color:inherit;text-decoration:none}
 .pd{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
 @media (max-width:760px){.pd{grid-template-columns:1fr}}
-.pd-img{background:#fff;border-radius:16px;border:1px solid rgba(212,166,63,.35);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pd-img{cursor:zoom-in;background:#fff;border-radius:16px;border:1px solid rgba(212,166,63,.35);aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .pd-img img{width:100%;height:100%;object-fit:contain}
 .pd-gal{display:grid;gap:10px;align-content:start}.pd-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.pd-thumbs button{padding:0;border:2px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;aspect-ratio:1;cursor:pointer}.pd-thumbs button[aria-pressed="true"]{border-color:var(--gold)}.pd-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
 .pd-img .ph svg{width:120px;color:#bbb}
@@ -444,7 +444,7 @@ footer .areas{line-height:1.9}
 </div>
 
 <div class="scrim" id="scrim" hidden></div>
-<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="صورة من أعمالنا"><button class="icon-btn lb-x" id="lbX" type="button" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><button class="icon-btn lb-n" id="lbN" type="button" aria-label="التالي">‹</button><button class="icon-btn lb-p" id="lbP" type="button" aria-label="السابق">›</button><figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure></div>
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="عرض الصور"><button class="icon-btn lb-x" id="lbX" type="button" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button><button class="icon-btn lb-n" id="lbN" type="button" aria-label="التالي">‹</button><button class="icon-btn lb-p" id="lbP" type="button" aria-label="السابق">›</button><figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure></div>
 <nav class="menu" id="menu" aria-label="القائمة" hidden>
   <div class="mh"><b>القائمة</b><button class="icon-btn" id="menuClose" type="button" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
   <div id="menuLinks"></div>
@@ -472,7 +472,7 @@ footer .areas{line-height:1.9}
   </div>
 </div>
 
-<script src="catalog.js?v=23"></script>
+<script src="catalog.js?v=24"></script>
 <script>
 const WA="201144772044";
 const PRODUCTS=[
@@ -1165,15 +1165,18 @@ $("sendWa").addEventListener("click",e=>{
 
 document.addEventListener("click",e=>{const g=e.target.closest("[data-gi]");if(!g)return;const m=$("pdMain");if(m)m.innerHTML=`<img src="${g.dataset.gi}" alt="">`;g.parentNode.querySelectorAll("[data-gi]").forEach(b=>b.setAttribute("aria-pressed",b===g))});
 let lbI=0;
-function lbShow(i){if(!WORKS.length)return;lbI=(i+WORKS.length)%WORKS.length;const w=WORKS[lbI];$("lbImg").src=w.img;$("lbImg").alt=w.t;$("lbCap").textContent=w.t+(w.place?" · "+w.place:"");$("lb").hidden=false;document.body.style.overflow="hidden";$("lbX").focus()}
-function lbClose(){$("lb").hidden=true;document.body.style.overflow=""}
+let LBL=null;
+function lbShow(i,list){if(list)LBL=list;else if(!$("lb").hidden&&LBL){}else LBL=WORKS;const L=LBL;if(!L.length)return;lbI=(i+L.length)%L.length;const w=L[lbI];$("lbImg").src=w.img;$("lbImg").alt=w.t;$("lbCap").textContent=(w.t||"")+(w.place?" · "+w.place:"")+(L.length>1?`  (${lbI+1}/${L.length})`:"");$("lb").hidden=false;document.body.style.overflow="hidden";$("lbX").focus()}
+function lbClose(){$("lb").hidden=true;document.body.style.overflow="";LBL=null}
 document.addEventListener("click",e=>{
   if(e.target.closest("[data-wmore]")){wlim=89;$("worksBody").innerHTML=worksGrid();return}
   const wk=e.target.closest("[data-wk]");if(wk){wfilt=wk.dataset.wk;$("worksBody").innerHTML=worksGrid();wk.parentNode.querySelectorAll("[data-wk]").forEach(c=>c.setAttribute("aria-pressed",c===wk));return}
-  const lb=e.target.closest("[data-lb]");if(lb){lbShow(+lb.dataset.lb);return}
+  const lb=e.target.closest("[data-lb]");if(lb){lbShow(+lb.dataset.lb,WORKS);return}
+  const pm=e.target.closest("#pdMain");if(pm){const th=[...document.querySelectorAll(".pd-thumbs [data-gi]")].map(b=>b.dataset.gi);const cur=pm.querySelector("img")?.getAttribute("src");const t=(document.querySelector(".pd h1")||{}).textContent||"";const L=(th.length?th:[cur]).filter(Boolean).map(u=>({img:u,t}));if(L.length){lbShow(Math.max(0,L.findIndex(x=>x.img===cur)),L)}return}
   if(e.target.id==="lb")lbClose();
 });
 $("lbX").onclick=lbClose;$("lbN").onclick=()=>lbShow(lbI+1);$("lbP").onclick=()=>lbShow(lbI-1);
+{let sx=null;$("lb").addEventListener("touchstart",e=>{sx=e.touches[0].clientX},{passive:true});$("lb").addEventListener("touchend",e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(dx)>45)lbShow(lbI+(dx>0?1:-1))},{passive:true})}
 document.addEventListener("keydown",e=>{if($("lb").hidden)return;if(e.key==="Escape")lbClose();else if(e.key==="ArrowLeft")lbShow(lbI+1);else if(e.key==="ArrowRight")lbShow(lbI-1)});
 function bindQuick(){
   const f=$("quickForm"); if(!f)return;
