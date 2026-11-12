@@ -472,7 +472,7 @@ footer .areas{line-height:1.9}
   </div>
 </div>
 
-<script src="catalog.js?v=24"></script>
+<script src="catalog.js?v=25"></script>
 <script>
 const WA="201144772044";
 const PRODUCTS=[
@@ -591,7 +591,8 @@ PRODUCTS.push(...(window.CATALOG||[]));
 const DISC=10;
 const dp=v=>v<200?Math.round(v*(100-DISC)/100):Math.round(v*(100-DISC)/100/5)*5;
 const DISC_ON=x=>x.cat==="lock"&&x.t!=="elock";
-if(DISC)PRODUCTS.forEach(x=>{if(x.p&&DISC_ON(x)){x.p0=x.p;x.p=dp(x.p)}});
+if(DISC)PRODUCTS.forEach(x=>{if(x.p&&!x.p0&&DISC_ON(x)){x.p0=x.p;x.p=dp(x.p)}});
+const DP=x=>x.p0?Math.round(100-100*x.p/x.p0):0;
 const was=(p,cls)=>p.p0?`<s class="${cls||"was"}">${fmt(p.p0)}</s>`:"";
 const TYPES=window.TYPES||{};
 Object.assign(TYPES,{pstrip:"مشتركات بمخارج USB",ptower:"أبراج كهرباء بشاشة",charger:"شواحن سريعة",pbank:"باور بانك"});
@@ -689,8 +690,8 @@ function card(p){
   const q=cart[p.id]||0;
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}" loading="lazy">`:`<div class="ph">${ico(catOf(p).ic,1.2)}<span>${esc(p.m)}</span></div>`;
   const price=p.soon?`<div class="price soon">قريباً</div>`:p.p?`<div class="price">${was(p)}${fmt(p.p)} <small>ج.م</small></div>`:`<div class="price oos">نفذ المخزون</div>`;
-  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م${p.p0?` (بعد خصم ${DISC}%)`:""}`:""}`;
-  return `<article class="card"><a class="pic" href="#p-${p.id}" aria-label="${esc(p.n)}">${pic}<span class="tag">${esc(p.b)}</span>${p.p0?`<span class="dtag">خصم ${DISC}%</span>`:""}</a>
+  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م${p.p0?` (بعد خصم ${DP(p)}%)`:""}`:""}`;
+  return `<article class="card"><a class="pic" href="#p-${p.id}" aria-label="${esc(p.n)}">${pic}<span class="tag">${esc(p.b)}</span>${p.p0?`<span class="dtag">خصم ${DP(p)}%</span>`:""}</a>
   <div class="body"><h3><a href="#p-${p.id}">${esc(p.n)}</a></h3><div class="model">${esc(p.m)}${freqOf(p)?` · <b class="fq">${FREQ[freqOf(p)].replace(/ \(.*\)/,"")}</b>`:""}</div>${price}
   <div class="row">${p.p?`<a class="btn" href="${wa(msg)}" target="_blank" rel="noopener">اطلب الآن</a>
   <button class="add${q?" in":""}" type="button" data-add="${p.id}" aria-label="${q?"في السلة: "+q:"أضف للسلة"}">${ico(q?"check":"plus",2)}</button>`:p.soon?`<a class="btn ghost" href="${wa(`السلام عليكم، عايز أحجز المنتج ده أول ما ينزل:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`)}" target="_blank" rel="noopener">احجز أول ما ينزل</a>`:`<a class="btn ghost" href="${wa(`السلام عليكم، المنتج ده هيتوفر إمتى؟\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`)}" target="_blank" rel="noopener">اسأل عن التوفر</a>`}</div></div></article>`;
@@ -995,7 +996,7 @@ const WHY={
  pbx:["ليه سنترال؟",[["pbx","خط واحد لكل المكاتب","توزيع الخطوط والتحويل بين الأوض."],["users","اتصال داخلي مجاني","بين الموظفين أو أفراد البيت."],["tool","تركيب وبرمجة","أرقام داخلية وتحويلات زي ما تحب."],["shield","ضمان وصيانة","ومتابعة بعد التركيب."]]]};
 const fCard=([ic,t,d])=>`<div class="fx"><span class="ic">${ico(ic)}</span><b>${t}</b><small>${d}</small></div>`;
 function pdExtras(p){
-  if(RETAIL(p))return `<section class="sec cta"><h2>عايز تطلبه؟</h2><p>ابعتلنا على الواتساب ونأكدلك التوفر والتوصيل.</p><div class="ctas"><a class="btn wa" href="${wa(`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م${p.p0?` (بعد خصم ${DISC}%)`:""}`:""}`)}" target="_blank" rel="noopener">كلّمنا على الواتساب</a><a class="btn ghost" href="tel:+201144772044">${ico("phone")}اتصل 01144772044</a></div></section>`;
+  if(RETAIL(p))return `<section class="sec cta"><h2>عايز تطلبه؟</h2><p>ابعتلنا على الواتساب ونأكدلك التوفر والتوصيل.</p><div class="ctas"><a class="btn wa" href="${wa(`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.p?`\nالسعر: ${fmt(p.p)} ج.م${p.p0?` (بعد خصم ${DP(p)}%)`:""}`:""}`)}" target="_blank" rel="noopener">كلّمنا على الواتساب</a><a class="btn ghost" href="tel:+201144772044">${ico("phone")}اتصل 01144772044</a></div></section>`;
   const fs=featsOf(p), why=WHY[p.cat], isLock=p.cat==="lock";
   const featHtml=fs.length?`<section class="sec"><div class="sec-h"><h2>${isLock||p.cat==="access"?"طرق الفتح والمميزات":"المميزات"}</h2></div><div class="fxs">${fs.map(k=>fCard(FEAT[k])).join("")}</div></section>`:"";
   const whyHtml=why?`<section class="sec why"><h2>${why[0]}</h2><div class="why-in"><div class="fxs">${why[1].map(fCard).join("")}</div>${p.img?`<div class="why-img"><img src="${esc(p.img)}" alt="" loading="lazy"></div>`:""}</div></section>`:"";
@@ -1007,8 +1008,8 @@ const pdStats=p=>RETAIL(p)?`<div class="stats"><div><b>سنة</b><small>ضمان
 function viewProduct(p){
   const c=catOf(p), b=brandOf(p);
   const pic=p.img?`<img src="${esc(p.img)}" alt="${esc(p.n)}">`:`<div class="ph">${ico(c?c.ic:"tag",1.2)}</div>`;
-  const price=p.soon?`<div class="pd-price soon" style="font-size:1.3rem">قريباً</div>`:p.p?`<div class="pd-price">${p.p0?`<span class="dbadge">خصم ${DISC}%</span> <s class="was">${fmt(p.p0)}</s> `:""}${fmt(p.p)} <small>ج.م</small></div>`:`<div class="pd-price oos" style="font-size:1.2rem">نفذ المخزون حالياً</div>`;
-  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م${p.p0?` (بعد خصم ${DISC}%)`:""}`:""}`;
+  const price=p.soon?`<div class="pd-price soon" style="font-size:1.3rem">قريباً</div>`:p.p?`<div class="pd-price">${p.p0?`<span class="dbadge">خصم ${DP(p)}%</span> <s class="was">${fmt(p.p0)}</s> `:""}${fmt(p.p)} <small>ج.م</small></div>`:`<div class="pd-price oos" style="font-size:1.2rem">نفذ المخزون حالياً</div>`;
+  const msg=`السلام عليكم، عايز أطلب:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}${p.p?`\nالسعر: ${fmt(p.p)} ج.م${p.p0?` (بعد خصم ${DP(p)}%)`:""}`:""}`;
   const ask=`السلام عليكم، عايز أسأل عن:\n${p.n}\n${p.b} ${p.m}${p.c?`\nكود: ${p.c}`:""}`;
   const rows=[["الماركة",p.b],["الموديل",`<span class="mono">${esc(p.m)}</span>`],...(p.c?[["الكود",`<span class="mono">${esc(p.c)}</span>`]]:[]),...(p.t&&TYPES[p.t]?[["النوع",TYPES[p.t]]]:[]),...(p.h||[]).map(([k,v])=>[k,esc(v)])];
   const specs=(p.s||[]).length?`<ul class="feat" style="direction:rtl;text-align:right;padding:0 18px 0 0">${p.s.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:"";
@@ -1115,7 +1116,7 @@ function cartMsg(){
   const name=$("cName").value.trim();
   const tot=Object.keys(cart).reduce((s,id)=>{const p=PRODUCTS.find(x=>x.id===id);return s+(p&&p.p||0)*cart[id]},0), ph=$("cPhone").value.trim();
   const note=$("cNote").value.trim();
-  return [`السلام عليكم، طلب جديد من موقع AR SMART — رقم الطلب: ${orderNo()}`,"",...lines,...(Object.keys(cart).some(id=>(PRODUCTS.find(x=>x.id===id)||{}).p0)?[`(أسعار الكوالين الذكية بعد خصم ${DISC}%)`]:[])].concat(tot?[`الإجمالي التقريبي: ${fmt(tot)} ج.م`]:[],["",
+  return [`السلام عليكم، طلب جديد من موقع AR SMART — رقم الطلب: ${orderNo()}`,"",...lines,...(Object.keys(cart).some(id=>(PRODUCTS.find(x=>x.id===id)||{}).p0)?[`(الأسعار المعروضة بعد الخصم)`]:[])].concat(tot?[`الإجمالي التقريبي: ${fmt(tot)} ج.م`]:[],["",
    ...(name?[`الاسم: ${name}`]:[]),...(ph?[`الموبايل: ${ph}`]:[]),`نوع المكان: ${$("cPlace").value}`,`المنطقة: ${$("cArea").value}`,...(note?[`العنوان / ملاحظات: ${note}`]:[]),`الطلب: ${$("cInst").value}`]).join("\n");
 }
 function renderCart(){
